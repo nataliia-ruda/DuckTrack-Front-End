@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
-import { AgricultureSharp } from "@mui/icons-material";
+
 
 const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
   const [formFields, setFormFields] = useState({
@@ -21,6 +21,8 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPassowrdError] = useState(false);
 
+  const [openDialog, setOpenDialog] = useState(false);
+
   const [errors, setErrors] = useState({
     firstNameError: "",
     lastNameError: "",
@@ -30,15 +32,16 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
 
   useEffect(() => {
     if (cleanForm) {
-      setFormFields({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
+        setFormFields({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        });
+        setOpenDialog(false); 
     }
-  }, [cleanForm]);
+}, [cleanForm])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -58,6 +61,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         password: formFields.password,
       };
       onSubmitForm(dataToInsert);
+      setOpenDialog(true);
     } else {
       alert("There are still some errors.");
     }
@@ -368,6 +372,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         </Link>
       </Typography>
     </Grid>
+
   );
 };
 

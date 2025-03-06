@@ -1,42 +1,43 @@
 import React from "react";
-import { Typography} from "@mui/material";
 import RegistrationForm from "./RegistrationForm.jsx";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 import { useState } from "react";
+import DialogBox from "./DialogBox.jsx";
 
-const url="http://localhost:3000/signup";
+const url = "http://localhost:3000/signup";
 
 const Registration = () => {
-  const [ cleanForm, setCleanForm ] = useState(false);
-  
+  const [cleanForm, setCleanForm] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+
   const handleUserCreate = async (data) => {
     try {
-        const response = await fetch(`${url}`,{
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        });
-        if (!response.ok) {
-            if (response.status===409) {
-                const result = await response.json();
-                throw Error(result.message);
-            } else {
-                throw Error("There was a problem connecting to the database!");
-            }
+      const response = await fetch(`${url}`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+      });
+      if (!response.ok) {
+        if (response.status === 409) {
+          const result = await response.json();
+          throw Error(result.message);
+        } else {
+          throw Error("There was a problem connecting to the database!");
         }
-        const result = await response.json();
-        alert(result.message);
-        setCleanForm(true);
+      }
+      const result = await response.json();
+      setDialogMessage(result.message);
+      setOpenDialog(true);
+      setCleanForm(true);
     } catch (error) {
-        console.log(error);
-        alert(error);
-    } 
-}
-
-
-
+      console.log(error);
+      setDialogMessage(error.message);
+      setOpenDialog(true);
+    }
+  };
 
   return (
     <Grid
@@ -50,13 +51,11 @@ const Registration = () => {
         justifyContent: "center",
       }}
     >
+      <RegistrationForm onSubmitForm={handleUserCreate} cleanForm={cleanForm} />
 
-     
-        <RegistrationForm onSubmitForm={ handleUserCreate} cleanForm={cleanForm} />
-    
-
-     
-
+      <DialogBox open={openDialog} setOpen={setOpenDialog}>
+        {dialogMessage}
+      </DialogBox>
     </Grid>
   );
 };
