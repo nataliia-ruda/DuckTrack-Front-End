@@ -1,9 +1,8 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-
+import SigninForm from "./SigninForm.jsx";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -24,8 +23,8 @@ const LandingPage = () => {
         height: "100vh",
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: { xs: "space-between", md: "center" },
+        justifyContent: { xs: "space-around", md: "center" },
       }}
     >
       {/* Left Section */}
@@ -33,32 +32,20 @@ const LandingPage = () => {
         xs={12}
         md={6}
         sx={{
-          width: "50%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 3,
-          textAlign: "center",
+         /*  height: "auto", */ 
+            width: {
+              xs: "100%",
+              sm: "70%",
+              md: "50%",
+              lg: "50%",
+            },
+          display: "flex"
+         
         }}
       >
-        <img
-          src="./logo4.png"
-          alt="logo"
-          style={{ width: "10%", height: "auto" }}
-        />
+        <SigninForm></SigninForm>
 
-        <Typography variant="h4" component="h1" gutterBottom>
-          Job Applications Tracker
-        </Typography>
-
-        <Button variant="contained" size="large" onClick={handleSignInClick}>
-          Sign in
-        </Button>
-
-        <Button variant="outlined" size="large" onClick={handleSignUpClick}>
-          Sign up
-        </Button>
+       
       </Grid>
 
       {/* Right Section */}
@@ -66,7 +53,12 @@ const LandingPage = () => {
         xs={12}
         md={6}
         sx={{
-          width: "50%",
+            width: {
+              xs: "100%",
+              sm: "70%",
+              md: "50%",
+              lg: "50%",
+            },
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

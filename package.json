@@ -13,8 +13,10 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
+    "@gsap/react": "^2.1.2",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
+    "gsap": "^3.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0"

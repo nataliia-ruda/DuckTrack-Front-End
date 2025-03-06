@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./components/LandingPage.jsx";
 import Registration from "./components/Registration.jsx";
-import LoginPage from "./components/LoginPage.jsx"
+import Homepage from "./components/Homepage.jsx";
+
 
 
 
@@ -12,7 +13,8 @@ function App() {
        <Routes>
        <Route path="/" element={ <LandingPage/> } />
        <Route path="signup" element={ <Registration/> } />
-       <Route path="signin" element={ <LoginPage/> } />
+       <Route path="home" element={ <Homepage/> } />
+      
        </Routes>
     </>
   )

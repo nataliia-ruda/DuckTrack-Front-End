@@ -3,6 +3,8 @@ import RegistrationForm from "./RegistrationForm.jsx";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
 import DialogBox from "./DialogBox.jsx";
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const url = "http://localhost:3000/signup";
 
@@ -10,6 +12,7 @@ const Registration = () => {
   const [cleanForm, setCleanForm] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
 
   const handleUserCreate = async (data) => {
     try {
@@ -30,10 +33,12 @@ const Registration = () => {
       }
       const result = await response.json();
       setDialogMessage(result.message);
+      setDialogTitle(<CheckCircleOutlineOutlinedIcon/>)
       setOpenDialog(true);
       setCleanForm(true);
     } catch (error) {
       console.log(error);
+      setDialogTitle(<ErrorOutlineOutlinedIcon/>)
       setDialogMessage(error.message);
       setOpenDialog(true);
     }
@@ -53,7 +58,7 @@ const Registration = () => {
     >
       <RegistrationForm onSubmitForm={handleUserCreate} cleanForm={cleanForm} />
 
-      <DialogBox open={openDialog} setOpen={setOpenDialog}>
+      <DialogBox open={openDialog} setOpen={setOpenDialog} title={dialogTitle}>
         {dialogMessage}
       </DialogBox>
     </Grid>
