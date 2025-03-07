@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid2";
-import Typography from "@mui/material/Typography";
+
 import { useNavigate } from "react-router-dom";
 import SigninForm from "./SigninForm.jsx";
 
@@ -39,7 +39,7 @@ const LandingPage = () => {
               md: "50%",
               lg: "50%",
             },
-          display: "flex"
+          display: "flex" 
          
         }}
       >
