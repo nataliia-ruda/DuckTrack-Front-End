@@ -24,6 +24,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 const drawerWidth = 240;
 
@@ -122,30 +123,40 @@ const SideNavigation = () => {
     0: <HomeIcon />,
     1: <StorageOutlinedIcon />,
     2: <BarChartOutlinedIcon />,
-  }; 
-  const navigate = useNavigate()
-  
+    3: <LogoutOutlinedIcon/>
+  };
+  const navigate = useNavigate();
+
   const handleAddApplication = () => {
-    
-    navigate("newapplication"); 
-  }
- 
+    navigate("newapplication");
+  };
+
   return (
     <>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <Box sx={{ display: "flex" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={[{ marginRight: 5 }, open && { display: "none" }]}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
+        <Toolbar
+          sx={{
+            backgroundColor: "rgba(20, 20, 20, 0.9)",
+            backdropFilter: "blur(6px)",
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
+            color: "#E0E0E0",
+            borderBottom: "2px solid white"
+          }}
+        >
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{
+              borderRight: "2px solid white",
+              marginRight: 5,
+              ...(open && { display: "none" }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
 
           <Typography variant="h6" noWrap component="div">
             Job Applications Tracker
@@ -159,16 +170,43 @@ const SideNavigation = () => {
               gap: 1,
             }}
           >
-            <Fab color="primary" aria-label="add" size="small" onClick={handleAddApplication}>
+            <Fab
+              color="primary"
+              aria-label="add"
+              size="small"
+              onClick={handleAddApplication}
+              sx={{
+                backgroundColor: "#616161",
+                color: "#ffffff",
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  backgroundColor: "#757575",
+                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.6)",
+                },
+              }}
+            >
               <AddIcon />
             </Fab>
-            <Typography variant="body1">Add New Application</Typography>
+            <Typography variant="p" sx={{fontSize: "13px"}}>Add New Application</Typography>
           </Box>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+
+      <Drawer
+        variant="permanent"
+        open={open}
+        PaperProps={{
+          sx: {
+            backgroundColor: "#141E27",
+            color: "#E0E0E0",
+            borderRight: "2px solid white"
+              
+          },
+        }}
+      >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton sx={{ color: "white" }} onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
@@ -180,58 +218,26 @@ const SideNavigation = () => {
         <Divider />
 
         <List>
-          <ListItem
-            /* key={text}  */ disablePadding
-            sx={{ display: "block", mb: 2 }}
-          >
+          <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
             <ListItemButton
-              sx={[
-                {
-                  minHeight: 48,
-                  px: 2.5,
-                },
-                open
-                  ? {
-                      justifyContent: "initial",
-                    }
-                  : {
-                      justifyContent: "center",
-                    },
-              ]}
+              sx={{
+                minHeight: 48,
+                px: 2.5,
+                color: "white",
+                justifyContent: open ? "initial" : "center",
+              }}
             >
               <ListItemIcon
-                sx={[
-                  {
-                    minWidth: 0,
-                    justifyContent: "center",
-                  },
-                  open
-                    ? {
-                        mr: 3,
-                      }
-                    : {
-                        mr: "auto",
-                      },
-                ]}
+                sx={{
+                  minWidth: 0,
+                  justifyContent: "center",
+                  color: "white",
+                  mr: open ? 3 : "auto",
+                }}
               >
-                <AccountCircleOutlinedIcon></AccountCircleOutlinedIcon>
+                <AccountCircleOutlinedIcon />
               </ListItemIcon>
-
-              <ListItemText
-                /*   primary={text} */
-                sx={[
-                  open
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              >
-                {" "}
-                User Name{" "}
-              </ListItemText>
+              {open && <ListItemText primary="User Name" />}
             </ListItemButton>
           </ListItem>
         </List>
@@ -239,56 +245,31 @@ const SideNavigation = () => {
         <Divider />
 
         <List>
-          {["Home", "My Applications ", "Statistics"].map((text, index) => (
+          {["Home", "My Applications", "Statistics", "Log out"].map((text, index) => (
             <ListItem
               key={text}
               disablePadding
               sx={{ display: "block", mb: 2 }}
             >
               <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                  color: "white",
+                  justifyContent: open ? "initial" : "center",
+                }}
               >
                 <ListItemIcon
-                  sx={[
-                    {
-                      minWidth: 0,
-                      justifyContent: "center",
-                    },
-                    open
-                      ? {
-                          mr: 3,
-                        }
-                      : {
-                          mr: "auto",
-                        },
-                  ]}
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: "center",
+                    color: "white",
+                    mr: open ? 3 : "auto",
+                  }}
                 >
                   {icons[index]}
                 </ListItemIcon>
-                <ListItemText
-                  primary={text}
-                  sx={[
-                    open
-                      ? {
-                          opacity: 1,
-                        }
-                      : {
-                          opacity: 0,
-                        },
-                  ]}
-                />
+                {open && <ListItemText primary={text} />}
               </ListItemButton>
             </ListItem>
           ))}

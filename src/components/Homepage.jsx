@@ -3,6 +3,7 @@ import SideNavigation, { DrawerHeader }  from './SideNavigation.jsx'
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 import RecentApplicationBox from './RecentApplicationBox.jsx';
+import Divider from '@mui/material/Divider';
 
 const Homepage = () => {
   const date = new Date() 
@@ -21,15 +22,22 @@ const Homepage = () => {
        <Box component="main"  sx={{ flexGrow: 1, p: 3 }} >
        <DrawerHeader />
 
-        <Typography variant= "h4" sx={{ marginBottom: 2 }}>
+        <Typography variant= "h5" sx={{ marginBottom: 2 }}>
           Welcome, User Name! 
         </Typography>
-        <Typography variant= "p" sx={{ marginBottom: 2 }}>
+        <Typography sx={{ marginBottom: 2, fontSize: "12px", color: ""}}>
           Today is {formattedDate}
-        </Typography>
-        <Typography sx={{ marginBottom: 2 }}>
-          Your recent applications
         </Typography> 
+        <Divider/>
+        <Typography variant='h6' sx={{ marginBottom: 2, fontWeight: 600 }}>
+          Your recent applications: 
+        </Typography>
+
+        <Box sx={{display: 'flex', flexDirection: 'column', gap: 1}}>
+        <Typography variant='h6' sx={{fontWeight: 600}}>Do you have any updates about this applications?</Typography>
+        <RecentApplicationBox/>
+        <RecentApplicationBox/> 
+        </Box> 
       </Box>
     </Box>
   )
