@@ -130,7 +130,7 @@ const SideNavigation = () => {
   const navigate = useNavigate();
 
   const handleAddApplication = () => {
-    navigate("newapplication");
+    navigate("/new-application");
   };
   
   const { user, logout } = useContext(AuthContext); 
