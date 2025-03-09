@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -25,6 +25,8 @@ import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import AuthContext from '../core/AuthContext';
+
 
 const drawerWidth = 240;
 
@@ -129,6 +131,13 @@ const SideNavigation = () => {
 
   const handleAddApplication = () => {
     navigate("newapplication");
+  };
+  
+  const { user, logout } = useContext(AuthContext); 
+
+  const handleLogout = () => {
+    logout();  
+    navigate("/");  
   };
 
   return (
@@ -237,7 +246,7 @@ const SideNavigation = () => {
               >
                 <AccountCircleOutlinedIcon />
               </ListItemIcon>
-              {open && <ListItemText primary="User Name" />}
+              {open && <ListItemText>{user.user_first_name} {user.user_last_name}</ListItemText>}
             </ListItemButton>
           </ListItem>
         </List>
@@ -258,6 +267,7 @@ const SideNavigation = () => {
                   color: "white",
                   justifyContent: open ? "initial" : "center",
                 }}
+                onClick={text === "Log out" ? handleLogout : undefined}
               >
                 <ListItemIcon
                   sx={{

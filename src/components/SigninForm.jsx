@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext} from "react";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
@@ -10,10 +10,13 @@ import { Link } from "@mui/material";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { TextPlugin } from "gsap/TextPlugin";
+import AuthContext from '../core/AuthContext';
 
 gsap.registerPlugin(TextPlugin);
 
 const SigninForm = () => {
+
+  // typewriting animation 
   const words = ["organize", "store", "track"];
   useGSAP(() => {
     let tlMaster = gsap.timeline({ repeat: -1 });
@@ -36,33 +39,42 @@ const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const { login } = useContext(AuthContext);
+  
   async function handleLogin(event) {
     event.preventDefault();
 
     try {
-      let response = await fetch(`http://localhost:3000/login`, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      });
+        let response = await fetch(`http://localhost:3000/login`, {
+            method: "POST",
+            body: JSON.stringify({ email, password }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-      let result = await response.json();
+        let result = await response.json();
 
-      if (response.status === 200) {
-        navigate("/home");
-      } else {
-        setErrorMessage(result.error);
-        setEmailError(true);
-        setPasswordError(true);
-      }
+        if (response.ok) {
+            // Store user data only if login is successful
+            login({
+                user_id: result.data.user_id,
+                user_first_name: result.data.user_first_name,
+                user_last_name: result.data.user_last_name,
+            });
+            navigate("/home");
+        } else {
+            // Show error message from server (401 or any other message)
+            setErrorMessage(result.message || "Something went wrong.");
+            setEmailError(true);
+            setPasswordError(true);
+        }
     } catch (error) {
-      console.error("Login error:", error);
-      alert("Something went wrong. Try again later.");
+        console.error("Login error:", error);
+        setErrorMessage("Something went wrong. Try again later.");
     }
-  }
+}
+  
 
   return (
     <Grid
@@ -73,7 +85,7 @@ const SigninForm = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap:2
+        gap: 2,
       }}
     >
       <Grid
@@ -84,15 +96,15 @@ const SigninForm = () => {
         }}
       >
         <Typography variant="h4">
-          Let's{" "}{" "}
+          Let's{" "}
           <Typography
             component="span"
             variant="h4"
             className="animated-text"
             sx={{
               backgroundColor: "#1976D2",
-              color: "white", 
-              padding: 1
+              color: "white",
+              padding: 1,
             }}
           ></Typography>
         </Typography>
@@ -152,7 +164,7 @@ const SigninForm = () => {
           error={passwordError}
         />
 
-{errorMessage && (
+        {errorMessage && (
           <Typography
             variant="p"
             sx={{

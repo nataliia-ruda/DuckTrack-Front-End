@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import SideNavigation, { DrawerHeader }  from './SideNavigation.jsx'
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
 import RecentApplicationBox from './RecentApplicationBox.jsx';
 import Divider from '@mui/material/Divider';
+import AuthContext from '../core/AuthContext';
 
 const Homepage = () => {
-  const date = new Date() 
+  const date = new Date(); 
+
+  const { user,logout } = useContext(AuthContext);
 
   const formattedDate = date.toLocaleDateString('en-GB', {
     weekday: 'long', 
@@ -23,7 +26,7 @@ const Homepage = () => {
        <DrawerHeader />
 
         <Typography variant= "h5" sx={{ marginBottom: 2 }}>
-          Welcome, User Name! 
+          Welcome, {user ? `${user.user_first_name}` : 'User'}! 
         </Typography>
         <Typography sx={{ marginBottom: 2, fontSize: "12px", color: ""}}>
           Today is {formattedDate}
