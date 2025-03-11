@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import AuthContext from "../core/AuthContext";
 import Radio from "@mui/material/Radio";
@@ -12,15 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import CircleIcon from "@mui/icons-material/Circle";
 
-const NewApplicationForm = () => {
+const EditApplicationTable = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const [status, setStatus] = useState("waiting for response");
-  const [source, setSource] = useState("");
-  const [customSource, setCustomSource] = useState("");
-  const [employmentType, setEmploymentType] = useState("");
-  const [customEmploymentType, setCustomEmploymentType] = useState("");
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
     position_name: "",
@@ -30,116 +25,89 @@ const NewApplicationForm = () => {
     source: "",
     job_description: "",
     job_link: "",
+    work_mode: "",
     status: "waiting for response",
   });
 
+  useEffect(() => {
+    const fetchApplicationInfo = async () => {
+      try {
+        let response = await fetch(`http://localhost:3000/my-applications/${id}`);
+        if (!response.ok) throw Error("URL does not exist!");
+
+        let result = await response.json();
+        
+        const formattedDate = result.application_date
+          ? result.application_date.split("T")[0] 
+          : "";
+
+        setFormData({
+          ...result,
+          application_date: formattedDate, 
+        });
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchApplicationInfo();
+  }, [id]);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-    setFormData({
-      ...formData,
-      status: event.target.value,
-    });
-  };
-
-  const handleSourceChange = (event) => {
-    const selectedValue = event.target.value;
-    setSource(selectedValue);
-    setFormData({
-      ...formData,
-      source: selectedValue,
-    });
-
-    if (selectedValue !== "other") {
-      setCustomSource("");
-    }
-  };
-
-  const handleEmploymentTypeChange = (event) => {
-    const selectedValue = event.target.value;
-    setEmploymentType(selectedValue);
-    setFormData({
-      ...formData,
-      employment_type: selectedValue,
-    });
-
-    if (selectedValue !== "other") {
-      setCustomEmploymentType("");
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleWorkModeChange = (event) => {
+    setFormData({ ...formData, work_mode: event.target.value });
+  };
+
+  const handleSourceChange = (e) => {
     setFormData({
       ...formData,
-      work_mode: event.target.value,
+      source: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const applicationData = {
+  const handleStatusChange = (e) => {
+    setFormData({
       ...formData,
-      user_id: user.user_id,
-      employment_type:
-        employmentType === "other" ? customEmploymentType : employmentType,
-      source: source === "other" ? customSource : source,
-    };
+      status: e.target.value,
+    });
+  };
 
-    if (
-      !applicationData.position_name ||
-      !applicationData.employer_name ||
-      !applicationData.application_date
-    ) {
-      alert("Please fill in all required fields.");
-      return;
-    }
+
+  const handleSaveChanges = async (e) => {
+    e.preventDefault(); 
 
     try {
-      const response = await fetch("http://localhost:3000/new-application", {
-        method: "POST",
+      const response = await fetch(`http://localhost:3000/my-applications/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(formData),
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
-        body: JSON.stringify(applicationData),
       });
 
-      if (response.ok) {
-        navigate("/home");
-        setFormData({
-          position_name: "",
-          employer_name: "",
-          application_date: "",
-          employment_type: "",
-          source: "",
-          job_description: "",
-          job_link: "",
-          work_mode: "",
-          status: "waiting for response",
-        });
-      } else {
-        alert("Failed to submit application. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting application:", error);
-      alert("Error submitting application. Please try again.");
+      if (!response.ok) throw new Error("Failed to update the application!");
+
+      const result = await response.json();
+      setFormData(result); 
+      alert("Application updated successfully!");
+    
+    
+      navigate("/my-applications");
+    } catch(error) {
+        alert(error)
     }
   };
 
   return (
     <Box sx={{ padding: 3, maxWidth: 700, margin: "auto" }}>
       <Typography variant="h5" gutterBottom>
-        Add New Application
+        Edit Application
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -147,6 +115,7 @@ const NewApplicationForm = () => {
           gap: 2,
           width: "100%",
         }}
+        onSubmit={handleSaveChanges} 
       >
         <TextField
           label="Job title:"
@@ -177,33 +146,6 @@ const NewApplicationForm = () => {
           }}
         />
 
-        <FormControl fullWidth>
-          <InputLabel id="employment-type-label">Employment type:</InputLabel>
-          <Select
-            labelId="employment-type-label"
-            value={employmentType}
-            onChange={handleEmploymentTypeChange}
-            label="Employment type"
-          >
-            <MenuItem value="full-time">Full-time</MenuItem>
-            <MenuItem value="part-time">Part-time</MenuItem>
-            <MenuItem value="minijob">Minijob</MenuItem>
-            <MenuItem value="internship">Internship</MenuItem>
-            <MenuItem value="temporary">Temporary</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
-          </Select>
-
-          {employmentType === "other" && (
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Enter employment type here:"
-              value={customEmploymentType}
-              onChange={(e) => setCustomEmploymentType(e.target.value)}
-            />
-          )}
-        </FormControl>
-
         <FormControl
           sx={{
             display: "flex",
@@ -220,21 +162,9 @@ const NewApplicationForm = () => {
             value={formData.work_mode}
             onChange={handleWorkModeChange}
           >
-            <FormControlLabel
-              value="On-site"
-              control={<Radio />}
-              label="On-site"
-            />
-            <FormControlLabel
-              value="Hybrid"
-              control={<Radio />}
-              label="Hybrid"
-            />
-            <FormControlLabel
-              value="Remote"
-              control={<Radio />}
-              label="Remote"
-            />
+            <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
+            <FormControlLabel value="Hybrid" control={<Radio />} label="Hybrid" />
+            <FormControlLabel value="Remote" control={<Radio />} label="Remote" />
           </RadioGroup>
         </FormControl>
 
@@ -242,7 +172,7 @@ const NewApplicationForm = () => {
           <InputLabel id="job-search-source-label">Source:</InputLabel>
           <Select
             labelId="job-search-source-label"
-            value={source}
+            value={formData.source}
             onChange={handleSourceChange}
             label="Source"
           >
@@ -255,16 +185,6 @@ const NewApplicationForm = () => {
             <MenuItem value="join">Corporate website</MenuItem>
             <MenuItem value="other">Other</MenuItem>
           </Select>
-
-          {source === "other" && (
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Enter source here:"
-              value={customSource}
-              onChange={(e) => setCustomSource(e.target.value)}
-            />
-          )}
         </FormControl>
 
         <TextField
@@ -289,9 +209,9 @@ const NewApplicationForm = () => {
           <InputLabel id="status-select-label">Application status:</InputLabel>
           <Select
             labelId="status-select-label"
-            value={status}
-            label="Application status"
+            value={formData.status}
             onChange={handleStatusChange}
+            label="Application status"
           >
             <MenuItem value="waiting for response">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -314,17 +234,12 @@ const NewApplicationForm = () => {
           </Select>
         </FormControl>
 
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2 }}
-        >
-          Add new application
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          Save changes
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default NewApplicationForm;
+export default EditApplicationTable;

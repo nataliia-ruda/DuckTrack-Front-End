@@ -367,7 +367,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
 
       <Typography variant="p" gutterBottom>
         Already have an account?{" "}
-        <Link component={RouterLink} to="/signin">
+        <Link component={RouterLink} to="/">
           Sign in
         </Link>
       </Typography>

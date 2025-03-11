@@ -140,6 +140,20 @@ const SideNavigation = () => {
     navigate("/");  
   };
 
+  const handleNavigation = (text) => {
+    const routes = {
+      Home: "/home",
+      "My Applications": "/my-applications",
+      Statistics: "/statistics",
+    };
+  
+    if (text === "Log out") {
+      handleLogout();
+    } else {
+      navigate(routes[text]); 
+    }
+  };
+
   return (
     <>
       <CssBaseline />
@@ -254,36 +268,32 @@ const SideNavigation = () => {
         <Divider />
 
         <List>
-          {["Home", "My Applications", "Statistics", "Log out"].map((text, index) => (
-            <ListItem
-              key={text}
-              disablePadding
-              sx={{ display: "block", mb: 2 }}
-            >
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  px: 2.5,
-                  color: "white",
-                  justifyContent: open ? "initial" : "center",
-                }}
-                onClick={text === "Log out" ? handleLogout : undefined}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                    color: "white",
-                    mr: open ? 3 : "auto",
-                  }}
-                >
-                  {icons[index]}
-                </ListItemIcon>
-                {open && <ListItemText primary={text} />}
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+  {["Home", "My Applications", "Statistics", "Log out"].map((text, index) => (
+    <ListItem key={text} disablePadding sx={{ display: "block", mb: 2 }}>
+      <ListItemButton
+        sx={{
+          minHeight: 48,
+          px: 2.5,
+          color: "white",
+          justifyContent: open ? "initial" : "center",
+        }}
+        onClick={() => handleNavigation(text)} 
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            justifyContent: "center",
+            color: "white",
+            mr: open ? 3 : "auto",
+          }}
+        >
+          {icons[index]}
+        </ListItemIcon>
+        {open && <ListItemText primary={text} />}
+      </ListItemButton>
+    </ListItem>
+  ))}
+</List>
       </Drawer>
     </>
   );
