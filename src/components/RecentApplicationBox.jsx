@@ -1,53 +1,82 @@
 import React from 'react'
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
-import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
-import Fab from '@mui/material/Fab'; 
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import CardContent from '@mui/material/CardContent'
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import WorkIcon from '@mui/icons-material/Work';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import {
+  Box,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import AuthContext from "../core/AuthContext";
+import "../App.css";
+import { useNavigate } from 'react-router-dom';
+ 
 
+const RecentApplicationBox = ({ application }) => {
 
+  const navigate = useNavigate(); 
+   const applicationId = application.application_id
 
-const RecentApplicationBox = ({ color}) => {
+  const handleRecentApplicationEdit = () => {
+      navigate(`/my-applications/${applicationId}`)
+  }
   return (
-    <Card sx={{ maxWidth: "50%", display: 'flex', justifyContent: "space-between" }}>
+    <Card sx={{ width: "30%", display: "flex", justifyContent: "center", position: "relative" }}>
+    
+      <Box
+        className={
+          application.status === "waiting for response"
+            ? "waiting"
+            : application.status === "rejected"
+            ? "rejected"
+            : "interview"
+        }
+        sx={{ width: 7, borderRadius: "4px 0 0 4px" }}
+      />
 
-    <Box sx={{ width: 7, backgroundColor: 'blue', borderRadius: "4px 0 0 4px" }} />
+      <Box sx={{ flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center", padding: 1, width: "60%", gap: 1.5}}>
+        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <WorkIcon sx={{ fontSize: 15 }} />
+            <Typography variant="p" gutterBottom sx={{ fontSize: 14, fontWeight: 700 }}>
+              {application.position_name}
+            </Typography>
+          </Box>
 
-   
-    <Box sx={{ flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center", padding: 1 }}>
-      <CardContent>
-        <Typography variant="body1" gutterBottom sx={{ fontSize: 13, fontWeight: 700 }}>
-          Junior Web-Developer
-        </Typography>
-        <Typography variant="body2">IBM</Typography>
-      </CardContent>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <ApartmentIcon sx={{ fontSize: 15 }} />
+            <Typography variant="p" gutterBottom sx={{ fontSize: 14}}>{application.employer_name}</Typography>
+          </Box>
+        </CardContent>
 
-      <CardActions>
-        <Fab color="primary" aria-label="add" size='small'
-        sx={{
-                backgroundColor: "inherit",
-                color: "#141E27",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                transition: "all 0.3s ease",
-                border: "1px solid black",
-                "&:hover": {
-                  backgroundColor: "#141E27",
-                  color: "white",
-                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.6)",
-                 
-                },
-              }}>
-          <ArrowForwardOutlinedIcon /* sx={{ fontSize: 19 }}  *//>
-        </Fab>
-      </CardActions>
-    </Box>
-  </Card>
-  )
-}
+        <CardActions
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              backgroundColor: "rgba(255, 255, 255, 0.7)", 
+              padding: "5px", 
+              borderRadius: "50%", 
+            }}
+            onClick={handleRecentApplicationEdit}
+          >
+            <ModeEditIcon sx={{ fontSize: 16 }} />
+          </IconButton>
+        </CardActions>
+      </Box>
+    </Card>
+  );
+};
 
-export default RecentApplicationBox
+export default RecentApplicationBox;

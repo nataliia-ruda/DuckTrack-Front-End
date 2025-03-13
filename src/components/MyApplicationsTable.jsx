@@ -142,44 +142,39 @@ Row.propTypes = {
   }).isRequired,
 };
 
-export default function MyApplicationsTable() {
-  const [jobApplications, setJobApplications] = useState([]);
-
+export default function MyApplicationsTable({ searchTerm }) {
+  const [applications, setApplications] = useState([]);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchJobApplications = async () => {
-      if (user) {
-        try {
-          const response = await fetch(
-            `http://localhost:3000/my-applications?user_id=${user.user_id}`
-          );
+    if (!user) return;
 
-          if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-          }
+    const fetchApplications = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchTerm}`
+        );
 
-          const data = await response.json();
-
-          if (data.applications && Array.isArray(data.applications)) {
-            setJobApplications(data.applications);
-          } else {
-            console.error("Expected an array but got:", data);
-            setJobApplications([]);
-          }
-        } catch (error) {
-          console.error("Error fetching job applications:", error);
-          setJobApplications([]);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
         }
+
+        const data = await response.json();
+        setApplications(data.applications || []);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+        setApplications([]);
       }
     };
 
-    fetchJobApplications();
-  }, [user]);
+    
+   const timeoutId = setTimeout(fetchApplications, 200);
+    return () => clearTimeout(timeoutId); 
+  }, [user, searchTerm]);
 
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="collapsible job applications table">
+      <Table aria-label="job applications">
         <TableHead>
           <TableRow>
             <TableCell />
@@ -191,9 +186,15 @@ export default function MyApplicationsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {jobApplications.map((row) => (
-            <Row key={row.application_id} row={row} />
-          ))}
+          {applications.length > 0 ? (
+            applications.map((row) => <Row key={row.application_id} row={row} />)
+          ) : (
+            <TableRow>
+              <TableCell colSpan={6} align="center">
+                No applications found.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
