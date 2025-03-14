@@ -9,6 +9,7 @@ import { useContext } from "react";
 import MyApplicationsPage from "./components/MyApplicationsPage.jsx";
 import "./App.css";
 import EditApplicationPage from "./components/EditApplicationPage.jsx";
+import EditProfilePage from "./components/EditProfilePage.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -52,6 +53,15 @@ function App() {
           element={
             <ProtectedRoute user={user}>
               <EditApplicationPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/update-profile/:id"
+          element={
+            <ProtectedRoute user={user}>
+              <EditProfilePage />
             </ProtectedRoute>
           }
         />

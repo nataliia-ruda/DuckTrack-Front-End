@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import RegistrationForm from "./RegistrationForm.jsx";
 import Grid from "@mui/material/Grid2";
-import { useState } from "react";
 import DialogBox from "./DialogBox.jsx";
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 
 const url = "http://localhost:3000/signup";
 
@@ -33,12 +34,12 @@ const Registration = () => {
       }
       const result = await response.json();
       setDialogMessage(result.message);
-      setDialogTitle(<CheckCircleOutlineOutlinedIcon/>)
+      setDialogTitle(<CheckCircleOutlineOutlinedIcon />);
       setOpenDialog(true);
       setCleanForm(true);
     } catch (error) {
       console.log(error);
-      setDialogTitle(<ErrorOutlineOutlinedIcon/>)
+      setDialogTitle(<ErrorOutlineOutlinedIcon />);
       setDialogMessage(error.message);
       setOpenDialog(true);
     }
@@ -51,13 +52,82 @@ const Registration = () => {
         width: "100%",
         height: "100vh",
         display: "flex",
-        flexDirection: { xs: "column", md: "row" },
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "#f4f4f4",
+        boxSizing: "border-box",
       }}
     >
-      <RegistrationForm onSubmitForm={handleUserCreate} cleanForm={cleanForm} />
+      {/* Wrapper to keep both sections together */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "stretch",
+          justifyContent: "center",
+          padding: 1,
+          width: "70%",
+          height: "auto",
+          backgroundColor: "white",
+          borderRadius: "10px",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        {/* Image Section */}
+        <Box
+          sx={{
+            width: { xs: "100%", md: "50%" },
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            pt: 4,
+            pb: "0",
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: "600", color: "#141E27" }}>
+            NEW HERE?
+          </Typography>
 
+          <Box
+            sx={{
+              width: "100%",
+              height: "auto",
+              overflow: "hidden",
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+          >
+            <img
+              src="./registration_img.svg"
+              alt="Registration Illustration"
+              style={{ width: "100%", height: "auto" /* maxWidth: "100%" */ }} // Make image responsive with max width
+            />
+          </Box>
+        </Box>
+
+        {/* Registration Form */}
+        <Box
+          sx={{
+            width: { xs: "100%", md: "50%" }, // Full width on small screens, half-width on medium and above
+            height: "100%",
+            display: "flex",
+            justifyContent: "center", // Center the form horizontally
+            alignItems: "center", // Center the form vertically
+            // Border between image and form on medium and above screens
+          }}
+        >
+          <RegistrationForm
+            onSubmitForm={handleUserCreate}
+            cleanForm={cleanForm}
+            setDialogMessage={dialogMessage}
+          />
+        </Box>
+      </Box>
+
+      {/* Dialog Box */}
       <DialogBox open={openDialog} setOpen={setOpenDialog} title={dialogTitle}>
         {dialogMessage}
       </DialogBox>

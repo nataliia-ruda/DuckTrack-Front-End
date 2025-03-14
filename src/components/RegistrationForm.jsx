@@ -63,7 +63,8 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
       onSubmitForm(dataToInsert);
       setOpenDialog(true);
     } else {
-      alert("There are still some errors.");
+      
+       alert("There is still some errors")
     }
   };
 
@@ -158,6 +159,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
     }
   };
 
+
   return (
     <Grid
       container
@@ -167,27 +169,24 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start", 
         gap: 4,
         py: 4,
         px: 4,
-        width: {
-          xs: "90%",
-          sm: "70%",
-          md: "50%",
-          lg: "34%",
-        },
+        width: "100%",
+        height: "100%", 
         boxSizing: "border-box",
         borderRadius: "10px",
-        backgroundColor: "#fff",
+        backgroundColor: "#141E27", 
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+        flexGrow: 1, 
       }}
     >
-      <Typography variant="h5" component="h1" gutterBottom>
-        CREATE ACCOUNT
+      <Typography variant="h5" gutterBottom sx={{ color: "#ffffff", fontWeight: "600"}}>
+        LET'S CREATE AN ACCOUNT!
       </Typography>
-
-      {/* First Name */}
+  
+      {/* Input Fields */}
       <Box sx={{ position: "relative", width: {
           xs: "90%",
           sm: "85%",
@@ -206,6 +205,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
+            backgroundColor: "#1F2A38", 
+            input: { color: "#ffffff" }, 
+            label: { color: "#cccccc" }, 
+            fieldset: { borderColor: "#444" }, 
+            "&:hover fieldset": { borderColor: "#888" }, 
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
           }}
           error={firstNameError}
         />
@@ -244,6 +249,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
+            backgroundColor: "#1F2A38", 
+            input: { color: "#ffffff" }, 
+            label: { color: "#cccccc" }, 
+            fieldset: { borderColor: "#444" }, 
+            "&:hover fieldset": { borderColor: "#888" }, 
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
           }}
           error={lastNameError}
         />
@@ -282,6 +293,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
+            backgroundColor: "#1F2A38", 
+            input: { color: "#ffffff" }, 
+            label: { color: "#cccccc" }, 
+            fieldset: { borderColor: "#444" }, 
+            "&:hover fieldset": { borderColor: "#888" }, 
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
           }}
           error={emailError}
         />
@@ -320,6 +337,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         size="small"
         sx={{
           width: "100%",
+          backgroundColor: "#1F2A38", 
+          input: { color: "#ffffff" }, 
+          label: { color: "#cccccc" }, 
+          fieldset: { borderColor: "#444" }, 
+          "&:hover fieldset": { borderColor: "#888" }, 
+          "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
         }}
         error={passwordError}
         />
@@ -345,6 +368,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
+            backgroundColor: "#1F2A38", 
+            input: { color: "#ffffff" }, 
+            label: { color: "#cccccc" },
+            fieldset: { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#888" }, 
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
           error={passwordError}
         />
@@ -361,18 +390,19 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         )}
       </Box>
 
-      <Button type="submit" variant="contained" size="large">
+      {/* Submit Button */}
+      <Button type="submit" variant="contained" size="large" sx={{ backgroundColor: "#FFC107", color: "#141E27", fontWeight: "500", '&:hover': { backgroundColor: "#e0a800" } }}>
         Sign up
       </Button>
-
-      <Typography variant="p" gutterBottom>
+  
+      {/* Login Link */}
+      <Typography variant="p" sx={{ color: "#ffffff" }} gutterBottom>
         Already have an account?{" "}
-        <Link component={RouterLink} to="/">
-          Sign in
+        <Link component={RouterLink} to="/" sx={{ color: "#66B2FF" }}>
+          Sign in 
         </Link>
       </Typography>
     </Grid>
-
   );
 };
 

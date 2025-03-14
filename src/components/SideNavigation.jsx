@@ -154,6 +154,10 @@ const SideNavigation = () => {
     }
   };
 
+  const handleEditProfileClick = () => {
+     navigate(`/update-profile/${user.user_id}`); 
+  }
+
   return (
     <>
       <CssBaseline />
@@ -249,6 +253,7 @@ const SideNavigation = () => {
                 color: "white",
                 justifyContent: open ? "initial" : "center",
               }}
+              onClick={handleEditProfileClick}
             >
               <ListItemIcon
                 sx={{
