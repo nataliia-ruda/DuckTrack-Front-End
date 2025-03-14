@@ -6,15 +6,15 @@ import SideNavigation from "./SideNavigation";
 import RecentApplicationBox from "./RecentApplicationBox";
 import AuthContext from "../core/AuthContext";
 import { DrawerHeader } from "./SideNavigation";
-import IconButton from "@mui/material/IconButton";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Fab from '@mui/material/Fab';
+
 import { useNavigate } from "react-router-dom";
+import OldApplicationsBox from './OldApplicationsBox.jsx'
 
 const Homepage = () => {
   const date = new Date();
   const { user } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
+  const [oldApplications, setOldApplications] = useState([]); 
 
   const formattedDate = date.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -36,27 +36,43 @@ const Homepage = () => {
           }
           const data = await response.json();
 
-          // Sort applications by date (assuming "created_at" exists)
+         
           const sortedApplications = data.applications.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
-          );
+          ); 
 
-          // Keep only last 4 applications
-          setApplications(sortedApplications.slice(0, 5));
+          setApplications(sortedApplications.slice(0, 5)); 
+
+          
+          const twoWeeksAgo = new Date();
+          twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 1);
+
+          const filteredOldApplications = data.applications.filter(application => {
+            
+            const lastUpdateDate = new Date(application.updated_at); 
+            return lastUpdateDate < twoWeeksAgo; 
+          });
+
+          setOldApplications(filteredOldApplications); 
         } catch (error) {
           console.error("Error fetching job applications:", error);
           setApplications([]);
+          setOldApplications([]);
         }
       }
     };
 
     fetchApplications();
-  }, [user]);  
-   
-  const navigate = useNavigate(); 
-  const handleGoToApplications = () => {
-       navigate("/my-applications")
-  }
+  }, [user]);
+
+  const navigate = useNavigate();
+/*   const handleGoToApplications = () => {
+    navigate("/my-applications");
+  };
+ */
+  const handleOldApplicationEdit = (applicationId) => {
+    navigate(`/my-applications/${applicationId}`);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -73,31 +89,35 @@ const Homepage = () => {
         </Typography>
         <Divider />
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
-          Your recent applications:
-        </Typography>
+        <Box py={3}>
+          <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
+            Your recent applications:
+          </Typography>
 
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-enevly",
-            alignItems: "center", 
-          }}
-        >
           <Box sx={{ display: "flex", gap: 3 }}>
-            {applications.map((application, index) => (
+            {applications.map((application) => (
               <RecentApplicationBox
                 key={application.application_id}
                 application={application}
               />
             ))}
           </Box>
+        </Box>
 
-          <Fab color="inherit" aria-label="add" size="small" onClick={handleGoToApplications}>
-            <ArrowForwardIosIcon/>
-          </Fab>
-
+        <Box paddingY={3}>
+          <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
+            These applications haven't had any updates for more than 2 weeks:
+          </Typography>
+       
+          <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            {oldApplications.map((oldApplication) => (
+              <OldApplicationsBox
+                key={oldApplication.application_id}
+                application={oldApplication}  
+                handleOldApplicationEdit={handleOldApplicationEdit}
+              />
+            ))}
+          </Box>
         </Box>
       </Box>
     </Box>

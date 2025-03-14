@@ -60,7 +60,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 
 const MyApplicationsPage = () => {
     const { user } = useContext(AuthContext);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchInput, setSearchInput] = useState("");
 
     return (
         <Box sx={{ display: "flex" }}>
@@ -68,7 +68,6 @@ const MyApplicationsPage = () => {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
 
-                {/* Search Bar */}
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                     <Typography variant="h5">My Applications</Typography>
                     <Search>
@@ -78,14 +77,14 @@ const MyApplicationsPage = () => {
                         <StyledInputBase
                             placeholder="Search…"
                             inputProps={{ "aria-label": "search" }}
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </Search>
                 </Box>
 
-                {/* Pass searchTerm to table */}
-                <MyApplicationsTable searchTerm={searchTerm} />
+                
+                <MyApplicationsTable searchInput={searchInput} />
             </Box>
         </Box>
     );

@@ -16,7 +16,7 @@ gsap.registerPlugin(TextPlugin);
 
 const SigninForm = () => {
 
-  // typewriting animation 
+ /* typing animation */
   const words = ["organize", "store", "track"];
   useGSAP(() => {
     let tlMaster = gsap.timeline({ repeat: -1 });
@@ -56,7 +56,7 @@ const SigninForm = () => {
         let result = await response.json();
 
         if (response.ok) {
-            // Store user data only if login is successful
+
             login({
                 user_id: result.data.user_id,
                 user_first_name: result.data.user_first_name,
@@ -64,7 +64,7 @@ const SigninForm = () => {
             });
             navigate("/home");
         } else {
-            // Show error message from server (401 or any other message)
+ 
             setErrorMessage(result.message || "Something went wrong.");
             setEmailError(true);
             setPasswordError(true);
@@ -93,23 +93,25 @@ const SigninForm = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
+         
         }}
       >
-        <Typography variant="h4">
+        <Typography variant="h4" sx={{fontWeight: "600"}}>
           Let's{" "}
           <Typography
             component="span"
             variant="h4"
             className="animated-text"
             sx={{
-              backgroundColor: "#1976D2",
-              color: "white",
+              backgroundColor: "#FFC107",
+              color: "#141E27",
               padding: 1,
+              fontWeight: "600"
             }}
           ></Typography>
         </Typography>
         <br />
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4"  sx={{fontWeight: "600"}} gutterBottom>
           {" "}
           your job applications!{" "}
         </Typography>
@@ -141,7 +143,7 @@ const SigninForm = () => {
             width: {
               xs: "100%",
               sm: "70%",
-              md: "55%",
+              md: "70%",
             },
           }}
           error={emailError}
@@ -158,7 +160,7 @@ const SigninForm = () => {
             width: {
               xs: "100%",
               sm: "70%",
-              md: "55%",
+              md: "70%",
             },
           }}
           error={passwordError}
@@ -176,7 +178,7 @@ const SigninForm = () => {
           </Typography>
         )}
 
-        <Button type="submit" variant="contained" size="large">
+        <Button type="submit" variant="contained" size="large" sx={{backgroundColor: "#141E27"}}>
           Sign in
         </Button>
 

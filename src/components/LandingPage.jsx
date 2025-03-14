@@ -1,19 +1,135 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid2";
-
 import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import SigninForm from "./SigninForm.jsx";
+import Box from "@mui/material/Box";
+
+gsap.registerPlugin(MotionPathPlugin);
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const svgRef = useRef(null);
+  const tl = useRef(null);
 
-  const handleSignInClick = () => {
-    navigate("/signin");
-  };
+  useEffect(() => {
+    const numCircles = 7;
+    const svg = svgRef.current;
+    const ns = "http://www.w3.org/2000/svg";
 
-  const handleSignUpClick = () => {
-    navigate("/signup");
-  };
+    tl.current = gsap.timeline({ id: "path followers" });
+
+    
+    const circleData = [
+      {
+        text: "LinkedIn",
+        color: "#2767B2",
+        textColor: "#F8F8F8",
+        fontWeight: "700",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "XING",
+        color: "#00796B",
+        textColor: "#F1FD01",
+        fontWeight: "700",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "Indeed",
+        color: "#003A9B",
+        textColor: "#FFFFFF",
+        fontWeight: "700",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "StepStone",
+        color: " hsla(182, 47%, 74%, 1)",
+        textColor: "#00217A",
+        fontWeight: "800",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "Monster",
+        color: "#7A4EC0",
+        textColor: "#F8F8F8",
+        fontWeight: "700",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "Jobware",
+        color: "#FF5D02",
+        textColor: "black",
+        fontWeight: "700",
+        fontSize: "16",
+        radius: 45,
+      },
+      {
+        text: "Arbeitsagentur",
+        color: "#EC252C",
+        textColor: "#FFFFFF",
+        fontSize: "14",
+        radius: 45,
+      },
+    ];
+
+    for (let i = 0; i < numCircles; i++) {
+      let newCircle = document.createElementNS(ns, "circle");
+      let newText = document.createElementNS(ns, "text");
+
+      
+      const { text, color, radius, textColor, fontWeight, fontSize } = circleData[i];
+
+     
+      newCircle.setAttributeNS(null, "cx", 300);
+      newCircle.setAttributeNS(null, "cy", 300); 
+      newCircle.setAttributeNS(null, "r", radius);
+      /* newCircle.setAttributeNS(null, "stroke", "white");
+      newCircle.setAttributeNS(null, "stroke-width", 3); */
+
+      
+      newText.setAttributeNS(null, "x", 300); 
+      newText.setAttributeNS(null, "y", 300); 
+      newText.setAttributeNS(null, "fill", textColor);
+      newText.setAttributeNS(null, "font-size", fontSize);
+      newText.setAttributeNS(null, "text-anchor", "middle");
+      newText.setAttributeNS(null, "font-weight", fontWeight);
+      newText.textContent = text; 
+
+      svg.appendChild(newCircle);
+      svg.appendChild(newText);
+
+      let start = i / numCircles; 
+
+      gsap.set(newCircle, {
+        fill: color, 
+      });
+
+      
+      tl.current.to(
+        [newCircle, newText],
+        {
+          motionPath: {
+            path: ".myPath",
+            align: ".myPath",
+            alignOrigin: [0.5, 0.5],
+            start: start,
+            end: start + 1,
+          },
+          ease: "none",
+          duration: 10, 
+          repeat: -1,
+        },
+        0
+      );
+    }
+  }, []);
 
   return (
     <Grid
@@ -23,8 +139,10 @@ const LandingPage = () => {
         height: "100vh",
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
-        alignItems: { xs: "space-between", md: "center" },
-        justifyContent: { xs: "space-around", md: "center" },
+        alignItems: "center",
+        justifyContent: "center",
+        margin: 0,
+        padding: 0,
       }}
     >
       {/* Left Section */}
@@ -32,43 +150,75 @@ const LandingPage = () => {
         xs={12}
         md={6}
         sx={{
-         /*  height: "auto", */ 
-            width: {
-              xs: "100%",
-              sm: "70%",
-              md: "50%",
-              lg: "50%",
-            },
-          display: "flex" 
-         
+          width: {
+            xs: "100%",
+            sm: "70%",
+            md: "50%",
+            lg: "50%",
+          },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
-        <SigninForm></SigninForm>
-
-       
+        <Box
+          sx={{
+            width: "70%",
+            height: "auto",
+            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
+            borderRadius: "10px",
+            padding: 5,
+            backgroundColor: "#fff",
+          }}
+        >
+          <SigninForm />
+        </Box>
       </Grid>
 
-      {/* Right Section */}
+      {/* Right Section*/}
       <Grid
         xs={12}
         md={6}
         sx={{
-            width: {
-              xs: "100%",
-              sm: "70%",
-              md: "50%",
-              lg: "50%",
-            },
+          width: {
+            xs: "100%",
+            sm: "70%",
+            md: "50%",
+            lg: "50%",
+          },
+          height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "#FFC107",
         }}
       >
-        <img
-          src="/girl.png"
-          alt="illustration"
-          style={{ width: "50%", height: "auto" }}
-        />
+        <svg
+          ref={svgRef}
+          width="600"
+          height="600" 
+          viewBox="0 0 600 600"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+         
+          <path
+            className="myPath"
+            d="M 300,100 A 200,200 0 1,1 299,100 Z" 
+            fill="none"
+            stroke="transparent"
+          />
+
+          
+          <image
+            href="/boy.svg"
+            x="120" 
+            y="120" 
+            width="350"
+            height="350"
+            style={{ borderRadius: "50%" }}
+          />
+        </svg>
       </Grid>
     </Grid>
   );

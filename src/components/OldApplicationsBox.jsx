@@ -1,81 +1,84 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Fab from '@mui/material/Fab'; 
-import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
+import { Box, Card, CardContent, CardActions, IconButton, Typography } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import WorkIcon from "@mui/icons-material/Work";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 
-const OldApplicationsBox = () => {
-
-    
-      useEffect(() => {
-         const fetchJobApplications = async () => {
-           if (user) {
-             try {
-               const response = await fetch(
-                 `http://localhost:3000/my-applications`
-               );
-     
-               if (!response.ok) {
-                 throw new Error(`Error: ${response.statusText}`);
-               }
-     
-               const data = await response.json();
-     
-               if (data.applications && Array.isArray(data.applications)) {
-                 setJobApplications(data.applications);
-               } else {
-                 console.error("Expected an array but got:", data);
-                 setJobApplications([]);
-               }
-             } catch (error) {
-               console.error("Error fetching job applications:", error);
-               setJobApplications([]);
-             }
-           }
-         };
-     
-         fetchJobApplications();
-       }, [user]);
-     
-
+const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
   return (
-    <Card sx={{ maxWidth: "50%", display: 'flex', justifyContent: "space-between" }}>
+    <Card
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        width: "50%",
+        mb: 2,
+      }}
+      key={application.application_id}
+    >
+      <Box sx={{ width: 7, borderRadius: "4px 0 0 4px", backgroundColor: "blue" }} />
 
-    <Box sx={{ width: 7, backgroundColor: 'blue', borderRadius: "4px 0 0 4px" }} />
-
-   
-    <Box sx={{ flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center", padding: 1 }}>
-      <CardContent sx={{display: flex, flexDirection: "column", gap: 3}}>
-        <Typography variant="body1" gutterBottom sx={{ fontSize: 13, fontWeight: 700 }}>
-          Junior Web-Developer
-        </Typography>
-        <Typography variant="body2">IBM</Typography>
-      </CardContent>
-
-      <CardActions>
-        <Fab color="primary" aria-label="add" size='small'
+      <Box
         sx={{
-                backgroundColor: "inherit",
-                color: "#141E27",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                transition: "all 0.3s ease",
-                border: "1px solid black",
-                "&:hover": {
-                  backgroundColor: "#141E27",
-                  color: "white",
-                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.6)",
-                 
-                },
-              }}>
-          <ArrowForwardOutlinedIcon /* sx={{ fontSize: 19 }}  *//>
-        </Fab>
-      </CardActions>
-    </Box>
-  </Card>
-  )
-}
+          flex: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: 1,
+          width: "60%",
+          gap: 1.5,
+        }}
+      >
+        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", gap: 2}}>
 
-export default OldApplicationsBox
+          <Box sx={{display: "flex", flexDirection: "column", gap: 1}}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <WorkIcon sx={{ fontSize: 15 }} />
+            <Typography variant="body1" gutterBottom sx={{ fontSize: 14, fontWeight: 700 }}>
+              {application.position_name}
+            </Typography>
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <ApartmentIcon sx={{ fontSize: 15 }} />
+            <Typography variant="body2" gutterBottom sx={{ fontSize: 14 }}>
+              {application.employer_name}
+            </Typography>
+          </Box>
+          </Box>
+
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Typography variant="p" sx={{ fontSize: 12 }}>Last update:</Typography>
+            <Typography variant="p" sx={{ fontSize: 12 }}>
+             {new Date(application.updated_at).toLocaleDateString()}
+            </Typography>
+          </Box>
+        </CardContent>
+
+        <CardActions
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              padding: "5px",
+              borderRadius: "50%",
+            }}
+            onClick={() => handleOldApplicationEdit(application.application_id)}
+          >
+            <ModeEditIcon sx={{ fontSize: 16 }} />
+          </IconButton>
+        </CardActions>
+      </Box>
+    </Card>
+  );
+};
+
+export default OldApplicationsBox;

@@ -142,7 +142,7 @@ Row.propTypes = {
   }).isRequired,
 };
 
-export default function MyApplicationsTable({ searchTerm }) {
+export default function MyApplicationsTable({ searchInput }) {
   const [applications, setApplications] = useState([]);
   const { user } = useContext(AuthContext);
 
@@ -152,7 +152,7 @@ export default function MyApplicationsTable({ searchTerm }) {
     const fetchApplications = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchTerm}`
+          `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}`
         );
 
         if (!response.ok) {
@@ -170,7 +170,7 @@ export default function MyApplicationsTable({ searchTerm }) {
     
    const timeoutId = setTimeout(fetchApplications, 200);
     return () => clearTimeout(timeoutId); 
-  }, [user, searchTerm]);
+  }, [user, searchInput]);
 
   return (
     <TableContainer component={Paper}>
