@@ -100,7 +100,14 @@ function Row({ row }) {
                   </TableRow>
                   <TableRow>
                     <TableCell>Job description:</TableCell>
-                    <TableCell>{row.job_description}</TableCell>
+                    <TableCell>
+                      {row.job_description.split("\n").map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    </TableCell>
                   </TableRow>
                   {row.job_link && (
                     <TableRow>
@@ -167,9 +174,8 @@ export default function MyApplicationsTable({ searchInput }) {
       }
     };
 
-    
-   const timeoutId = setTimeout(fetchApplications, 200);
-    return () => clearTimeout(timeoutId); 
+    const timeoutId = setTimeout(fetchApplications, 200);
+    return () => clearTimeout(timeoutId);
   }, [user, searchInput]);
 
   return (
@@ -187,7 +193,9 @@ export default function MyApplicationsTable({ searchInput }) {
         </TableHead>
         <TableBody>
           {applications.length > 0 ? (
-            applications.map((row) => <Row key={row.application_id} row={row} />)
+            applications.map((row) => (
+              <Row key={row.application_id} row={row} />
+            ))
           ) : (
             <TableRow>
               <TableCell colSpan={6} align="center">
