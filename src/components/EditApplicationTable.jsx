@@ -27,6 +27,7 @@ const EditApplicationTable = () => {
     job_link: "",
     work_mode: "",
     status: "waiting for response",
+    notes: ""
   });
 
   useEffect(() => {
@@ -233,6 +234,16 @@ const EditApplicationTable = () => {
             </MenuItem>
           </Select>
         </FormControl>
+
+        <TextField
+                  label="Notes:"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  fullWidth
+                  multiline
+                  minRows={4}
+                />
 
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
           Save changes

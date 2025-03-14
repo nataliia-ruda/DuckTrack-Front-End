@@ -31,6 +31,7 @@ const NewApplicationForm = () => {
     job_description: "",
     job_link: "",
     status: "waiting for response",
+    notes: ""
   });
 
   const handleChange = (e) => {
@@ -122,6 +123,7 @@ const NewApplicationForm = () => {
           job_link: "",
           work_mode: "",
           status: "waiting for response",
+          notes: ""
         });
       } else {
         alert("Failed to submit application. Please try again.");
@@ -313,6 +315,16 @@ const NewApplicationForm = () => {
             </MenuItem>
           </Select>
         </FormControl>
+         
+        <TextField
+          label="Notes:"
+          name="notes"
+          value={formData.notes}
+          onChange={handleChange}
+          fullWidth
+          multiline
+          minRows={4}
+        />
 
         <Button
           type="submit"

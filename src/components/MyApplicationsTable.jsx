@@ -122,7 +122,18 @@ function Row({ row }) {
                         </a>
                       </TableCell>
                     </TableRow>
-                  )}
+                  )} 
+                   <TableRow>
+                    <TableCell>Notes:</TableCell>
+                    <TableCell>
+                      {row.notes && row.notes.split("\n").map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
