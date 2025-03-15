@@ -58,7 +58,7 @@ const Registration = () => {
         boxSizing: "border-box",
       }}
     >
-      {/* Wrapper to keep both sections together */}
+      
       <Box
         sx={{
           display: "flex",
@@ -73,7 +73,7 @@ const Registration = () => {
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
         }}
       >
-        {/* Image Section */}
+  
         <Box
           sx={{
             width: { xs: "100%", md: "50%" },
@@ -103,20 +103,20 @@ const Registration = () => {
             <img
               src="./registration_img.svg"
               alt="Registration Illustration"
-              style={{ width: "100%", height: "auto" /* maxWidth: "100%" */ }} // Make image responsive with max width
+              style={{ width: "100%", height: "auto"}}
             />
           </Box>
         </Box>
 
-        {/* Registration Form */}
+        
         <Box
           sx={{
-            width: { xs: "100%", md: "50%" }, // Full width on small screens, half-width on medium and above
+            width: { xs: "100%", md: "50%" }, 
             height: "100%",
             display: "flex",
-            justifyContent: "center", // Center the form horizontally
-            alignItems: "center", // Center the form vertically
-            // Border between image and form on medium and above screens
+            justifyContent: "center", 
+            alignItems: "center",
+            
           }}
         >
           <RegistrationForm

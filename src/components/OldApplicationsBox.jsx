@@ -2,6 +2,7 @@ import { Box, Card, CardContent, CardActions, IconButton, Typography } from "@mu
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import WorkIcon from "@mui/icons-material/Work";
 import ApartmentIcon from "@mui/icons-material/Apartment";
+import "../App.css";
 
 const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
   return (
@@ -10,70 +11,81 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
         display: "flex",
         justifyContent: "center",
         position: "relative",
-        width: "50%",
+        width: "100%", 
+        minHeight: "160px", 
         mb: 2,
+        padding: 2,
+        boxShadow: 3,
       }}
       key={application.application_id}
     >
-      <Box sx={{ width: 7, borderRadius: "4px 0 0 4px", backgroundColor: "blue" }} />
-
+     
+      <Box sx={{ width: 7, borderRadius: "4px 0 0 4px" }}  className={
+          application.status === "waiting for response"
+            ? "waiting"
+            : application.status === "rejected"
+            ? "rejected"
+            : "interview"
+        }/>
+  
       <Box
         sx={{
           flex: 1,
           display: "flex",
+          flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: "center",
-          padding: 1,
-          width: "60%",
-          gap: 1.5,
+          alignItems: "stretch", 
+          padding: 2,
+          gap: 2,
         }}
       >
-        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", gap: 2}}>
-
-          <Box sx={{display: "flex", flexDirection: "column", gap: 1}}>
+        <CardContent
+          sx={{
+            flexGrow: 1, 
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+         
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <WorkIcon sx={{ fontSize: 15 }} />
-            <Typography variant="body1" gutterBottom sx={{ fontSize: 14, fontWeight: 700 }}>
+            <WorkIcon sx={{ fontSize: 20 }} />
+            <Typography variant="body1" sx={{ fontSize: 16, fontWeight: 700 }}>
               {application.position_name}
             </Typography>
           </Box>
-
+  
+          
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <ApartmentIcon sx={{ fontSize: 15 }} />
-            <Typography variant="body2" gutterBottom sx={{ fontSize: 14 }}>
+            <ApartmentIcon sx={{ fontSize: 20 }} />
+            <Typography variant="body2" sx={{ fontSize: 14 }}>
               {application.employer_name}
             </Typography>
           </Box>
-          </Box>
-
+  
+          
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Typography variant="p" sx={{ fontSize: 12 }}>Last update:</Typography>
-            <Typography variant="p" sx={{ fontSize: 12 }}>
-             {new Date(application.updated_at).toLocaleDateString()}
+            <Typography variant="body2" sx={{ fontSize: 14, fontWeight: 600 }}>
+              Last update:
+            </Typography>
+            <Typography variant="body2" sx={{ fontSize: 14 }}>
+              {new Date(application.updated_at).toLocaleDateString()}
             </Typography>
           </Box>
         </CardContent>
-
-        <CardActions
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
+  
+        <CardActions sx={{ position: "absolute", top: 10, right: 10 }}>
           <IconButton
             sx={{
-              position: "absolute",
-              top: 10,
-              right: 10,
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-              padding: "5px",
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              padding: "6px",
               borderRadius: "50%",
+              boxShadow: 2,
             }}
             onClick={() => handleOldApplicationEdit(application.application_id)}
           >
-            <ModeEditIcon sx={{ fontSize: 16 }} />
+            <ModeEditIcon sx={{ fontSize: 18 }} />
           </IconButton>
         </CardActions>
       </Box>

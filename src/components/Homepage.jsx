@@ -8,13 +8,14 @@ import AuthContext from "../core/AuthContext";
 import { DrawerHeader } from "./SideNavigation";
 
 import { useNavigate } from "react-router-dom";
-import OldApplicationsBox from './OldApplicationsBox.jsx'
+import OldApplicationsBox from "./OldApplicationsBox.jsx";
 
 const Homepage = () => {
   const date = new Date();
   const { user } = useContext(AuthContext);
   const [applications, setApplications] = useState([]);
-  const [oldApplications, setOldApplications] = useState([]); 
+  const [oldApplications, setOldApplications] = useState([]);
+  const [interviewApplications, setInterviewApplications] = useState([]);
 
   const formattedDate = date.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -36,28 +37,35 @@ const Homepage = () => {
           }
           const data = await response.json();
 
-         
           const sortedApplications = data.applications.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
-          ); 
+          );
 
-          setApplications(sortedApplications.slice(0, 5)); 
+          setApplications(sortedApplications.slice(0, 5));
 
-          
           const twoWeeksAgo = new Date();
           twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 1);
 
-          const filteredOldApplications = data.applications.filter(application => {
-            
-            const lastUpdateDate = new Date(application.updated_at); 
-            return lastUpdateDate < twoWeeksAgo; 
-          });
+          const filteredOldApplications = data.applications.filter(
+            (application) => {
+              const lastUpdateDate = new Date(application.updated_at);
+              return lastUpdateDate < twoWeeksAgo;
+            }
+          );
 
-          setOldApplications(filteredOldApplications); 
+          setOldApplications(filteredOldApplications);
+
+          const filteredInterviewApplications = data.applications.filter(
+            (application) => application.status === "interview"
+          );
+          console.log(filteredInterviewApplications);
+
+          setInterviewApplications(filteredInterviewApplications);
         } catch (error) {
           console.error("Error fetching job applications:", error);
           setApplications([]);
           setOldApplications([]);
+          setInterviewApplications([]);
         }
       }
     };
@@ -66,16 +74,16 @@ const Homepage = () => {
   }, [user]);
 
   const navigate = useNavigate();
-/*   const handleGoToApplications = () => {
-    navigate("/my-applications");
-  };
- */
   const handleOldApplicationEdit = (applicationId) => {
     navigate(`/my-applications/${applicationId}`);
   };
 
+  const handleInterviewApplicationEdit = (applicationId) => {
+    navigate(`/my-applications/${applicationId}`);
+  };
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <SideNavigation />
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -104,19 +112,112 @@ const Homepage = () => {
           </Box>
         </Box>
 
-        <Box paddingY={3}>
-          <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
-            These applications haven't had any updates for more than 2 weeks:
-          </Typography>
-       
-          <Box sx={{ display: "flex", flexDirection: "column", width: "100%" }}>
-            {oldApplications.map((oldApplication) => (
-              <OldApplicationsBox
-                key={oldApplication.application_id}
-                application={oldApplication}  
-                handleOldApplicationEdit={handleOldApplicationEdit}
-              />
-            ))}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            width: "100%",
+            gap: 5,
+          }}
+        >
+          <Box sx={{ width: "50%" }}>
+            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
+              These applications haven't had any updates for more than 2 weeks:
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "10px",
+                overflowY: "auto",
+                boxShadow:
+                  "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
+                maxHeight: "320px",
+                padding: 2,
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              {oldApplications.length > 0 ? (
+                oldApplications.map((oldApplication) => (
+                  <OldApplicationsBox
+                    key={oldApplication.application_id}
+                    application={oldApplication}
+                    handleOldApplicationEdit={handleOldApplicationEdit}
+                  />
+                ))
+              ) : (
+                <Typography
+                  sx={{ textAlign: "center", color: "gray", fontSize: "14px" }}
+                >
+                  No outdated applications.
+                </Typography>
+              )}
+            </Box>
+          </Box>
+
+          <Box sx={{ width: "50%" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: 2,
+                fontWeight: 600,
+              }}
+            >
+              Upcoming interviews:
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "rgba(20, 20, 20, 0.9)",
+                  color: "#fff",
+                  fontSize: "14px",
+                  borderRadius: "50%",
+                  width: "28px",
+                  height: "28px",
+                  marginLeft: 1,
+                  fontWeight: "bold",
+                }}
+              >
+                {interviewApplications.length}
+              </Box>
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                borderRadius: "10px",
+                overflowY: "auto",
+                boxShadow:
+                  "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
+                minHeight: "320px",
+                padding: 2,
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              {interviewApplications.length > 0 ? (
+                interviewApplications.map((interview) => (
+                  <OldApplicationsBox
+                    key={interview.application_id}
+                    application={interview}
+                    handleOldApplicationEdit={handleInterviewApplicationEdit}
+                  />
+                ))
+              ) : (
+                <Typography
+                  sx={{ textAlign: "center", color: "gray", fontSize: "14px" }}
+                >
+                  No upcoming interviews.
+                </Typography>
+              )}
+            </Box>
           </Box>
         </Box>
       </Box>
