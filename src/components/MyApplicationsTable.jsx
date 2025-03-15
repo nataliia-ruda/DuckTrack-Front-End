@@ -30,6 +30,10 @@ function Row({ row }) {
     navigate(`/my-applications/${row.application_id}`);
   };
 
+  const handleApplicationDelete = () => {
+    
+  }
+
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -65,8 +69,8 @@ function Row({ row }) {
             <ModeEditIcon />
           </IconButton>
 
-          <IconButton>
-            <DeleteIcon />
+          <IconButton onClick={handleApplicationDelete}>
+            <DeleteIcon/>
           </IconButton>
         </TableCell>
       </TableRow>

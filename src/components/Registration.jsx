@@ -6,6 +6,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const url = "http://localhost:3000/signup";
 
@@ -15,6 +16,7 @@ const Registration = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
 
+   const navigate = useNavigate(); 
   const handleUserCreate = async (data) => {
     try {
       const response = await fetch(`${url}`, {
@@ -34,7 +36,7 @@ const Registration = () => {
       }
       const result = await response.json();
       setDialogMessage(result.message);
-      setDialogTitle(<CheckCircleOutlineOutlinedIcon />);
+      setDialogTitle(<CheckCircleOutlineOutlinedIcon color="green" />);
       setOpenDialog(true);
       setCleanForm(true);
     } catch (error) {
@@ -58,7 +60,6 @@ const Registration = () => {
         boxSizing: "border-box",
       }}
     >
-      
       <Box
         sx={{
           display: "flex",
@@ -73,7 +74,6 @@ const Registration = () => {
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
         }}
       >
-  
         <Box
           sx={{
             width: { xs: "100%", md: "50%" },
@@ -103,20 +103,18 @@ const Registration = () => {
             <img
               src="./registration_img.svg"
               alt="Registration Illustration"
-              style={{ width: "100%", height: "auto"}}
+              style={{ width: "100%", height: "auto" }}
             />
           </Box>
         </Box>
 
-        
         <Box
           sx={{
-            width: { xs: "100%", md: "50%" }, 
+            width: { xs: "100%", md: "50%" },
             height: "100%",
             display: "flex",
-            justifyContent: "center", 
+            justifyContent: "center",
             alignItems: "center",
-            
           }}
         >
           <RegistrationForm
@@ -127,10 +125,21 @@ const Registration = () => {
         </Box>
       </Box>
 
-      {/* Dialog Box */}
-      <DialogBox open={openDialog} setOpen={setOpenDialog} title={dialogTitle}>
-        {dialogMessage}
-      </DialogBox>
+      <DialogBox
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={dialogTitle}
+        message={dialogMessage}
+        buttons={[
+          {
+            text: "Go to Sign in",
+            onClick: () => navigate("/"),
+            variant: "contained",
+        
+          },
+          { text: "Close", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "white" },
+        ]}
+      />
     </Grid>
   );
 };

@@ -6,55 +6,52 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import { useNavigate } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogBox = ({ open, setOpen, children, title }) => {
-  const navigate = useNavigate();
-  const handleReturn = () => {
-    navigate("/");
-  };
-
+const DialogBox = ({ 
+  open, 
+  setOpen, 
+  title, 
+  message, 
+  buttons = []  
+}) => {
   return (
     <Dialog
-      sx={{ padding: 4 }}
       TransitionComponent={Transition}
       keepMounted
-      aria-describedby="alert-dialog-slide-description"
       open={open}
       onClose={() => setOpen(false)}
+      aria-labelledby="dialog-title"
+      aria-describedby="dialog-message"
     >
-      <DialogTitle sx={{ textAlign: "center", padding: 2 }}>
+      <DialogTitle id="dialog-title" sx={{ textAlign: "center", padding: 2 }}>
         {title}
       </DialogTitle>
 
       <DialogContent sx={{ textAlign: "center", padding: 3 }}>
-        <DialogContentText id="alert-dialog-slide-description" variant="h6">
-          {children}
+        <DialogContentText id="dialog-message" variant="h6">
+          {message}
         </DialogContentText>
       </DialogContent>
 
       <DialogActions sx={{ padding: 2 }}>
-        <Button
-          onClick={handleReturn}
-          color="primary"
-          variant="contained"
-          size="small"
-        >
-          Go to Sing in
-        </Button>
-
-        <Button
-          onClick={() => setOpen(false)}
-          color="primary"
-          variant="outlined"
-          size="small"
-        >
-          Close
-        </Button>
+        {buttons.map(({ text, onClick, variant = "contained", color, bgColor, textColor }, index) => (
+          <Button 
+            key={index} 
+            onClick={onClick} 
+            variant={variant} 
+            sx={{
+              backgroundColor: bgColor || "#FFC107",  
+              color: textColor || "#0D1117",  
+              "&:hover": { backgroundColor: bgColor ? bgColor : "#e0a800" } 
+            }}
+          >
+            {text}
+          </Button>
+        ))}
       </DialogActions>
     </Dialog>
   );

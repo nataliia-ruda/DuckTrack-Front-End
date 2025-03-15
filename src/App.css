@@ -10,6 +10,9 @@
   background-color: #43A047;
   color: #43A047; 
 }
+.noupdates {
+  background-color: #1E88E5;
+}
 *{
   margin: 0;
   padding: 0;

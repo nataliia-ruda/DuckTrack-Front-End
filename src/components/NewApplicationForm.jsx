@@ -10,7 +10,11 @@ import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import CircleIcon from "@mui/icons-material/Circle";
+import CircleIcon from "@mui/icons-material/Circle"; 
+import DialogBox from "./DialogBox";
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+
 
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
@@ -21,6 +25,10 @@ const NewApplicationForm = () => {
   const [customSource, setCustomSource] = useState("");
   const [employmentType, setEmploymentType] = useState("");
   const [customEmploymentType, setCustomEmploymentType] = useState("");
+
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
 
   const [formData, setFormData] = useState({
     position_name: "",
@@ -98,8 +106,9 @@ const NewApplicationForm = () => {
       !applicationData.employer_name ||
       !applicationData.application_date
     ) {
-      alert("Please fill in all required fields.");
-      return;
+      setOpenDialog(true)
+      setDialogMessage("Please fill in all required fields.");
+      setDialogTitle(<PriorityHighIcon/>); 
     }
 
     try {
@@ -110,9 +119,13 @@ const NewApplicationForm = () => {
         },
         body: JSON.stringify(applicationData),
       });
+        
+      const result = await response.json(); 
 
       if (response.ok) {
-        navigate("/home");
+        setOpenDialog(true); 
+        setDialogMessage(result.message); 
+        setDialogTitle(<CheckCircleOutlineOutlinedIcon/>);
         setFormData({
           position_name: "",
           employer_name: "",
@@ -126,11 +139,15 @@ const NewApplicationForm = () => {
           notes: ""
         });
       } else {
-        alert("Failed to submit application. Please try again.");
+        setOpenDialog(true); 
+        setDialogMessage("Failed to submit application. Please try again.");
+        setDialogTitle(<PriorityHighIcon/>);
       }
     } catch (error) {
+      setOpenDialog(true); 
+      setDialogMessage("Error submitting application. Please try again.");
+      setDialogTitle(<PriorityHighIcon/>);
       console.error("Error submitting application:", error);
-      alert("Error submitting application. Please try again.");
     }
   };
 
@@ -329,13 +346,25 @@ const NewApplicationForm = () => {
         <Button
           type="submit"
           variant="contained"
-          color="primary"
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, backgroundColor:"rgba(20, 20, 20, 0.9)" }}
         >
           Add new application
         </Button>
       </Box>
+
+      <DialogBox
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={dialogTitle}
+        message={dialogMessage}
+        buttons={[
+    
+          { text: "Close", onClick: () => setOpenDialog(false), variant: "filled" },
+        ]}
+      />
     </Box>
+       
+
   );
 };
 

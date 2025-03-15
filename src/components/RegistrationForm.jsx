@@ -4,7 +4,8 @@ import { Button, Link, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid2"; 
+import DialogBox from "./DialogBox.jsx";
 
 
 const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
@@ -63,9 +64,9 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
       onSubmitForm(dataToInsert);
       setOpenDialog(true);
     } else {
-      
+        
        alert("There is still some errors")
-    }
+    } 
   };
 
   const handleChange = (event) => {
