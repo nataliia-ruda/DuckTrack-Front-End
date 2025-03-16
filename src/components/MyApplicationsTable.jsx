@@ -21,18 +21,65 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
 import "../App.css";
+import DialogBox from "./DialogBox";
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
-function Row({ row }) {
+function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleEditClick = () => {
     navigate(`/my-applications/${row.application_id}`);
+  }; 
+
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState("");
+  const [deleteId, setDeleteId] = useState(null);
+  const [isConfirmDialog, setIsConfirmDialog] = useState(false);
+  
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+    setDialogTitle(<QuestionMarkIcon/>);
+    setDialogMessage("Are you sure you want to delete this application?");
+    setIsConfirmDialog(true);
+    setOpenDialog(true);
   };
 
-  const handleApplicationDelete = () => {
-    
-  }
+ 
+  const handleApplicationDelete = async () => {
+    if (!deleteId) return;
+  
+    try {
+      const response = await fetch(`http://localhost:3000/my-applications/${deleteId}`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        throw new Error("There was a problem deleting the application!");
+      }
+  
+      const result = await response.json();
+  
+      
+      setOpenDialog(false); 
+      
+
+  
+      setTimeout(() => {
+        setDialogTitle(<CheckCircleOutlineIcon />);
+        setDialogMessage(result.message);
+      }, 200);
+  
+      setDeleteId(null);
+      fetchApplications();
+    } catch (error) {
+      console.error("Error deleting application:", error);
+      alert("Failed to delete the application.");
+      setOpenDialog(false);
+    }
+  };
 
   return (
     <>
@@ -69,7 +116,7 @@ function Row({ row }) {
             <ModeEditIcon />
           </IconButton>
 
-          <IconButton onClick={handleApplicationDelete}>
+          <IconButton onClick={() => confirmDelete(row.application_id)}>
             <DeleteIcon/>
           </IconButton>
         </TableCell>
@@ -144,6 +191,23 @@ function Row({ row }) {
           </Collapse>
         </TableCell>
       </TableRow>
+
+      <DialogBox
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={dialogTitle}
+        message={dialogMessage}
+        buttons={
+          isConfirmDialog
+            ? [
+                { text: "OK", onClick: handleApplicationDelete, variant: "contained" },
+                { text: "Cancel", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "black", textColor: "white" }
+              ]
+            : [
+                { text: "Close", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "black", textColor: "white" }
+              ]
+        }
+      />
     </>
   );
 }
@@ -168,31 +232,30 @@ export default function MyApplicationsTable({ searchInput }) {
   const [applications, setApplications] = useState([]);
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
+  const fetchApplications = async () => {
     if (!user) return;
 
-    const fetchApplications = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}`
-        );
+    try {
+      const response = await fetch(
+        `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}`
+      );
 
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setApplications(data.applications || []);
-      } catch (error) {
-        console.error("Error fetching applications:", error);
-        setApplications([]);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
-    };
 
+      const data = await response.json();
+      setApplications(data.applications || []);
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      setApplications([]);
+    }
+  };
+
+  useEffect(() => {
     const timeoutId = setTimeout(fetchApplications, 200);
     return () => clearTimeout(timeoutId);
   }, [user, searchInput]);
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="job applications">
@@ -209,7 +272,7 @@ export default function MyApplicationsTable({ searchInput }) {
         <TableBody>
           {applications.length > 0 ? (
             applications.map((row) => (
-              <Row key={row.application_id} row={row} />
+              <Row key={row.application_id} row={row}  fetchApplications={fetchApplications}/>
             ))
           ) : (
             <TableRow>
