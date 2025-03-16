@@ -7,6 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Select,
+  MenuItem,
   Collapse,
   Box,
   Typography,
@@ -22,8 +24,12 @@ import { useNavigate } from "react-router-dom";
 import CircleIcon from "@mui/icons-material/Circle";
 import "../App.css";
 import DialogBox from "./DialogBox";
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import Tooltip from "@mui/material/Tooltip";
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
@@ -31,47 +37,46 @@ function Row({ row, fetchApplications }) {
 
   const handleEditClick = () => {
     navigate(`/my-applications/${row.application_id}`);
-  }; 
+  };
 
   const [dialogMessage, setDialogMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [isConfirmDialog, setIsConfirmDialog] = useState(false);
-  
+
   const confirmDelete = (id) => {
     setDeleteId(id);
-    setDialogTitle(<QuestionMarkIcon/>);
+    setDialogTitle(<QuestionMarkIcon />);
     setDialogMessage("Are you sure you want to delete this application?");
     setIsConfirmDialog(true);
     setOpenDialog(true);
   };
 
- 
   const handleApplicationDelete = async () => {
     if (!deleteId) return;
-  
+
     try {
-      const response = await fetch(`http://localhost:3000/my-applications/${deleteId}`, {
-        method: "DELETE",
-      });
-  
+      const response = await fetch(
+        `http://localhost:3000/my-applications/${deleteId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
       if (!response.ok) {
         throw new Error("There was a problem deleting the application!");
       }
-  
-      const result = await response.json();
-  
-      
-      setOpenDialog(false); 
-      
 
-  
+      const result = await response.json();
+
+      setOpenDialog(false);
+
       setTimeout(() => {
         setDialogTitle(<CheckCircleOutlineIcon />);
         setDialogMessage(result.message);
       }, 200);
-  
+
       setDeleteId(null);
       fetchApplications();
     } catch (error) {
@@ -112,13 +117,17 @@ function Row({ row, fetchApplications }) {
         </TableCell>
 
         <TableCell>
-          <IconButton onClick={handleEditClick}>
-            <ModeEditIcon />
-          </IconButton>
+          <Tooltip title="Edit">
+            <IconButton onClick={handleEditClick}>
+              <ModeEditIcon />
+            </IconButton>
+          </Tooltip>
 
-          <IconButton onClick={() => confirmDelete(row.application_id)}>
-            <DeleteIcon/>
-          </IconButton>
+          <Tooltip title="Delete">
+            <IconButton onClick={() => confirmDelete(row.application_id)}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -173,16 +182,17 @@ function Row({ row, fetchApplications }) {
                         </a>
                       </TableCell>
                     </TableRow>
-                  )} 
-                   <TableRow>
+                  )}
+                  <TableRow>
                     <TableCell>Notes:</TableCell>
                     <TableCell>
-                      {row.notes && row.notes.split("\n").map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
+                      {row.notes &&
+                        row.notes.split("\n").map((line, index) => (
+                          <span key={index}>
+                            {line}
+                            <br />
+                          </span>
+                        ))}
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -200,11 +210,27 @@ function Row({ row, fetchApplications }) {
         buttons={
           isConfirmDialog
             ? [
-                { text: "OK", onClick: handleApplicationDelete, variant: "contained" },
-                { text: "Cancel", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "black", textColor: "white" }
+                {
+                  text: "OK",
+                  onClick: handleApplicationDelete,
+                  variant: "contained",
+                },
+                {
+                  text: "Cancel",
+                  onClick: () => setOpenDialog(false),
+                  variant: "outlined",
+                  bgColor: "black",
+                  textColor: "white",
+                },
               ]
             : [
-                { text: "Close", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "black", textColor: "white" }
+                {
+                  text: "Close",
+                  onClick: () => setOpenDialog(false),
+                  variant: "outlined",
+                  bgColor: "black",
+                  textColor: "white",
+                },
               ]
         }
       />
@@ -232,12 +258,18 @@ export default function MyApplicationsTable({ searchInput }) {
   const [applications, setApplications] = useState([]);
   const { user } = useContext(AuthContext);
 
+
+  const [sortColumn, setSortColumn] = useState("created_at"); 
+  const [sortOrder, setSortOrder] = useState("desc"); 
+  const [statusFilter, setStatusFilter] = useState(""); 
+
+  
   const fetchApplications = async () => {
     if (!user) return;
 
     try {
       const response = await fetch(
-        `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}`
+        `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`
       );
 
       if (!response.ok) {
@@ -255,24 +287,93 @@ export default function MyApplicationsTable({ searchInput }) {
   useEffect(() => {
     const timeoutId = setTimeout(fetchApplications, 200);
     return () => clearTimeout(timeoutId);
-  }, [user, searchInput]);
+  }, [user, searchInput, sortColumn, sortOrder, statusFilter]);
+
+  
+  const handleSort = (column) => {
+    const newOrder = sortColumn === column && sortOrder === "asc" ? "desc" : "asc";
+    setSortColumn(column);
+    setSortOrder(newOrder);
+  };
+
+
+  const handleStatusFilter = (event) => {
+    setStatusFilter(event.target.value);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="job applications">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell sx={{ fontWeight: 700 }}>Position</TableCell>
-            <TableCell sx={{ fontWeight: 700 }}>Employer</TableCell>
-            <TableCell sx={{ fontWeight: 700 }}>Created at</TableCell>
-            <TableCell sx={{ fontWeight: 700 }}>Status</TableCell>
+
+           
+            <TableCell>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography sx={{ fontWeight: 700 }}>Position</Typography>
+                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("position_name")}>
+                  {sortColumn === "position_name" && sortOrder === "asc" ? 
+                    <ArrowDropUpIcon fontSize="medium" /> : 
+                    <ArrowDropDownIcon fontSize="medium" />
+                  }
+                </IconButton>
+              </Box>
+            </TableCell>
+
+           
+            <TableCell>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography sx={{ fontWeight: 700 }}>Employer</Typography>
+                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("employer_name")}>
+                  {sortColumn === "employer_name" && sortOrder === "asc" ? 
+                    <ArrowDropUpIcon fontSize="medium" /> : 
+                    <ArrowDropDownIcon fontSize="medium" />
+                  }
+                </IconButton>
+              </Box>
+            </TableCell>
+
+          
+            <TableCell sx={{ whiteSpace: "nowrap" }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography sx={{ fontWeight: 700 }}>Created at</Typography>
+                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("created_at")}>
+                  {sortColumn === "created_at" && sortOrder === "asc" ? 
+                    <ArrowDropUpIcon fontSize="medium" /> : 
+                    <ArrowDropDownIcon fontSize="medium" />
+                  }
+                </IconButton>
+              </Box>
+            </TableCell>
+
+   
+            <TableCell>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography sx={{ fontWeight: 700 }}>Status</Typography>
+                <Select
+                  value={statusFilter}
+                  onChange={handleStatusFilter}
+                  size="small"
+                  sx={{ minWidth: 120, height: 32 }}
+                >
+                  <MenuItem value="">All</MenuItem>
+                  <MenuItem value="waiting for response">Waiting for response</MenuItem>
+                  <MenuItem value="rejected">Rejected</MenuItem>
+                  <MenuItem value="interview">Interview</MenuItem>
+                </Select>
+              </Box>
+            </TableCell>
+
             <TableCell />
           </TableRow>
         </TableHead>
+
+       
         <TableBody>
           {applications.length > 0 ? (
             applications.map((row) => (
-              <Row key={row.application_id} row={row}  fetchApplications={fetchApplications}/>
+              <Row key={row.application_id} row={row} fetchApplications={fetchApplications} />
             ))
           ) : (
             <TableRow>

@@ -10,6 +10,7 @@ import MyApplicationsPage from "./components/MyApplicationsPage.jsx";
 import "./App.css";
 import EditApplicationPage from "./components/EditApplicationPage.jsx";
 import EditProfilePage from "./components/EditProfilePage.jsx";
+import StatisctisPage from "./components/StatisctisPage.jsx";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -62,6 +63,15 @@ function App() {
           element={
             <ProtectedRoute user={user}>
               <EditProfilePage />
+            </ProtectedRoute>
+          }
+        /> 
+
+         <Route
+          path="statistics"
+          element={
+            <ProtectedRoute user={user}>
+              <StatisctisPage />
             </ProtectedRoute>
           }
         />
