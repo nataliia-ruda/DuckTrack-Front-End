@@ -6,7 +6,8 @@ import SideNavigation from "./SideNavigation";
 import RecentApplicationBox from "./RecentApplicationBox";
 import AuthContext from "../core/AuthContext";
 import { DrawerHeader } from "./SideNavigation";
-
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { useNavigate } from "react-router-dom";
 import OldApplicationsBox from "./OldApplicationsBox.jsx";
 
@@ -102,14 +103,28 @@ const Homepage = () => {
             Your recent applications:
           </Typography>
 
-          <Box sx={{ display: "flex", gap: 3 }}>
-            {applications.map((application) => (
-              <RecentApplicationBox
-                key={application.application_id}
-                application={application}
-              />
-            ))}
-          </Box>
+          {applications.length > 0 ? (
+            <Box sx={{ display: "flex", gap: 3 }}>
+              {applications.map((application) => (
+                <RecentApplicationBox
+                  key={application.application_id}
+                  application={application}
+                />
+              ))}
+            </Box>
+          ) : (
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "gray",
+                fontSize: "14px",
+                fontStyle: "italic",
+              }}
+            >
+              No applications yet. Start by registering a new application to get
+              started!
+            </Typography>
+          )}
         </Box>
 
         <Box
@@ -123,7 +138,7 @@ const Homepage = () => {
         >
           <Box sx={{ width: "50%" }}>
             <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
-              These applications haven't had any updates for more than 2 weeks:
+              Applications with no updates in over 2 weeks:
             </Typography>
 
             <Box
@@ -135,7 +150,7 @@ const Homepage = () => {
                 overflowY: "auto",
                 boxShadow:
                   "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
-                maxHeight: "320px",
+                maxHeight: "340px",
                 padding: 2,
                 backgroundColor: "#f9f9f9",
               }}
@@ -150,8 +165,18 @@ const Homepage = () => {
                 ))
               ) : (
                 <Typography
-                  sx={{ textAlign: "center", color: "gray", fontSize: "14px" }}
+                  sx={{
+                    textAlign: "center",
+                    color: "gray",
+                    fontSize: "14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                    py: 2,
+                  }}
                 >
+                  <WorkOutlineIcon fontSize="small" />
                   No outdated applications.
                 </Typography>
               )}
@@ -197,7 +222,7 @@ const Homepage = () => {
                 overflowY: "auto",
                 boxShadow:
                   "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
-                minHeight: "320px",
+                maxHeight: "340px",
                 padding: 2,
                 backgroundColor: "#f9f9f9",
               }}
@@ -212,8 +237,18 @@ const Homepage = () => {
                 ))
               ) : (
                 <Typography
-                  sx={{ textAlign: "center", color: "gray", fontSize: "14px" }}
+                  sx={{
+                    textAlign: "center",
+                    color: "gray",
+                    fontSize: "14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                    py: 2,
+                  }}
                 >
+                  <EventBusyIcon fontSize="small" />
                   No upcoming interviews.
                 </Typography>
               )}
