@@ -38,7 +38,7 @@ const DialogBox = ({
       </DialogContent>
 
       <DialogActions sx={{ padding: 2 }}>
-        {buttons.map(({ text, onClick, variant = "contained", color, bgColor, textColor }, index) => (
+        {buttons.map(({ text, onClick, variant = "contained", bgColor, textColor }, index) => (
           <Button 
             key={index} 
             onClick={onClick} 

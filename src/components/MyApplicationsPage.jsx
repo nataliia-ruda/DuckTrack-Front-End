@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import AuthContext from '../core/AuthContext';
 import SideNavigation, { DrawerHeader } from './SideNavigation.jsx';
 import Box from '@mui/material/Box';
@@ -59,7 +59,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 }));
 
 const MyApplicationsPage = () => {
-    const { user } = useContext(AuthContext);
     const [searchInput, setSearchInput] = useState("");
 
     return (

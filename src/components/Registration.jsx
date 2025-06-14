@@ -16,7 +16,7 @@ const Registration = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
 
-   const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const handleUserCreate = async (data) => {
     try {
       const response = await fetch(`${url}`, {
@@ -36,12 +36,15 @@ const Registration = () => {
       }
       const result = await response.json();
       setDialogMessage(result.message);
-      setDialogTitle(<CheckCircleOutlineOutlinedIcon color="green" />);
+      setDialogTitle(
+        <CheckCircleOutlineOutlinedIcon sx={{ color: "green" }} />
+      );
       setOpenDialog(true);
       setCleanForm(true);
+
+  
     } catch (error) {
-      console.log(error);
-      setDialogTitle(<ErrorOutlineOutlinedIcon />);
+      setDialogTitle(<ErrorOutlineOutlinedIcon sx={{ color: "red" }} />);
       setDialogMessage(error.message);
       setOpenDialog(true);
     }
@@ -68,7 +71,6 @@ const Registration = () => {
           justifyContent: "center",
           padding: 1,
           width: "70%",
-          height: "auto",
           backgroundColor: "white",
           borderRadius: "10px",
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
@@ -81,29 +83,35 @@ const Registration = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            textAlign: "center",
+            justifyContent: "flex-start",
             pt: 4,
-            pb: "0",
+            gap: 2,
           }}
         >
-          <Typography variant="h5" sx={{ fontWeight: "600", color: "#141E27" }}>
+          {/* Header */}
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "600", color: "#141E27", marginBottom: "2.5em" }}
+          >
             NEW HERE?
           </Typography>
 
+          {/* Centered image */}
           <Box
             sx={{
               width: "100%",
-              height: "auto",
-              overflow: "hidden",
               display: "flex",
               justifyContent: "center",
-              textAlign: "center",
             }}
           >
             <img
-              src="./registration_img.svg"
-              alt="Registration Illustration"
-              style={{ width: "100%", height: "auto" }}
+              src="./RegistrationFormImg1.png"
+              alt="duck in the suite waving to say 'hi'"
+              style={{
+                width: "65%",
+                height: "auto",
+                maxWidth: "300px",
+              }}
             />
           </Box>
         </Box>
@@ -120,7 +128,8 @@ const Registration = () => {
           <RegistrationForm
             onSubmitForm={handleUserCreate}
             cleanForm={cleanForm}
-            setDialogMessage={dialogMessage}
+            setDialogMessage={setDialogMessage} 
+            onFormCleaned={() => setCleanForm(false)}
           />
         </Box>
       </Box>
@@ -135,9 +144,13 @@ const Registration = () => {
             text: "Go to Sign in",
             onClick: () => navigate("/"),
             variant: "contained",
-        
           },
-          { text: "Close", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "white" },
+          {
+            text: "Close",
+            onClick: () => setOpenDialog(false),
+            variant: "outlined",
+            bgColor: "white",
+          },
         ]}
       />
     </Grid>

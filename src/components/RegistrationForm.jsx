@@ -4,17 +4,23 @@ import { Button, Link, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid2"; 
+import Grid from "@mui/material/Grid2";
 import DialogBox from "./DialogBox.jsx";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
-
-const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
+const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
   const [formFields, setFormFields] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
+    gender: "",
   });
 
   const [firstNameError, setFirstNameError] = useState(false);
@@ -33,20 +39,23 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
 
   useEffect(() => {
     if (cleanForm) {
-        setFormFields({
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-        });
-        setOpenDialog(false); 
+      setFormFields({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        gender: "",
+      });
+      setOpenDialog(false);
+      if (typeof onFormCleaned === "function") {
+        onFormCleaned();
+      }
     }
-}, [cleanForm])
+  }, [cleanForm]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formFields);
 
     let isThereErrors = false;
     for (let property in errors) {
@@ -54,19 +63,24 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         isThereErrors = true;
       }
     }
+
+    if (!formFields.gender) {
+      alert("Please select a gender.");
+      return;
+    }
     if (!isThereErrors) {
       const dataToInsert = {
         user_first_name: formFields.firstName,
         user_last_name: formFields.lastName,
         email: formFields.email,
         password: formFields.password,
+        gender: formFields.gender,
       };
       onSubmitForm(dataToInsert);
       setOpenDialog(true);
     } else {
-        
-       alert("There is still some errors")
-    } 
+      alert("There is still some errors");
+    }
   };
 
   const handleChange = (event) => {
@@ -160,7 +174,6 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
     }
   };
 
-
   return (
     <Grid
       container
@@ -170,30 +183,39 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "flex-start", 
+        justifyContent: "flex-start",
         gap: 4,
         py: 4,
         px: 4,
         width: "100%",
-        height: "100%", 
+        height: "100%",
         boxSizing: "border-box",
         borderRadius: "10px",
-        backgroundColor: "#141E27", 
+        backgroundColor: "#141E27",
         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-        flexGrow: 1, 
+        flexGrow: 1,
       }}
     >
-      <Typography variant="h5" gutterBottom sx={{ color: "#ffffff", fontWeight: "600"}}>
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{ color: "#ffffff", fontWeight: "600" }}
+      >
         LET'S CREATE AN ACCOUNT!
       </Typography>
-  
+
       {/* Input Fields */}
-      <Box sx={{ position: "relative", width: {
-          xs: "90%",
-          sm: "85%",
-          md: "85%",
-          lg: "85%",
-        }}}>
+      <Box
+        sx={{
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
+        }}
+      >
         <TextField
           value={formFields.firstName}
           name="firstName"
@@ -206,12 +228,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
-            backgroundColor: "#1F2A38", 
-            input: { color: "#ffffff" }, 
-            label: { color: "#cccccc" }, 
-            fieldset: { borderColor: "#444" }, 
-            "&:hover fieldset": { borderColor: "#888" }, 
-            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
+            backgroundColor: "#1F2A38",
+            input: { color: "#ffffff" },
+            label: { color: "#cccccc" },
+            fieldset: { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#888" },
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
           error={firstNameError}
         />
@@ -232,12 +254,17 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
       </Box>
 
       {/* Last Name */}
-      <Box sx={{ position: "relative", width: {
-          xs: "90%",
-          sm: "85%",
-          md: "85%",
-          lg: "85%",
-        } }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
+        }}
+      >
         <TextField
           value={formFields.lastName}
           onChange={handleChange}
@@ -250,12 +277,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
-            backgroundColor: "#1F2A38", 
-            input: { color: "#ffffff" }, 
-            label: { color: "#cccccc" }, 
-            fieldset: { borderColor: "#444" }, 
-            "&:hover fieldset": { borderColor: "#888" }, 
-            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
+            backgroundColor: "#1F2A38",
+            input: { color: "#ffffff" },
+            label: { color: "#cccccc" },
+            fieldset: { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#888" },
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
           error={lastNameError}
         />
@@ -275,13 +302,97 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
         )}
       </Box>
 
+      {/* Gender */}
+      <Box
+        sx={{
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "2.1em",
+        }}
+      >
+        <FormLabel
+          id="demo-row-radio-buttons-group-label"
+          sx={{ color: " #cccccc" }}
+          required
+        >
+          Gender:
+        </FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          value={formFields.gender}
+          onChange={handleChange}
+          name="gender"
+          sx={{ fontSize: "0.8em" }}
+        >
+          <FormControlLabel
+            value="female"
+            control={
+              <Radio
+                sx={{
+                  color: "#cccccc",
+                  "&.Mui-checked": {
+                    color: "#cccccc",
+                  },
+                }}
+              />
+            }
+            label="Female"
+            sx={{ color: " #cccccc" }}
+          />
+          <FormControlLabel
+            value="male"
+            control={
+              <Radio
+                sx={{
+                  color: "#cccccc",
+                  "&.Mui-checked": {
+                    color: "#cccccc",
+                  },
+                }}
+              />
+            }
+            label="Male"
+            sx={{ color: " #cccccc" }}
+          />
+          <FormControlLabel
+            value="other"
+            control={
+              <Radio
+                sx={{
+                  color: "#cccccc",
+                  "&.Mui-checked": {
+                    color: "#cccccc",
+                  },
+                }}
+              />
+            }
+            label="Other"
+            sx={{ color: " #cccccc" }}
+          />
+        </RadioGroup>
+      </Box>
+
       {/* Email */}
-      <Box sx={{ position: "relative", width: {
-          xs: "90%",
-          sm: "85%",
-          md: "85%",
-          lg: "85%",
-        } }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
+        }}
+      >
         <TextField
           value={formFields.email}
           onChange={handleChange}
@@ -294,12 +405,12 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
-            backgroundColor: "#1F2A38", 
-            input: { color: "#ffffff" }, 
-            label: { color: "#cccccc" }, 
-            fieldset: { borderColor: "#444" }, 
-            "&:hover fieldset": { borderColor: "#888" }, 
-            "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
+            backgroundColor: "#1F2A38",
+            input: { color: "#ffffff" },
+            label: { color: "#cccccc" },
+            fieldset: { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#888" },
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
           error={emailError}
         />
@@ -320,43 +431,52 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
       </Box>
 
       {/* Password */}
-      <Box sx={{ position: "relative", width: {
-          xs: "90%",
-          sm: "85%",
-          md: "85%",
-          lg: "85%",
-        }}}>
-      <TextField
-        value={formFields.password}
-        onChange={handleChange}
-        onBlur={handleComparePassword}
-        name="password"
-        id="password"
-        label="Password"
-        variant="outlined"
-        required
-        size="small"
+      <Box
         sx={{
-          width: "100%",
-          backgroundColor: "#1F2A38", 
-          input: { color: "#ffffff" }, 
-          label: { color: "#cccccc" }, 
-          fieldset: { borderColor: "#444" }, 
-          "&:hover fieldset": { borderColor: "#888" }, 
-          "&.Mui-focused fieldset": { borderColor: "#ffffff" }, 
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
         }}
-        error={passwordError}
+      >
+        <TextField
+          value={formFields.password}
+          onChange={handleChange}
+          onBlur={handleComparePassword}
+          name="password"
+          id="password"
+          label="Password"
+          variant="outlined"
+          required
+          size="small"
+          sx={{
+            width: "100%",
+            backgroundColor: "#1F2A38",
+            input: { color: "#ffffff" },
+            label: { color: "#cccccc" },
+            fieldset: { borderColor: "#444" },
+            "&:hover fieldset": { borderColor: "#888" },
+            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
+          }}
+          error={passwordError}
         />
-        </Box>
-      
+      </Box>
 
       {/* Confirm Password */}
-      <Box sx={{ position: "relative", width: {
-          xs: "90%",
-          sm: "85%",
-          md: "85%",
-          lg: "85%",
-        }}}>
+      <Box
+        sx={{
+          position: "relative",
+          width: {
+            xs: "90%",
+            sm: "85%",
+            md: "85%",
+            lg: "85%",
+          },
+        }}
+      >
         <TextField
           value={formFields.confirmPassword}
           onChange={handleChange}
@@ -369,11 +489,11 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
           size="small"
           sx={{
             width: "100%",
-            backgroundColor: "#1F2A38", 
-            input: { color: "#ffffff" }, 
+            backgroundColor: "#1F2A38",
+            input: { color: "#ffffff" },
             label: { color: "#cccccc" },
             fieldset: { borderColor: "#444" },
-            "&:hover fieldset": { borderColor: "#888" }, 
+            "&:hover fieldset": { borderColor: "#888" },
             "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
           error={passwordError}
@@ -392,15 +512,25 @@ const RegistrationForm = ({ cleanForm, onSubmitForm }) => {
       </Box>
 
       {/* Submit Button */}
-      <Button type="submit" variant="contained" size="large" sx={{ backgroundColor: "#FFC107", color: "#141E27", fontWeight: "500", '&:hover': { backgroundColor: "#e0a800" } }}>
+      <Button
+        type="submit"
+        variant="contained"
+        size="large"
+        sx={{
+          backgroundColor: "#FFC107",
+          color: "#141E27",
+          fontWeight: "500",
+          "&:hover": { backgroundColor: "#e0a800" },
+        }}
+      >
         Sign up
       </Button>
-  
+
       {/* Login Link */}
       <Typography variant="p" sx={{ color: "#ffffff" }} gutterBottom>
         Already have an account?{" "}
         <Link component={RouterLink} to="/" sx={{ color: "#66B2FF" }}>
-          Sign in 
+          Sign in
         </Link>
       </Typography>
     </Grid>

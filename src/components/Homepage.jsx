@@ -45,7 +45,7 @@ const Homepage = () => {
           setApplications(sortedApplications.slice(0, 5));
 
           const twoWeeksAgo = new Date();
-          twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 1);
+          twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
           const filteredOldApplications = data.applications.filter(
             (application) => {

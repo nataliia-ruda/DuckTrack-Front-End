@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid2";
-import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import SigninForm from "./SigninForm.jsx";
@@ -9,7 +8,6 @@ import Box from "@mui/material/Box";
 gsap.registerPlugin(MotionPathPlugin);
 
 const LandingPage = () => {
-  const navigate = useNavigate();
   const svgRef = useRef(null);
   const tl = useRef(null);
 
@@ -28,7 +26,7 @@ const LandingPage = () => {
         textColor: "#F8F8F8",
         fontWeight: "700",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "XING",
@@ -36,7 +34,7 @@ const LandingPage = () => {
         textColor: "#F1FD01",
         fontWeight: "700",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "Indeed",
@@ -44,7 +42,7 @@ const LandingPage = () => {
         textColor: "#FFFFFF",
         fontWeight: "700",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "StepStone",
@@ -52,7 +50,7 @@ const LandingPage = () => {
         textColor: "#00217A",
         fontWeight: "800",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "Monster",
@@ -60,7 +58,7 @@ const LandingPage = () => {
         textColor: "#F8F8F8",
         fontWeight: "700",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "Jobware",
@@ -68,14 +66,14 @@ const LandingPage = () => {
         textColor: "black",
         fontWeight: "700",
         fontSize: "16",
-        radius: 45,
+        radius: 50,
       },
       {
         text: "Arbeitsagentur",
         color: "#EC252C",
         textColor: "#FFFFFF",
         fontSize: "14",
-        radius: 45,
+        radius: 50,
       },
     ];
 
@@ -204,18 +202,18 @@ const LandingPage = () => {
          
           <path
             className="myPath"
-            d="M 300,100 A 200,200 0 1,1 299,100 Z" 
+            d="M 300,50 A 250,250 0 1,1 299,50 Z" 
             fill="none"
             stroke="transparent"
           />
 
           
           <image
-            href="/boy.svg"
-            x="120" 
-            y="120" 
-            width="350"
-            height="350"
+            href="/LoginImg.png"
+            x="150" 
+            y="150" 
+            width="300"
+            height="300"
             style={{ borderRadius: "50%" }}
           />
         </svg>
