@@ -10,10 +10,13 @@ import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { useNavigate } from "react-router-dom";
 import OldApplicationsBox from "./OldApplicationsBox.jsx";
+import Avatar from "@mui/material/Avatar";
 
 const Homepage = () => {
   const date = new Date();
   const { user } = useContext(AuthContext);
+  console.log("User gender:", user.gender);
+
   const [applications, setApplications] = useState([]);
   const [oldApplications, setOldApplications] = useState([]);
   const [interviewApplications, setInterviewApplications] = useState([]);
@@ -90,12 +93,41 @@ const Homepage = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
 
-        <Typography variant="h5" sx={{ marginBottom: 2 }}>
-          Welcome, {user ? `${user.user_first_name}` : "User"}!
-        </Typography>
-        <Typography sx={{ marginBottom: 2, fontSize: "12px" }}>
-          Today is {formattedDate}
-        </Typography>
+        <Box sx={{ display: "flex", gap: 2, mb: 0.3 }}>
+          <Avatar
+            alt="user avatar"
+            src={
+              user.gender === "female"
+                ? "/FemaleAv.png"
+                : user.gender === "male"
+                ? "/MaleAv.png"
+                : "/OtherAv.png"
+            }
+            sx={{
+              border: "2px solid black",
+              width: 60,
+              height: 60,
+              bgcolor: "white",
+            }}
+          />
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 0.5,
+            }}
+          >
+            <Typography variant="h5">
+              Welcome, {user ? `${user.user_first_name}` : "User"}!
+            </Typography>
+            <Typography sx={{ marginBottom: 2, fontSize: "12px" }}>
+              Today is {formattedDate}
+            </Typography>
+          </Box>
+        </Box>
+
         <Divider />
 
         <Box py={3}>

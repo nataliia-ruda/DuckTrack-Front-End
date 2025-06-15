@@ -17,16 +17,16 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import AuthContext from '../core/AuthContext';
-
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AuthContext from "../core/AuthContext";
+import Avatar from "@mui/material/Avatar";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 const drawerWidth = 240;
 
@@ -124,19 +124,19 @@ const SideNavigation = () => {
     0: <HomeIcon />,
     1: <StorageOutlinedIcon />,
     2: <BarChartOutlinedIcon />,
-    3: <LogoutOutlinedIcon/>
+    3: <LogoutOutlinedIcon />,
   };
   const navigate = useNavigate();
 
   const handleAddApplication = () => {
     navigate("/new-application");
   };
-  
-  const { user, logout } = useContext(AuthContext); 
+
+  const { user, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    logout();  
-    navigate("/");  
+    logout();
+    navigate("/");
   };
 
   const handleNavigation = (text) => {
@@ -145,17 +145,17 @@ const SideNavigation = () => {
       "My Applications": "/my-applications",
       Statistics: "/statistics",
     };
-  
+
     if (text === "Log out") {
       handleLogout();
     } else {
-      navigate(routes[text]); 
+      navigate(routes[text]);
     }
   };
 
   const handleEditProfileClick = () => {
-     navigate(`/update-profile/${user.user_id}`); 
-  }
+    navigate(`/update-profile/${user.user_id}`);
+  };
 
   return (
     <>
@@ -167,7 +167,7 @@ const SideNavigation = () => {
             backdropFilter: "blur(6px)",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             color: "#E0E0E0",
-            borderBottom: "2px solid white"
+            borderBottom: "2px solid white",
           }}
         >
           <IconButton
@@ -185,7 +185,7 @@ const SideNavigation = () => {
           </IconButton>
 
           <Typography variant="h6" noWrap component="div">
-            Job Applications Tracker
+            DuckTrack - Job Applications Tracker
           </Typography>
 
           <Box
@@ -214,7 +214,9 @@ const SideNavigation = () => {
             >
               <AddIcon />
             </Fab>
-            <Typography variant="p" sx={{fontSize: "13px"}}>Add New Application</Typography>
+            <Typography variant="p" sx={{ fontSize: "13px" }}>
+              Add New Application
+            </Typography>
           </Box>
         </Toolbar>
       </AppBar>
@@ -226,8 +228,7 @@ const SideNavigation = () => {
           sx: {
             backgroundColor: "#141E27",
             color: "#E0E0E0",
-            borderRight: "2px solid white"
-              
+            borderRight: "2px solid white",
           },
         }}
       >
@@ -244,60 +245,93 @@ const SideNavigation = () => {
         <Divider />
 
         <List>
-          <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                px: 2.5,
-                color: "white",
-                justifyContent: open ? "initial" : "center",
-              }}
-              onClick={handleEditProfileClick}
-            >
-              <ListItemIcon
+          {open && (
+            <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
+                  display: "flex",
+                  flexDirection: "column",
                   justifyContent: "center",
+                  width: "100%",
+                  gap: 0.5,
+                  alignItems: "center",
+                  minHeight: 48,
+                  px: 2.5,
                   color: "white",
-                  mr: open ? 3 : "auto",
                 }}
+                onClick={handleEditProfileClick}
               >
-                <AccountCircleOutlinedIcon />
-              </ListItemIcon>
-              {open && <ListItemText>{user.user_first_name} {user.user_last_name}</ListItemText>}
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    justifyContent: "center",
+                    color: "white",
+                  }}
+                >
+                  <Avatar
+                    alt="duck avatar"
+                    src={
+                      user.gender === "female"
+                        ? "/FemaleAv.png"
+                        : user.gender === "male"
+                        ? "/MaleAv.png"
+                        : "/OtherAv.png"
+                    }
+                    sx={{
+                      border: "2px solid black",
+                      width: 50,
+                      height: 50,
+                      bgcolor: "white",
+                    }}
+                  />
+                </ListItemIcon>
+                <ListItemText>
+                  &nbsp;{user.user_first_name} {user.user_last_name}{" "}
+                  <BorderColorIcon
+                    sx={{ height: 12, width: 12, marginLeft: 0.3, marginBottom: 0.4}}
+                    onClick={handleEditProfileClick}
+                  />
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
 
-        <Divider />
+        <Divider sx={{ color: "white" }} />
 
         <List>
-  {["Home", "My Applications", "Statistics", "Log out"].map((text, index) => (
-    <ListItem key={text} disablePadding sx={{ display: "block", mb: 2 }}>
-      <ListItemButton
-        sx={{
-          minHeight: 48,
-          px: 2.5,
-          color: "white",
-          justifyContent: open ? "initial" : "center",
-        }}
-        onClick={() => handleNavigation(text)} 
-      >
-        <ListItemIcon
-          sx={{
-            minWidth: 0,
-            justifyContent: "center",
-            color: "white",
-            mr: open ? 3 : "auto",
-          }}
-        >
-          {icons[index]}
-        </ListItemIcon>
-        {open && <ListItemText primary={text} />}
-      </ListItemButton>
-    </ListItem>
-  ))}
-</List>
+          {["Home", "My Applications", "Statistics", "Log out"].map(
+            (text, index) => (
+              <ListItem
+                key={text}
+                disablePadding
+                sx={{ display: "block", mb: 2 }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    px: 2.5,
+                    color: "white",
+                    justifyContent: open ? "initial" : "center",
+                  }}
+                  onClick={() => handleNavigation(text)}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      justifyContent: "center",
+                      color: "white",
+                      mr: open ? 3 : "auto",
+                    }}
+                  >
+                    {icons[index]}
+                  </ListItemIcon>
+                  {open && <ListItemText primary={text} />}
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
+        </List>
       </Drawer>
     </>
   );

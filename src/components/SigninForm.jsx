@@ -61,6 +61,7 @@ const SigninForm = () => {
                 user_id: result.data.user_id,
                 user_first_name: result.data.user_first_name,
                 user_last_name: result.data.user_last_name,
+                gender: result.data.gender,
             });
             navigate("/home");
         } else {

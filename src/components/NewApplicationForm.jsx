@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import AuthContext from "../core/AuthContext";
 import Radio from "@mui/material/Radio";
@@ -18,7 +17,6 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const [status, setStatus] = useState("waiting for response");
   const [source, setSource] = useState("");
