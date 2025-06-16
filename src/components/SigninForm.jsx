@@ -51,18 +51,14 @@ const SigninForm = () => {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
         });
 
         let result = await response.json();
 
         if (response.ok) {
 
-            login({
-                user_id: result.data.user_id,
-                user_first_name: result.data.user_first_name,
-                user_last_name: result.data.user_last_name,
-                gender: result.data.gender,
-            });
+            login(result.user);
             navigate("/home");
         } else {
  

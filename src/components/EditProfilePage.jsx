@@ -21,14 +21,12 @@ const EditProfilePage = () => {
 
  
   useEffect(() => {
-    console.log(`http://localhost:3000/get-user/${user.user_id}`)
     if (user) {
       const fetchUserData = async () => {
         try {
           const response = await fetch(`http://localhost:3000/get-user/${user.user_id}`);
           if (response.ok) {
             const data = await response.json();
-            console.log(data)
             setFormData({
               firstName: data.user_first_name,
               lastName: data.user_last_name,

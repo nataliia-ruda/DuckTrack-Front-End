@@ -15,7 +15,6 @@ import Avatar from "@mui/material/Avatar";
 const Homepage = () => {
   const date = new Date();
   const { user } = useContext(AuthContext);
-  console.log("User gender:", user.gender);
 
   const [applications, setApplications] = useState([]);
   const [oldApplications, setOldApplications] = useState([]);
@@ -62,7 +61,6 @@ const Homepage = () => {
           const filteredInterviewApplications = data.applications.filter(
             (application) => application.status === "interview"
           );
-          console.log(filteredInterviewApplications);
 
           setInterviewApplications(filteredInterviewApplications);
         } catch (error) {
