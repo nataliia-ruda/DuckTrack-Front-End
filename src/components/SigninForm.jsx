@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
-import { useState, useContext} from "react";
+import { useState, useContext } from "react";
 import Grid from "@mui/material/Grid2";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
@@ -10,13 +10,19 @@ import { Link } from "@mui/material";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { TextPlugin } from "gsap/TextPlugin";
-import AuthContext from '../core/AuthContext';
+import AuthContext from "../core/AuthContext";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 gsap.registerPlugin(TextPlugin);
 
 const SigninForm = () => {
-
- /* typing animation */
+  /* typing animation */
   const words = ["organize", "store", "track"];
   useGSAP(() => {
     let tlMaster = gsap.timeline({ repeat: -1 });
@@ -40,38 +46,46 @@ const SigninForm = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  
+
   async function handleLogin(event) {
     event.preventDefault();
 
     try {
-        let response = await fetch(`http://localhost:3000/login`, {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
+      let response = await fetch(`http://localhost:3000/login`, {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-        let result = await response.json();
+      let result = await response.json();
 
-        if (response.ok) {
-
-            login(result.user);
-            navigate("/home");
-        } else {
- 
-            setErrorMessage(result.message || "Something went wrong.");
-            setEmailError(true);
-            setPasswordError(true);
-        }
+      if (response.ok) {
+        login(result.user);
+        navigate("/home");
+      } else {
+        setErrorMessage(result.message || "Something went wrong.");
+        setEmailError(true);
+        setPasswordError(true);
+      }
     } catch (error) {
-        console.error("Login error:", error);
-        setErrorMessage("Something went wrong. Try again later.");
+      console.error("Login error:", error);
+      setErrorMessage("Something went wrong. Try again later.");
     }
-}
-  
+  }
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <Grid
@@ -90,10 +104,9 @@ const SigninForm = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-         
         }}
       >
-        <Typography variant="h4" sx={{fontWeight: "600"}}>
+        <Typography variant="h4" sx={{ fontWeight: "600" }}>
           Let's{" "}
           <Typography
             component="span"
@@ -103,12 +116,12 @@ const SigninForm = () => {
               backgroundColor: "#FFC107",
               color: "#141E27",
               padding: 1,
-              fontWeight: "600"
+              fontWeight: "600",
             }}
           ></Typography>
         </Typography>
         <br />
-        <Typography variant="h4"  sx={{fontWeight: "600"}} gutterBottom>
+        <Typography variant="h4" sx={{ fontWeight: "600" }} gutterBottom>
           {" "}
           your job applications!{" "}
         </Typography>
@@ -146,13 +159,7 @@ const SigninForm = () => {
           error={emailError}
         />
 
-        <TextField
-          onChange={(e) => setPassword(e.target.value)}
-          id="password"
-          type="password"
-          label="Password"
-          variant="outlined"
-          required
+        <FormControl
           sx={{
             width: {
               xs: "100%",
@@ -160,8 +167,35 @@ const SigninForm = () => {
               md: "70%",
             },
           }}
+          variant="outlined"
+          required
           error={passwordError}
-        />
+        >
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            id="password"
+            onChange={(e) => setPassword(e.target.value)}
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? "hide the password" : "display the password"
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
 
         {errorMessage && (
           <Typography
@@ -175,7 +209,12 @@ const SigninForm = () => {
           </Typography>
         )}
 
-        <Button type="submit" variant="contained" size="large" sx={{backgroundColor: "#141E27"}}>
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          sx={{ backgroundColor: "#141E27" }}
+        >
           Sign in
         </Button>
 

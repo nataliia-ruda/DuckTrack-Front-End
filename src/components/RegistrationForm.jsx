@@ -11,7 +11,12 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
   const [formFields, setFormFields] = useState({
@@ -52,7 +57,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
         onFormCleaned();
       }
     }
-  }, [cleanForm]);
+  }, [cleanForm, onFormCleaned]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -172,6 +177,18 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
     } else {
       setEmailError(true);
     }
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -431,44 +448,57 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
       </Box>
 
       {/* Password */}
-      <Box
+      <FormControl
+        size="small"
         sx={{
-          position: "relative",
           width: {
             xs: "90%",
             sm: "85%",
             md: "85%",
             lg: "85%",
           },
+          backgroundColor: "#1F2A38",
+          input: { color: "#ffffff" },
+          label: { color: "#cccccc" },
+          fieldset: { borderColor: "#444" },
+          "&:hover fieldset": { borderColor: "#888" },
+          "&.Mui-focused fieldset": { borderColor: "#ffffff" },
         }}
+        variant="outlined"
+        required
+        error={passwordError}
       >
-        <TextField
+        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <OutlinedInput
+          id="password"
+          name="password"
           value={formFields.password}
           onChange={handleChange}
           onBlur={handleComparePassword}
-          name="password"
-          id="password"
+          type={showPassword ? "text" : "password"}
+          endAdornment={
+            <InputAdornment position="end" sx={{ color: "#cccccc" }}>
+              <IconButton
+                sx={{ color: "#cccccc" }}
+                aria-label={
+                  showPassword ? "hide the password" : "display the password"
+                }
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                onMouseUp={handleMouseUpPassword}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
           label="Password"
-          variant="outlined"
-          required
-          size="small"
-          sx={{
-            width: "100%",
-            backgroundColor: "#1F2A38",
-            input: { color: "#ffffff" },
-            label: { color: "#cccccc" },
-            fieldset: { borderColor: "#444" },
-            "&:hover fieldset": { borderColor: "#888" },
-            "&.Mui-focused fieldset": { borderColor: "#ffffff" },
-          }}
-          error={passwordError}
         />
-      </Box>
+      </FormControl>
 
       {/* Confirm Password */}
       <Box
         sx={{
-          position: "relative",
           width: {
             xs: "90%",
             sm: "85%",
@@ -477,15 +507,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
           },
         }}
       >
-        <TextField
-          value={formFields.confirmPassword}
-          onChange={handleChange}
-          onBlur={handleComparePassword}
-          name="confirmPassword"
-          id="confirmPassword"
-          label="Confirm password"
-          variant="outlined"
-          required
+        <FormControl
           size="small"
           sx={{
             width: "100%",
@@ -496,8 +518,40 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
             "&:hover fieldset": { borderColor: "#888" },
             "&.Mui-focused fieldset": { borderColor: "#ffffff" },
           }}
+          variant="outlined"
+          required
           error={passwordError}
-        />
+        >
+          <InputLabel htmlFor="outlined-adornment-password">
+            Confirm Password:
+          </InputLabel>
+          <OutlinedInput
+            name="confirmPassword"
+            id="confirmPassword"
+            value={formFields.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleComparePassword}
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end" sx={{ color: "#cccccc" }}>
+                <IconButton
+                  sx={{ color: "#cccccc" }}
+                  aria-label={
+                    showPassword ? "hide the password" : "display the password"
+                  }
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  onMouseUp={handleMouseUpPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Confirm password"
+          />
+        </FormControl>
+
         {errors.comparePasswordError && (
           <Typography
             variant="p"
