@@ -283,7 +283,8 @@ export default function MyApplicationsTable({ searchInput }) {
       setApplications([]);
     }
   };
-
+  
+ 
   useEffect(() => {
     const timeoutId = setTimeout(fetchApplications, 200);
     return () => clearTimeout(timeoutId);
