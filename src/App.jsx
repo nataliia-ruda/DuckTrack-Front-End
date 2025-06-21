@@ -13,6 +13,7 @@ import EditProfilePage from "./components/EditProfilePage.jsx";
 import StatisctisPage from "./components/StatisctisPage.jsx";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import VerifyEmailPage from "./components/VerifyEmailPage.jsx";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -35,6 +36,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="signup" element={<Registration />} />
+      <Route path="/verify-email" element={<VerifyEmailPage/>}/>
 
       <Route
         path="home"

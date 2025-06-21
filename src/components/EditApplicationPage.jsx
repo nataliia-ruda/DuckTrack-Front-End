@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import SideNavigation, { DrawerHeader }  from './SideNavigation.jsx'
 import Box from '@mui/material/Box';
 import AuthContext from '../core/AuthContext';
@@ -6,8 +6,6 @@ import EditApplicationTable from './EditApplicationTable.jsx';
 import Typography from "@mui/material/Typography";
 
 const EditApplicationPage = () => {
-
-    const { user,logout } = useContext(AuthContext);
 
   return (
     <Box sx={{ display: 'flex' }} > 
