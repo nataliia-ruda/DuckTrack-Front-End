@@ -179,7 +179,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
     }
   };
 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
