@@ -47,34 +47,39 @@ const SigninForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
+ 
   async function handleLogin(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    try {
-      let response = await fetch(`http://localhost:3000/login`, {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+  try {
+    let response = await fetch(`http://localhost:3000/login`, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
 
-      let result = await response.json();
+    let result = await response.json();
 
-      if (response.ok) {
-        login(result.user);
-        navigate("/home");
-      } else {
-        setErrorMessage(result.message || "Something went wrong.");
-        setEmailError(true);
-        setPasswordError(true);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setErrorMessage("Something went wrong. Try again later.");
+    if (response.ok) {
+      login(result.user);
+      navigate("/home");
+    } else if (response.status === 403 && result.verified === false) {
+      localStorage.setItem("pendingEmail", result.email);
+      localStorage.setItem("pendingUserId", result.user_id);
+      navigate("/verify-required");
+    } else {
+      setErrorMessage(result.message || "Something went wrong.");
+      setEmailError(true);
+      setPasswordError(true);
     }
+  } catch (error) {
+    console.error("Login error:", error);
+    setErrorMessage("Something went wrong. Try again later.");
   }
+}
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

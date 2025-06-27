@@ -14,6 +14,8 @@ import StatisctisPage from "./components/StatisctisPage.jsx";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import VerifyEmailPage from "./components/VerifyEmailPage.jsx";
+import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
+
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -37,6 +39,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="signup" element={<Registration />} />
       <Route path="/verify-email" element={<VerifyEmailPage/>}/>
+      <Route path="/verify-required" element={<VerifyRequiredPage />} />
 
       <Route
         path="home"
