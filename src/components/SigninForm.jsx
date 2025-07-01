@@ -18,10 +18,12 @@ import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Box from "@mui/material/Box";
 
 gsap.registerPlugin(TextPlugin);
 
 const SigninForm = () => {
+
   /* typing animation */
   const words = ["organize", "store", "track"];
   useGSAP(() => {
@@ -47,40 +49,40 @@ const SigninForm = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
- 
   async function handleLogin(event) {
-  event.preventDefault();
+    
+    event.preventDefault();
 
-  try {
-    let response = await fetch(`http://localhost:3000/login`, {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    try {
+      let response = await fetch(`http://localhost:3000/login`, {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-    let result = await response.json();
+      let result = await response.json();
 
-    if (response.ok) {
-      login(result.user);
-      navigate("/home");
-    } else if (response.status === 403 && result.verified === false) {
-      localStorage.setItem("pendingEmail", result.email);
-      localStorage.setItem("pendingUserId", result.user_id);
-      navigate("/verify-required");
-    } else {
-      setErrorMessage(result.message || "Something went wrong.");
-      setEmailError(true);
-      setPasswordError(true);
+      if (response.ok) {
+        login(result.user);
+        navigate("/home");
+      } else if (response.status === 403 && result.verified === false) {
+        localStorage.setItem("pendingEmail", result.email);
+        localStorage.setItem("pendingUserId", result.user_id);
+        navigate("/verify-required");
+      } else {
+        setErrorMessage(result.message || "Something went wrong.");
+        setEmailError(true);
+        setPasswordError(true);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMessage("Something went wrong. Try again later.");
     }
-  } catch (error) {
-    console.error("Login error:", error);
-    setErrorMessage("Something went wrong. Try again later.");
   }
-}
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -101,7 +103,7 @@ const SigninForm = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 2,
+        gap: 1.5,
       }}
     >
       <Grid
@@ -157,8 +159,8 @@ const SigninForm = () => {
           sx={{
             width: {
               xs: "100%",
-              sm: "70%",
-              md: "70%",
+              sm: "80%",
+              md: "80%",
             },
           }}
           error={emailError}
@@ -168,8 +170,8 @@ const SigninForm = () => {
           sx={{
             width: {
               xs: "100%",
-              sm: "70%",
-              md: "70%",
+              sm: "80%",
+              md: "80%",
             },
           }}
           variant="outlined"
@@ -200,6 +202,13 @@ const SigninForm = () => {
             }
             label="Password"
           />
+          <Link
+            component={RouterLink}
+            to="/forgot-password"
+            sx={{ display: "block", textAlign: "end", mt: 2, fontSize: "18px" }}
+          >
+            Forgot password?
+          </Link>
         </FormControl>
 
         {errorMessage && (
@@ -214,21 +223,40 @@ const SigninForm = () => {
           </Typography>
         )}
 
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          sx={{ backgroundColor: "#141E27" }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            gap: 1,
+            width: {
+              xs: "100%",
+              sm: "80%",
+              md: "80%",
+            },
+          }}
         >
-          Sign in
-        </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            sx={{ backgroundColor: "#141E27" }}
+          >
+            Sign in
+          </Button>
 
-        <Typography variant="p" gutterBottom>
-          Don't have an account yet?{"  "}
-          <Link component={RouterLink} to="/signup">
+          <Button
+            onClick={() => {
+              navigate("/signup");
+            }}
+            type="submit"
+            variant="outlined"
+            size="large"
+            color="#141E27"
+          >
             Sign up
-          </Link>
-        </Typography>
+          </Button>
+        </Box>
       </Grid>
     </Grid>
   );

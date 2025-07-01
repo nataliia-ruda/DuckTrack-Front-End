@@ -166,7 +166,8 @@ const LandingPage = () => {
             height: "auto",
             boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
             borderRadius: "10px",
-            padding: 5,
+            py: 10,
+            px: 3,
             backgroundColor: "#fff",
           }}
         >
