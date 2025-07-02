@@ -16,6 +16,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import VerifyEmailPage from "./components/VerifyEmailPage.jsx";
 import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
 import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
+import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
       <Route path="/verify-email" element={<VerifyEmailPage/>}/>
       <Route path="/verify-required" element={<VerifyRequiredPage />} /> 
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       <Route
         path="home"

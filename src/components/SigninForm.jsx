@@ -205,7 +205,7 @@ const SigninForm = () => {
           <Link
             component={RouterLink}
             to="/forgot-password"
-            sx={{ display: "block", textAlign: "end", mt: 2, fontSize: "18px" }}
+            sx={{ display: "block", textAlign: "end", mt: 2, fontSize: "16px" }}
           >
             Forgot password?
           </Link>

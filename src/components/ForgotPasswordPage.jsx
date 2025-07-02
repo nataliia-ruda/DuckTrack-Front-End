@@ -33,6 +33,7 @@ const ForgotPasswordPage = () => {
       .then((res) => res.json())
       .then((data) => {
         setStatus(data.message || "Check your email for reset link.");
+        setEmail(""); 
       })
       .catch(() => {
         setStatus("Something went wrong. Please try again.");
