@@ -14,6 +14,9 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ResetPasswordPage = () => {
   const [params] = useSearchParams();
@@ -221,7 +224,27 @@ const ResetPasswordPage = () => {
           </Typography>
         )}
         {status && (
-          <Typography sx={{ mt: 2, fontSize: "15px" }}>{status}</Typography>
+          <>
+            <Typography sx={{ mt: 2, fontSize: "15px" }}>{status}</Typography>
+
+            {status === "Password has been reset successfully!" && (
+              <Link
+                component={RouterLink}
+                to="/"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  fontSize: "18px",
+                  justifyContent: "center",
+                  mt: 2,
+                }}
+              >
+                <ArrowBackIcon sx={{ width: "18px", height: "18px" }} /> Go back
+                to login
+              </Link>
+            )}
+          </>
         )}
       </Box>
     </Box>
