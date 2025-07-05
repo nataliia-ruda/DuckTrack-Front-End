@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -7,10 +7,14 @@ import RecentApplicationBox from "./RecentApplicationBox";
 import AuthContext from "../core/AuthContext";
 import { DrawerHeader } from "./SideNavigation";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import EventBusyIcon from "@mui/icons-material/EventBusy";
 import { useNavigate } from "react-router-dom";
 import OldApplicationsBox from "./OldApplicationsBox.jsx";
 import Avatar from "@mui/material/Avatar";
+import OverviewBoard from "./OverviewBoard.jsx";
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 
 const Homepage = () => {
   const date = new Date();
@@ -18,7 +22,6 @@ const Homepage = () => {
 
   const [applications, setApplications] = useState([]);
   const [oldApplications, setOldApplications] = useState([]);
-  const [interviewApplications, setInterviewApplications] = useState([]);
 
   const formattedDate = date.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -52,22 +55,18 @@ const Homepage = () => {
           const filteredOldApplications = data.applications.filter(
             (application) => {
               const lastUpdateDate = new Date(application.updated_at);
-              return lastUpdateDate < twoWeeksAgo;
+              return (
+                lastUpdateDate < twoWeeksAgo &&
+                ["applied", "ghosted"].includes(application.status)
+              );
             }
           );
 
           setOldApplications(filteredOldApplications);
-
-          const filteredInterviewApplications = data.applications.filter(
-            (application) => application.status === "interview"
-          );
-
-          setInterviewApplications(filteredInterviewApplications);
         } catch (error) {
           console.error("Error fetching job applications:", error);
           setApplications([]);
           setOldApplications([]);
-          setInterviewApplications([]);
         }
       }
     };
@@ -77,10 +76,6 @@ const Homepage = () => {
 
   const navigate = useNavigate();
   const handleOldApplicationEdit = (applicationId) => {
-    navigate(`/my-applications/${applicationId}`);
-  };
-
-  const handleInterviewApplicationEdit = (applicationId) => {
     navigate(`/my-applications/${applicationId}`);
   };
 
@@ -128,48 +123,54 @@ const Homepage = () => {
 
         <Divider />
 
-        <Box py={3}>
-          <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
-            Your recent applications:
-          </Typography>
-
-          {applications.length > 0 ? (
-            <Box sx={{ display: "flex", gap: 3 }}>
-              {applications.map((application) => (
-                <RecentApplicationBox
-                  key={application.application_id}
-                  application={application}
-                />
-              ))}
-            </Box>
-          ) : (
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: "gray",
-                fontSize: "14px",
-                fontStyle: "italic",
-              }}
-            >
-              No applications yet. Start by registering a new application to get
-              started!
-            </Typography>
-          )}
-        </Box>
+        <OverviewBoard />
 
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "space-between",
             alignItems: "flex-start",
             width: "100%",
-            gap: 5,
+            gap: 4,
+            mt: 3,
           }}
         >
-          <Box sx={{ width: "50%" }}>
-            <Typography variant="h6" sx={{ marginBottom: 2, fontWeight: 600 }}>
-              Applications with no updates in over 2 weeks:
-            </Typography>
+          {/* Recent Applications */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
+              <Typography variant="p" sx={{ fontWeight: 600 }}>
+                Recent Applications:
+              </Typography>
+              <Link
+                component={RouterLink}
+                to="/my-applications"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  fontSize: "16px",
+                  justifyContent: "center",
+                }}
+              >
+                Show All Applications{" "}
+                <ArrowForwardIcon sx={{ width: "16px", height: "16px" }} />
+              </Link>
+            </Box>
 
             <Box
               sx={{
@@ -180,7 +181,62 @@ const Homepage = () => {
                 overflowY: "auto",
                 boxShadow:
                   "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
-                maxHeight: "340px",
+                maxHeight: "420px",
+                padding: 2,
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              {applications.length > 0 ? (
+                applications.map((application) => (
+                  <RecentApplicationBox
+                    key={application.application_id}
+                    application={application}
+                  />
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                     textAlign: "center",
+                    color: "gray",
+                    fontSize: "14px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: 1,
+                    py: 2,
+                  }}
+                >
+                  <CollectionsBookmarkIcon fontSize="small" />
+                  No applications yet. Start by registering a new application.
+                </Typography>
+              )}
+            </Box>
+          </Box>
+
+          {/* Old Applications */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <Typography variant="p" sx={{ marginBottom: 3, fontWeight: 600 }}>
+              Applications with no updates in over 2 weeks:
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                height: "auto",
+                borderRadius: "10px",
+                overflowY: "auto",
+                boxShadow:
+                  "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
+                maxHeight: "420px",
                 padding: 2,
                 backgroundColor: "#f9f9f9",
               }}
@@ -208,78 +264,6 @@ const Homepage = () => {
                 >
                   <WorkOutlineIcon fontSize="small" />
                   No outdated applications.
-                </Typography>
-              )}
-            </Box>
-          </Box>
-
-          <Box sx={{ width: "50%" }}>
-            <Typography
-              variant="h6"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: 2,
-                fontWeight: 600,
-              }}
-            >
-              Upcoming interviews:
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "rgba(20, 20, 20, 0.9)",
-                  color: "#fff",
-                  fontSize: "14px",
-                  borderRadius: "50%",
-                  width: "28px",
-                  height: "28px",
-                  marginLeft: 1,
-                  fontWeight: "bold",
-                }}
-              >
-                {interviewApplications.length}
-              </Box>
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                borderRadius: "10px",
-                overflowY: "auto",
-                boxShadow:
-                  "0px 4px 10px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06)",
-                maxHeight: "340px",
-                padding: 2,
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              {interviewApplications.length > 0 ? (
-                interviewApplications.map((interview) => (
-                  <OldApplicationsBox
-                    key={interview.application_id}
-                    application={interview}
-                    handleOldApplicationEdit={handleInterviewApplicationEdit}
-                  />
-                ))
-              ) : (
-                <Typography
-                  sx={{
-                    textAlign: "center",
-                    color: "gray",
-                    fontSize: "14px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 1,
-                    py: 2,
-                  }}
-                >
-                  <EventBusyIcon fontSize="small" />
-                  No upcoming interviews.
                 </Typography>
               )}
             </Box>

@@ -27,9 +27,9 @@ import DialogBox from "./DialogBox";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Tooltip from "@mui/material/Tooltip";
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
@@ -104,11 +104,17 @@ function Row({ row, fetchApplications }) {
             <CircleIcon
               fontSize="small"
               className={
-                row.status === "waiting for response"
-                  ? "waiting"
+                row.status === "applied"
+                  ? "applied"
+                  : row.status === "interviewing"
+                  ? "interviewing"
+                  : row.status === "offer"
+                  ? "offer"
                   : row.status === "rejected"
                   ? "rejected"
-                  : "interview"
+                  : row.status === "ghosted"
+                  ? "ghosted"
+                  : "withdrawn"
               }
               sx={{ backgroundColor: "inherit" }}
             />
@@ -258,12 +264,10 @@ export default function MyApplicationsTable({ searchInput }) {
   const [applications, setApplications] = useState([]);
   const { user } = useContext(AuthContext);
 
+  const [sortColumn, setSortColumn] = useState("created_at");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [statusFilter, setStatusFilter] = useState("");
 
-  const [sortColumn, setSortColumn] = useState("created_at"); 
-  const [sortOrder, setSortOrder] = useState("desc"); 
-  const [statusFilter, setStatusFilter] = useState(""); 
-
-  
   const fetchApplications = async () => {
     if (!user) return;
 
@@ -283,20 +287,18 @@ export default function MyApplicationsTable({ searchInput }) {
       setApplications([]);
     }
   };
-  
- 
+
   useEffect(() => {
     const timeoutId = setTimeout(fetchApplications, 200);
     return () => clearTimeout(timeoutId);
   }, [user, searchInput, sortColumn, sortOrder, statusFilter]);
 
-  
   const handleSort = (column) => {
-    const newOrder = sortColumn === column && sortOrder === "asc" ? "desc" : "asc";
+    const newOrder =
+      sortColumn === column && sortOrder === "asc" ? "desc" : "asc";
     setSortColumn(column);
     setSortOrder(newOrder);
   };
-
 
   const handleStatusFilter = (event) => {
     setStatusFilter(event.target.value);
@@ -309,46 +311,54 @@ export default function MyApplicationsTable({ searchInput }) {
           <TableRow>
             <TableCell />
 
-           
             <TableCell>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography sx={{ fontWeight: 700 }}>Position</Typography>
-                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("position_name")}>
-                  {sortColumn === "position_name" && sortOrder === "asc" ? 
-                    <ArrowDropUpIcon fontSize="medium" /> : 
+                <IconButton
+                  sx={{ padding: 0.1 }}
+                  onClick={() => handleSort("position_name")}
+                >
+                  {sortColumn === "position_name" && sortOrder === "asc" ? (
+                    <ArrowDropUpIcon fontSize="medium" />
+                  ) : (
                     <ArrowDropDownIcon fontSize="medium" />
-                  }
+                  )}
                 </IconButton>
               </Box>
             </TableCell>
 
-           
             <TableCell>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography sx={{ fontWeight: 700 }}>Employer</Typography>
-                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("employer_name")}>
-                  {sortColumn === "employer_name" && sortOrder === "asc" ? 
-                    <ArrowDropUpIcon fontSize="medium" /> : 
+                <IconButton
+                  sx={{ padding: 0.1 }}
+                  onClick={() => handleSort("employer_name")}
+                >
+                  {sortColumn === "employer_name" && sortOrder === "asc" ? (
+                    <ArrowDropUpIcon fontSize="medium" />
+                  ) : (
                     <ArrowDropDownIcon fontSize="medium" />
-                  }
+                  )}
                 </IconButton>
               </Box>
             </TableCell>
 
-          
             <TableCell sx={{ whiteSpace: "nowrap" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography sx={{ fontWeight: 700 }}>Created at</Typography>
-                <IconButton sx={{ padding: 0.1 }} onClick={() => handleSort("created_at")}>
-                  {sortColumn === "created_at" && sortOrder === "asc" ? 
-                    <ArrowDropUpIcon fontSize="medium" /> : 
+                <IconButton
+                  sx={{ padding: 0.1 }}
+                  onClick={() => handleSort("created_at")}
+                >
+                  {sortColumn === "created_at" && sortOrder === "asc" ? (
+                    <ArrowDropUpIcon fontSize="medium" />
+                  ) : (
                     <ArrowDropDownIcon fontSize="medium" />
-                  }
+                  )}
                 </IconButton>
               </Box>
             </TableCell>
 
-   
             <TableCell>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography sx={{ fontWeight: 700 }}>Status</Typography>
@@ -359,9 +369,12 @@ export default function MyApplicationsTable({ searchInput }) {
                   sx={{ minWidth: 120, height: 32 }}
                 >
                   <MenuItem value="">All</MenuItem>
-                  <MenuItem value="waiting for response">Waiting for response</MenuItem>
+                  <MenuItem value="applied">Applied</MenuItem>
+                  <MenuItem value="interviewing">Interviewing</MenuItem>
+                  <MenuItem value="offer">Offer</MenuItem>
                   <MenuItem value="rejected">Rejected</MenuItem>
-                  <MenuItem value="interview">Interview</MenuItem>
+                  <MenuItem value="ghosted">Ghosted</MenuItem>
+                  <MenuItem value="withdrawn">Withdrawn</MenuItem>
                 </Select>
               </Box>
             </TableCell>
@@ -370,16 +383,19 @@ export default function MyApplicationsTable({ searchInput }) {
           </TableRow>
         </TableHead>
 
-       
         <TableBody>
           {applications.length > 0 ? (
             applications.map((row) => (
-              <Row key={row.application_id} row={row} fetchApplications={fetchApplications} />
+              <Row
+                key={row.application_id}
+                row={row}
+                fetchApplications={fetchApplications}
+              />
             ))
           ) : (
             <TableRow>
               <TableCell colSpan={6} align="center">
-                No applications found.
+                No applications found. 
               </TableCell>
             </TableRow>
           )}

@@ -15,9 +15,9 @@ const EditApplicationPage = () => {
      <Box component="main"  sx={{ flexGrow: 1, p: 3 }} >
      <DrawerHeader />
 
-      <Typography variant= "h5" sx={{ marginBottom: 2 }}>
+   {/*    <Typography variant= "h5" sx={{ marginBottom: 2 }}>
         Edit Application
-      </Typography>
+      </Typography> */}
        
        <EditApplicationTable></EditApplicationTable>
     </Box>

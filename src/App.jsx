@@ -91,7 +91,7 @@ function App() {
       />
 
       <Route
-        path="statistics"
+        path="/statitics"
         element={
           <ProtectedRoute user={user}>
             <StatisctisPage />

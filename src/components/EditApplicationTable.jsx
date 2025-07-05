@@ -32,7 +32,7 @@ const EditApplicationTable = () => {
     job_description: "",
     job_link: "",
     work_mode: "",
-    status: "waiting for response",
+    status: "applied",
     notes: ""
   });
 
@@ -98,7 +98,6 @@ const EditApplicationTable = () => {
       if (!response.ok) throw new Error("Failed to update the application!");
 
       const result = await response.json();
-      setFormData(result); 
       setOpenDialog(true); 
       setDialogMessage(result.message); 
       setDialogTitle(<CheckCircleOutlineOutlinedIcon></CheckCircleOutlineOutlinedIcon>)
@@ -112,7 +111,7 @@ const EditApplicationTable = () => {
 
   return (
     <Box sx={{ padding: 3, maxWidth: 700, margin: "auto" }}>
-      <Typography variant="h5" gutterBottom>
+      <Typography variant="h5" mb={3} textAlign={"center"}>
         Edit Application
       </Typography>
       <Box
@@ -127,6 +126,7 @@ const EditApplicationTable = () => {
         onSubmit={handleSaveChanges} 
       >
         <TextField
+          variant="outlined"
           label="Job title:"
           name="position_name"
           value={formData.position_name}
@@ -222,24 +222,42 @@ const EditApplicationTable = () => {
             onChange={handleStatusChange}
             label="Application status"
           >
-            <MenuItem value="waiting for response">
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
-                <span>Waiting for response</span>
-              </Box>
-            </MenuItem>
-            <MenuItem value="rejected">
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <CircleIcon fontSize="small" sx={{ color: "#E53935" }} />
-                <span>Rejected</span>
-              </Box>
-            </MenuItem>
-            <MenuItem value="interview">
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <CircleIcon fontSize="small" sx={{ color: "#43A047" }} />
-                <span>Interview</span>
-              </Box>
-            </MenuItem>
+           <MenuItem value="applied">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
+                           <span>Applied</span>
+                         </Box>
+                       </MenuItem>
+                       <MenuItem value="interviewing">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
+                           <span>Interviewing</span>
+                         </Box>
+                       </MenuItem> 
+                       <MenuItem value="offer">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
+                           <span>Offer</span>
+                         </Box>
+                       </MenuItem>
+                       <MenuItem value="rejected">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#E53935" }} />
+                           <span>Rejected</span>
+                         </Box>
+                       </MenuItem>
+                       <MenuItem value="ghosted">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
+                           <span>Ghosted</span>
+                         </Box>
+                       </MenuItem> 
+                        <MenuItem value="withdrawn">
+                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                           <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
+                           <span>Withdrawn</span>
+                         </Box>
+                       </MenuItem>
           </Select>
         </FormControl>
 

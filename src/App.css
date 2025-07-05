@@ -1,4 +1,4 @@
-.waiting {
+.applied {
  background-color: #FFC107; 
  color: #FFC107; 
 }
@@ -6,12 +6,22 @@
   background-color: #E53935;
   color: #E53935;
 }
-.interview {
-  background-color: #43A047;
-  color: #43A047; 
+.interviewing {
+  background-color: #C8E6C9;
+  color: #C8E6C9; 
 }
-.noupdates {
+.offer{
+  background-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.ghosted{
   background-color: #1E88E5;
+  color:  #1E88E5; 
+}
+.withdrawn {
+  background-color: #9E9E9E;
+  color:  #9E9E9E; 
 }
 *{
   margin: 0;

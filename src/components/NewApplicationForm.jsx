@@ -18,7 +18,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
 
-  const [status, setStatus] = useState("waiting for response");
+  const [status, setStatus] = useState("applied");
   const [source, setSource] = useState("");
   const [customSource, setCustomSource] = useState("");
   const [employmentType, setEmploymentType] = useState("");
@@ -36,7 +36,7 @@ const NewApplicationForm = () => {
     source: "",
     job_description: "",
     job_link: "",
-    status: "waiting for response",
+    status: "applied",
     notes: ""
   });
 
@@ -133,7 +133,7 @@ const NewApplicationForm = () => {
           job_description: "",
           job_link: "",
           work_mode: "",
-          status: "waiting for response",
+          status: "applied",
           notes: ""
         });
       } else {
@@ -310,10 +310,22 @@ const NewApplicationForm = () => {
             label="Application status"
             onChange={handleStatusChange}
           >
-            <MenuItem value="waiting for response">
+            <MenuItem value="applied">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
-                <span>Waiting for response</span>
+                <span>Applied</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="interviewing">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
+                <span>Interviewing</span>
+              </Box>
+            </MenuItem> 
+            <MenuItem value="offer">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
+                <span>Offer</span>
               </Box>
             </MenuItem>
             <MenuItem value="rejected">
@@ -322,12 +334,19 @@ const NewApplicationForm = () => {
                 <span>Rejected</span>
               </Box>
             </MenuItem>
-            <MenuItem value="interview">
+            <MenuItem value="ghosted">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <CircleIcon fontSize="small" sx={{ color: "#43A047" }} />
-                <span>Interview</span>
+                <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
+                <span>Ghosted</span>
+              </Box>
+            </MenuItem> 
+             <MenuItem value="withdrawn">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
+                <span>Withdrawn</span>
               </Box>
             </MenuItem>
+            
           </Select>
         </FormControl>
          

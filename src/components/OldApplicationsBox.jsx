@@ -12,9 +12,9 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
         justifyContent: "center",
         position: "relative",
         width: "100%", 
-        minHeight: "160px", 
+        minHeight: "110px", 
         mb: 2,
-        padding: 2,
+        padding: 1,
         boxShadow: 3,
       }}
       key={application.application_id}
@@ -33,7 +33,7 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "stretch", 
-          padding: 2,
+          padding: 1,
           gap: 2,
         }}
       >
@@ -43,31 +43,31 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: 2,
+            gap: 1.2,
           }}
         >
          
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <WorkIcon sx={{ fontSize: 20 }} />
-            <Typography variant="body1" sx={{ fontSize: 16, fontWeight: 700 }}>
+            <WorkIcon sx={{ fontSize: 14 }} />
+            <Typography variant="body1" sx={{ fontSize: 13, fontWeight: 700 }}>
               {application.position_name}
             </Typography>
           </Box>
   
           
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <ApartmentIcon sx={{ fontSize: 20 }} />
-            <Typography variant="body2" sx={{ fontSize: 14 }}>
+            <ApartmentIcon sx={{ fontSize: 14}} />
+            <Typography variant="body2" sx={{ fontSize: 13 }}>
               {application.employer_name}
             </Typography>
           </Box>
   
           
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: 14, fontWeight: 600 }}>
+            <Typography variant="body2" sx={{ fontSize: 12, fontWeight: 600 }}>
               Last update:
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: 14 }}>
+            <Typography variant="body2" sx={{ fontSize: 12 }}>
               {new Date(application.updated_at).toLocaleDateString()}
             </Typography>
           </Box>
@@ -83,7 +83,7 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
             }}
             onClick={() => handleOldApplicationEdit(application.application_id)}
           >
-            <ModeEditIcon sx={{ fontSize: 18 }} />
+            <ModeEditIcon sx={{ fontSize: 16 }} />
           </IconButton>
         </CardActions>
       </Box>

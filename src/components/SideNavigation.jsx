@@ -16,10 +16,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
-import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +25,8 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AuthContext from "../core/AuthContext";
 import Avatar from "@mui/material/Avatar";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import { Button } from "@mui/material";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 
 const drawerWidth = 240;
 
@@ -121,7 +121,7 @@ const SideNavigation = () => {
   };
 
   const icons = {
-    0: <HomeIcon />,
+    0: <DashboardRoundedIcon />,
     1: <StorageOutlinedIcon />,
     2: <BarChartOutlinedIcon />,
     3: <LogoutOutlinedIcon />,
@@ -141,9 +141,9 @@ const SideNavigation = () => {
 
   const handleNavigation = (text) => {
     const routes = {
-      Home: "/home",
+      Overview: "/home",
       "My Applications": "/my-applications",
-      Statistics: "/statistics",
+      Analytics: "/statitics",
     };
 
     if (text === "Log out") {
@@ -188,36 +188,18 @@ const SideNavigation = () => {
             DuckTrack - Job Applications Tracker
           </Typography>
 
-          <Box
-            sx={{
-              marginLeft: "auto",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Button
+            onClick={handleAddApplication}
+            sx={{ color: "black", backgroundColor: "#FFC107" }}
           >
-            <Fab
-              color="primary"
-              aria-label="add"
-              size="small"
-              onClick={handleAddApplication}
-              sx={{
-                backgroundColor: "#616161",
-                color: "#ffffff",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.5)",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  backgroundColor: "#757575",
-                  boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.6)",
-                },
-              }}
-            >
-              <AddIcon />
-            </Fab>
-            <Typography variant="p" sx={{ fontSize: "13px" }}>
+            <AddIcon sx={{ mx: 0.5, fontSize: "14px" }} />
+
+            <Typography variant="p" sx={{ fontSize: "12px", fontWeight: 500 }}>
               Add New Application
             </Typography>
-          </Box>
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -288,7 +270,12 @@ const SideNavigation = () => {
                 <ListItemText>
                   &nbsp;{user.user_first_name} {user.user_last_name}{" "}
                   <BorderColorIcon
-                    sx={{ height: 12, width: 12, marginLeft: 0.3, marginBottom: 0.4}}
+                    sx={{
+                      height: 12,
+                      width: 12,
+                      marginLeft: 0.3,
+                      marginBottom: 0.4,
+                    }}
                     onClick={handleEditProfileClick}
                   />
                 </ListItemText>
@@ -300,7 +287,7 @@ const SideNavigation = () => {
         <Divider sx={{ color: "white" }} />
 
         <List>
-          {["Home", "My Applications", "Statistics", "Log out"].map(
+          {["Overview", "My Applications", "Analytics", "Log out"].map(
             (text, index) => (
               <ListItem
                 key={text}
