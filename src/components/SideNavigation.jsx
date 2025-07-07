@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
@@ -184,9 +183,12 @@ const SideNavigation = () => {
             <MenuIcon />
           </IconButton>
 
-          <Typography variant="h6" noWrap component="div">
-            DuckTrack - Job Applications Tracker
-          </Typography>
+          <Box
+            component="img"
+            src="/duck_track_white.png"
+            alt=""
+            sx={{ height: "30px" }}
+          />
 
           <Box sx={{ flexGrow: 1 }} />
 

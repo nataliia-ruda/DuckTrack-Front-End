@@ -185,14 +185,14 @@ const EditApplicationTable = () => {
             onChange={handleSourceChange}
             label="Source"
           >
-            <MenuItem value="stepstone">StepStone</MenuItem>
-            <MenuItem value="indeed">Indeed</MenuItem>
-            <MenuItem value="linkedin">LinkedIn</MenuItem>
-            <MenuItem value="xing">Xing</MenuItem>
-            <MenuItem value="arbeitsagentur">Arbeitsagentur</MenuItem>
-            <MenuItem value="monster">Monster</MenuItem>
-            <MenuItem value="join">Corporate website</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
+            <MenuItem value="StepStone">StepStone</MenuItem>
+            <MenuItem value="Indeed">Indeed</MenuItem>
+            <MenuItem value="LinkedIn">LinkedIn</MenuItem>
+            <MenuItem value="Xing">Xing</MenuItem>
+            <MenuItem value="Arbeitsagentur">Arbeitsagentur</MenuItem>
+            <MenuItem value="Monster">Monster</MenuItem>
+            <MenuItem value="Corporate website">Corporate website</MenuItem>
+            <MenuItem value="Other">Other</MenuItem>
           </Select>
         </FormControl>
 

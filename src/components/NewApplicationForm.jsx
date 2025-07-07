@@ -63,7 +63,7 @@ const NewApplicationForm = () => {
       source: selectedValue,
     });
 
-    if (selectedValue !== "other") {
+    if (selectedValue !== "Other") {
       setCustomSource("");
     }
   };
@@ -76,7 +76,7 @@ const NewApplicationForm = () => {
       employment_type: selectedValue,
     });
 
-    if (selectedValue !== "other") {
+    if (selectedValue !== "Other") {
       setCustomEmploymentType("");
     }
   };
@@ -95,8 +95,8 @@ const NewApplicationForm = () => {
       ...formData,
       user_id: user.user_id,
       employment_type:
-        employmentType === "other" ? customEmploymentType : employmentType,
-      source: source === "other" ? customSource : source,
+        employmentType === "Other" ? customEmploymentType : employmentType,
+      source: source === "Other" ? customSource : source,
     };
 
     if (
@@ -202,15 +202,15 @@ const NewApplicationForm = () => {
             onChange={handleEmploymentTypeChange}
             label="Employment type"
           >
-            <MenuItem value="full-time">Full-time</MenuItem>
-            <MenuItem value="part-time">Part-time</MenuItem>
-            <MenuItem value="minijob">Minijob</MenuItem>
-            <MenuItem value="internship">Internship</MenuItem>
-            <MenuItem value="temporary">Temporary</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
+            <MenuItem value="Full-time">Full-time</MenuItem>
+            <MenuItem value="Part-time">Part-time</MenuItem>
+            <MenuItem value="Minijob">Minijob</MenuItem>
+            <MenuItem value="Internship">Internship</MenuItem>
+            <MenuItem value="Temporary">Temporary</MenuItem>
+            <MenuItem value="Other">Other</MenuItem>
           </Select>
 
-          {employmentType === "other" && (
+          {employmentType === "Other" && (
             <TextField
               fullWidth
               margin="normal"
@@ -263,17 +263,17 @@ const NewApplicationForm = () => {
             onChange={handleSourceChange}
             label="Source"
           >
-            <MenuItem value="stepstone">StepStone</MenuItem>
-            <MenuItem value="indeed">Indeed</MenuItem>
-            <MenuItem value="linkedin">LinkedIn</MenuItem>
-            <MenuItem value="xing">Xing</MenuItem>
-            <MenuItem value="arbeitsagentur">Arbeitsagentur</MenuItem>
-            <MenuItem value="monster">Monster</MenuItem>
-            <MenuItem value="join">Corporate website</MenuItem>
-            <MenuItem value="other">Other</MenuItem>
+            <MenuItem value="StepStone">StepStone</MenuItem>
+            <MenuItem value="Indeed">Indeed</MenuItem>
+            <MenuItem value="LinkedIn">LinkedIn</MenuItem>
+            <MenuItem value="Xing">Xing</MenuItem>
+            <MenuItem value="Arbeitsagentur">Arbeitsagentur</MenuItem>
+            <MenuItem value="Monster">Monster</MenuItem>
+            <MenuItem value="Corporate website">Corporate website</MenuItem>
+            <MenuItem value="Other">Other</MenuItem>
           </Select>
 
-          {source === "other" && (
+          {source === "Other" && (
             <TextField
               fullWidth
               margin="normal"
