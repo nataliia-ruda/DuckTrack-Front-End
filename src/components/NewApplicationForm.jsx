@@ -18,12 +18,8 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
 
-  const [status, setStatus] = useState("applied");
-  const [source, setSource] = useState("");
   const [customSource, setCustomSource] = useState("");
-  const [employmentType, setEmploymentType] = useState("");
   const [customEmploymentType, setCustomEmploymentType] = useState("");
-
   const [dialogMessage, setDialogMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -36,6 +32,7 @@ const NewApplicationForm = () => {
     source: "",
     job_description: "",
     job_link: "",
+    work_mode: "",
     status: "applied",
     notes: ""
   });
@@ -47,66 +44,21 @@ const NewApplicationForm = () => {
     });
   };
 
-  const handleStatusChange = (event) => {
-    setStatus(event.target.value);
-    setFormData({
-      ...formData,
-      status: event.target.value,
-    });
-  };
-
-  const handleSourceChange = (event) => {
-    const selectedValue = event.target.value;
-    setSource(selectedValue);
-    setFormData({
-      ...formData,
-      source: selectedValue,
-    });
-
-    if (selectedValue !== "Other") {
-      setCustomSource("");
-    }
-  };
-
-  const handleEmploymentTypeChange = (event) => {
-    const selectedValue = event.target.value;
-    setEmploymentType(selectedValue);
-    setFormData({
-      ...formData,
-      employment_type: selectedValue,
-    });
-
-    if (selectedValue !== "Other") {
-      setCustomEmploymentType("");
-    }
-  };
-
-  const handleWorkModeChange = (event) => {
-    setFormData({
-      ...formData,
-      work_mode: event.target.value,
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const applicationData = {
       ...formData,
       user_id: user.user_id,
-      employment_type:
-        employmentType === "Other" ? customEmploymentType : employmentType,
-      source: source === "Other" ? customSource : source,
+      employment_type: formData.employment_type === "Other" ? customEmploymentType : formData.employment_type,
+      source: formData.source === "Other" ? customSource : formData.source,
     };
 
-    if (
-      !applicationData.position_name ||
-      !applicationData.employer_name ||
-      !applicationData.application_date
-    ) {
-      setOpenDialog(true)
+    if (!applicationData.position_name || !applicationData.employer_name || !applicationData.application_date) {
+      setOpenDialog(true);
       setDialogMessage("Please fill in all required fields.");
-      setDialogTitle(<PriorityHighIcon/>); 
+      setDialogTitle(<PriorityHighIcon />);
+      return;
     }
 
     try {
@@ -117,13 +69,13 @@ const NewApplicationForm = () => {
         },
         body: JSON.stringify(applicationData),
       });
-        
-      const result = await response.json(); 
+
+      const result = await response.json();
 
       if (response.ok) {
-        setOpenDialog(true); 
-        setDialogMessage(result.message); 
-        setDialogTitle(<CheckCircleOutlineOutlinedIcon/>);
+        setOpenDialog(true);
+        setDialogMessage(result.message);
+        setDialogTitle(<CheckCircleOutlineOutlinedIcon />);
         setFormData({
           position_name: "",
           employer_name: "",
@@ -136,15 +88,17 @@ const NewApplicationForm = () => {
           status: "applied",
           notes: ""
         });
+        setCustomSource("");
+        setCustomEmploymentType("");
       } else {
-        setOpenDialog(true); 
+        setOpenDialog(true);
         setDialogMessage("Failed to submit application. Please try again.");
-        setDialogTitle(<PriorityHighIcon/>);
+        setDialogTitle(<PriorityHighIcon />);
       }
     } catch (error) {
-      setOpenDialog(true); 
+      setOpenDialog(true);
       setDialogMessage("Error submitting application. Please try again.");
-      setDialogTitle(<PriorityHighIcon/>);
+      setDialogTitle(<PriorityHighIcon />);
       console.error("Error submitting application:", error);
     }
   };
@@ -157,13 +111,7 @@ const NewApplicationForm = () => {
       <Box
         component="form"
         onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: 2,
-          width: "100%",
-        }}
+        sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
       >
         <TextField
           label="Job title:"
@@ -189,17 +137,17 @@ const NewApplicationForm = () => {
           onChange={handleChange}
           fullWidth
           required
-          InputLabelProps={{
-            shrink: true,
-          }}
+          InputLabelProps={{ shrink: true }}
         />
 
         <FormControl fullWidth>
           <InputLabel id="employment-type-label">Employment type:</InputLabel>
           <Select
             labelId="employment-type-label"
-            value={employmentType}
-            onChange={handleEmploymentTypeChange}
+            value={formData.employment_type}
+            onChange={(e) =>
+              setFormData({ ...formData, employment_type: e.target.value })
+            }
             label="Employment type"
           >
             <MenuItem value="Full-time">Full-time</MenuItem>
@@ -210,7 +158,7 @@ const NewApplicationForm = () => {
             <MenuItem value="Other">Other</MenuItem>
           </Select>
 
-          {employmentType === "Other" && (
+          {formData.employment_type === "Other" && (
             <TextField
               fullWidth
               margin="normal"
@@ -221,37 +169,18 @@ const NewApplicationForm = () => {
           )}
         </FormControl>
 
-        <FormControl
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
+        <FormControl sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }}>
           <FormLabel id="work-mode-label">Work mode:</FormLabel>
           <RadioGroup
             row
             aria-labelledby="work-mode-label"
             name="work_mode"
             value={formData.work_mode}
-            onChange={handleWorkModeChange}
+            onChange={handleChange}
           >
-            <FormControlLabel
-              value="On-site"
-              control={<Radio />}
-              label="On-site"
-            />
-            <FormControlLabel
-              value="Hybrid"
-              control={<Radio />}
-              label="Hybrid"
-            />
-            <FormControlLabel
-              value="Remote"
-              control={<Radio />}
-              label="Remote"
-            />
+            <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
+            <FormControlLabel value="Hybrid" control={<Radio />} label="Hybrid" />
+            <FormControlLabel value="Remote" control={<Radio />} label="Remote" />
           </RadioGroup>
         </FormControl>
 
@@ -259,8 +188,10 @@ const NewApplicationForm = () => {
           <InputLabel id="job-search-source-label">Source:</InputLabel>
           <Select
             labelId="job-search-source-label"
-            value={source}
-            onChange={handleSourceChange}
+            value={formData.source}
+            onChange={(e) =>
+              setFormData({ ...formData, source: e.target.value })
+            }
             label="Source"
           >
             <MenuItem value="StepStone">StepStone</MenuItem>
@@ -273,7 +204,7 @@ const NewApplicationForm = () => {
             <MenuItem value="Other">Other</MenuItem>
           </Select>
 
-          {source === "Other" && (
+          {formData.source === "Other" && (
             <TextField
               fullWidth
               margin="normal"
@@ -306,9 +237,11 @@ const NewApplicationForm = () => {
           <InputLabel id="status-select-label">Application status:</InputLabel>
           <Select
             labelId="status-select-label"
-            value={status}
+            value={formData.status}
             label="Application status"
-            onChange={handleStatusChange}
+            onChange={(e) =>
+              setFormData({ ...formData, status: e.target.value })
+            }
           >
             <MenuItem value="applied">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -321,7 +254,7 @@ const NewApplicationForm = () => {
                 <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
                 <span>Interviewing</span>
               </Box>
-            </MenuItem> 
+            </MenuItem>
             <MenuItem value="offer">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
@@ -339,17 +272,16 @@ const NewApplicationForm = () => {
                 <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
                 <span>Ghosted</span>
               </Box>
-            </MenuItem> 
-             <MenuItem value="withdrawn">
+            </MenuItem>
+            <MenuItem value="withdrawn">
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
                 <span>Withdrawn</span>
               </Box>
             </MenuItem>
-            
           </Select>
         </FormControl>
-         
+
         <TextField
           label="Notes:"
           name="notes"
@@ -363,7 +295,7 @@ const NewApplicationForm = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={{ mt: 2, backgroundColor:"rgba(20, 20, 20, 0.9)" }}
+          sx={{ mt: 2, backgroundColor: "rgba(20, 20, 20, 0.9)" }}
         >
           Add new application
         </Button>
@@ -375,13 +307,10 @@ const NewApplicationForm = () => {
         title={dialogTitle}
         message={dialogMessage}
         buttons={[
-    
           { text: "Close", onClick: () => setOpenDialog(false), variant: "filled" },
         ]}
       />
     </Box>
-       
-
   );
 };
 

@@ -18,6 +18,8 @@ import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
 import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 
+import AnimatedLogo from "./components/AnimatedLogo.jsx";
+
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -44,6 +46,7 @@ function App() {
       <Route path="/verify-required" element={<VerifyRequiredPage />} /> 
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/landing" element={<AnimatedLogo/>} />
 
       <Route
         path="home"
