@@ -176,21 +176,22 @@ const AnimatedLogo = () => {
     <Box
       sx={{
         width: "100%",
-        height: "100vh",
+        height: "auto",
         display: "flex",
         justifyContent: "center",
-        backgroundColor: "#141E27",
+        alignItems: "center",
+       /*  backgroundColor: "#F5F8FF", */
       }}
     >
       <Typography
         variant="h1"
         sx={{
           display: "flex",
-          color: "white",
+          color: "#001A42",
           fontWeight: 800,
           justifyContent: "center",
           alignItems: "center",
-          fontSize: 90,
+          fontSize: 70,
         }}
       >
         <span
@@ -202,10 +203,10 @@ const AnimatedLogo = () => {
           }}
         >
           <img
-            src="/d_logo_white.png"
+            src="/d_logo.png"
             alt="Logo"
             style={{
-              height: "1em",
+              height: "0.85em",
               verticalAlign: "baseline",
             }}
           />

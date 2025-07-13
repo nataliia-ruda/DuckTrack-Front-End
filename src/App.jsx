@@ -17,7 +17,7 @@ import VerifyEmailPage from "./components/VerifyEmailPage.jsx";
 import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
 import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
-
+import LandingPageFull from "./components/LandingPageFull.jsx";
 import AnimatedLogo from "./components/AnimatedLogo.jsx";
 
 
@@ -46,7 +46,7 @@ function App() {
       <Route path="/verify-required" element={<VerifyRequiredPage />} /> 
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/landing" element={<AnimatedLogo/>} />
+      <Route path="/landing" element={<LandingPageFull/>} />
 
       <Route
         path="home"
