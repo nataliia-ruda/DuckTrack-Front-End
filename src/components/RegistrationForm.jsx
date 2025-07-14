@@ -583,7 +583,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
       {/* Login Link */}
       <Typography variant="p" sx={{ color: "#ffffff" }} gutterBottom>
         Already have an account?{" "}
-        <Link component={RouterLink} to="/" sx={{ color: "#66B2FF" }}>
+        <Link component={RouterLink} to="/signin" sx={{ color: "#66B2FF" }}>
           Sign in
         </Link>
       </Typography>

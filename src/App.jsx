@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import LandingPage from "./components/LandingPage.jsx";
 import Registration from "./components/Registration.jsx";
 import Homepage from "./components/Homepage.jsx";
 import NewApplicationPage from "./components/NewApplicationPage.jsx";
@@ -18,7 +17,7 @@ import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
 import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 import LandingPageFull from "./components/LandingPageFull.jsx";
-import AnimatedLogo from "./components/AnimatedLogo.jsx";
+import SigninPage from "./components/SigninPage.jsx"
 
 
 function App() {
@@ -40,13 +39,14 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<LandingPageFull/>} />
+      <Route path="/signin" element={<SigninPage />} />
       <Route path="signup" element={<Registration />} />
       <Route path="/verify-email" element={<VerifyEmailPage/>}/>
       <Route path="/verify-required" element={<VerifyRequiredPage />} /> 
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/landing" element={<LandingPageFull/>} />
+      
 
       <Route
         path="home"

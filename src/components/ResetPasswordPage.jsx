@@ -230,7 +230,7 @@ const ResetPasswordPage = () => {
             {status === "Password has been reset successfully!" && (
               <Link
                 component={RouterLink}
-                to="/"
+                to="/signin"
                 sx={{
                   display: "flex",
                   alignItems: "center",

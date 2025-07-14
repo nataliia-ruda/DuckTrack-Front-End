@@ -138,7 +138,7 @@ const ForgotPasswordPage = () => {
 
         <Link
           component={RouterLink}
-          to="/"
+          to="/signin"
           sx={{
             display: "flex",
             alignItems: "center",

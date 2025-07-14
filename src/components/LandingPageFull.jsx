@@ -278,7 +278,7 @@ const LandingPageFull = () => {
             <Button
               onClick={(event) => {
                 event.preventDefault();
-                navigate("/");
+                navigate("/signin");
               }}
               variant="outlined"
               sx={{
