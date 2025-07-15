@@ -100,7 +100,8 @@ function App() {
             <StatisctisPage />
           </ProtectedRoute>
         }
-      />
+      /> 
+
     </Routes>
   );
 }

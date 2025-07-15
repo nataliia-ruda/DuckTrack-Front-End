@@ -14,7 +14,7 @@ import OverviewBoard from "./OverviewBoard.jsx";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import CollectionsBookmarkIcon from "@mui/icons-material/CollectionsBookmark";
 
 const Homepage = () => {
   const date = new Date();
@@ -49,19 +49,22 @@ const Homepage = () => {
 
           setApplications(sortedApplications.slice(0, 5));
 
-          const twoWeeksAgo = new Date();
-          twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+          const threeWeeksAgo = new Date();
+          threeWeeksAgo.setDate(threeWeeksAgo.getDate() - 21);
 
           const filteredOldApplications = data.applications.filter(
             (application) => {
               const lastUpdateDate = new Date(application.updated_at);
-              return (
-                lastUpdateDate < twoWeeksAgo &&
-                ["applied", "ghosted"].includes(application.status)
-              );
+
+              const isOldApplied =
+                application.status.toLowerCase() === "applied" &&
+                lastUpdateDate < threeWeeksAgo;
+
+              const isGhosted = application.status.toLowerCase() === "ghosted";
+
+              return isOldApplied || isGhosted;
             }
           );
-
           setOldApplications(filteredOldApplications);
         } catch (error) {
           console.error("Error fetching job applications:", error);
@@ -196,7 +199,7 @@ const Homepage = () => {
               ) : (
                 <Typography
                   sx={{
-                     textAlign: "center",
+                    textAlign: "center",
                     color: "gray",
                     fontSize: "14px",
                     display: "flex",
@@ -223,7 +226,7 @@ const Homepage = () => {
             }}
           >
             <Typography variant="p" sx={{ marginBottom: 3, fontWeight: 600 }}>
-              Applications with no updates in over 2 weeks:
+              Applications with no updates in over 3 weeks:
             </Typography>
 
             <Box

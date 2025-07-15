@@ -23,11 +23,11 @@ import { useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AuthContext from "../core/AuthContext";
 import Avatar from "@mui/material/Avatar";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { Button } from "@mui/material";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -123,7 +123,8 @@ const SideNavigation = () => {
     0: <DashboardRoundedIcon />,
     1: <StorageOutlinedIcon />,
     2: <BarChartOutlinedIcon />,
-    3: <LogoutOutlinedIcon />,
+    3: <ManageAccountsIcon/>,
+    4: <LogoutOutlinedIcon />,
   };
   const navigate = useNavigate();
 
@@ -143,6 +144,7 @@ const SideNavigation = () => {
       Overview: "/home",
       "My Applications": "/my-applications",
       Analytics: "/statitics",
+      "Profile Settings" : `/update-profile/${user.user_id}`
     };
 
     if (text === "Log out") {
@@ -150,10 +152,6 @@ const SideNavigation = () => {
     } else {
       navigate(routes[text]);
     }
-  };
-
-  const handleEditProfileClick = () => {
-    navigate(`/update-profile/${user.user_id}`);
   };
 
   return (
@@ -231,7 +229,7 @@ const SideNavigation = () => {
         <List>
           {open && (
             <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
-              <ListItemButton
+              <ListItem
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -243,7 +241,6 @@ const SideNavigation = () => {
                   px: 2.5,
                   color: "white",
                 }}
-                onClick={handleEditProfileClick}
               >
                 <ListItemIcon
                   sx={{
@@ -271,17 +268,8 @@ const SideNavigation = () => {
                 </ListItemIcon>
                 <ListItemText>
                   &nbsp;{user.user_first_name} {user.user_last_name}{" "}
-                  <BorderColorIcon
-                    sx={{
-                      height: 12,
-                      width: 12,
-                      marginLeft: 0.3,
-                      marginBottom: 0.4,
-                    }}
-                    onClick={handleEditProfileClick}
-                  />
                 </ListItemText>
-              </ListItemButton>
+              </ListItem>
             </ListItem>
           )}
         </List>
@@ -289,7 +277,7 @@ const SideNavigation = () => {
         <Divider sx={{ color: "white" }} />
 
         <List>
-          {["Overview", "My Applications", "Analytics", "Log out"].map(
+          {["Overview", "My Applications", "Analytics", "Profile Settings", "Log out"].map(
             (text, index) => (
               <ListItem
                 key={text}

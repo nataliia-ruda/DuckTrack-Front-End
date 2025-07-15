@@ -20,10 +20,19 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
       key={application.application_id}
     >
      
-      <Box sx={{ width: 7, borderRadius: "4px 0 0 4px", }}  className={
-          application.status === "interview"
-            ? "interview"
-            : "noupdates"
+      <Box sx={{ width: 7, borderRadius: "4px 0 0 4px", }}  
+       className={
+          application.status === "applied"
+            ? "applied"
+            : application.status === "interviewing"
+            ? "interviewing"
+            : application.status === "offer"
+            ? "offer"
+            : application.status === "rejected"
+            ? "rejected"
+            : application.status === "ghosted"
+            ? "ghosted"
+            : "withdrawn"
         }/>
   
       <Box

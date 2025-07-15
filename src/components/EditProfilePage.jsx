@@ -18,6 +18,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Switch from "@mui/material/Switch";
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -58,6 +61,7 @@ const EditProfilePage = () => {
               email: data.email,
               gender: data.gender,
             }));
+            setChecked(data.auto_ghost_enabled === 1);
           } else {
             console.error("Error fetching user data");
           }
@@ -181,6 +185,7 @@ const EditProfilePage = () => {
           lastName,
           gender,
           user_id: user.user_id,
+          autoGhostEnabled: checked, 
           ...(isChangingPassword && {
             currentPassword,
             newPassword,
@@ -215,6 +220,13 @@ const EditProfilePage = () => {
       alert("Something went wrong.");
     }
   };
+   
+  const [checked, setChecked] = useState(false);
+  
+    const handleSwitchChange = (event) => {
+      setChecked(event.target.checked);
+    };
+
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -254,8 +266,10 @@ const EditProfilePage = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
+              justifyContent: "center",
               gap: 3,
-              width: "70%",
+              width: "60%",
+             /*  border: "2px solid black" */
             }}
           >
             {/* First Name */}
@@ -407,11 +421,26 @@ const EditProfilePage = () => {
               </Typography>
             )}
 
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <label>
+                Automatically change outdated applications status to "Ghosted"
+                <Tooltip title='If enabled, applications in status "Applied" with no updates for 3 weeks will be automatically marked as "Ghosted". You can turn this off anytime.'>
+                  <IconButton size="small" sx={{ marginLeft: "4px" }}>
+                    <HelpOutlineIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </label>
+              <Switch
+                checked={checked}
+                onChange={handleSwitchChange}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+            </Box>
+
             <Button
               type="submit"
               variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, backgroundColor: "#FCC708", color: "black", width: "20%", alignSelf: "center" }}
             >
               Save Changes
             </Button>
