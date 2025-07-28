@@ -26,6 +26,7 @@ import Avatar from "@mui/material/Avatar";
 import { Button } from "@mui/material";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 
 const drawerWidth = 250;
 
@@ -122,9 +123,10 @@ const SideNavigation = () => {
   const icons = {
     0: <DashboardRoundedIcon />,
     1: <StorageOutlinedIcon />,
-    2: <BarChartOutlinedIcon />,
-    3: <ManageAccountsIcon/>,
-    4: <LogoutOutlinedIcon />,
+    2: <PermContactCalendarIcon/>,
+    3: <BarChartOutlinedIcon />,
+    4: <ManageAccountsIcon/>,
+    5: <LogoutOutlinedIcon />,
   };
   const navigate = useNavigate();
 
@@ -143,6 +145,7 @@ const SideNavigation = () => {
     const routes = {
       Overview: "/home",
       "My Applications": "/my-applications",
+      Interviews : "/my-interviews",
       Analytics: "/statitics",
       "Profile Settings" : `/update-profile/${user.user_id}`
     };
@@ -159,12 +162,14 @@ const SideNavigation = () => {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar
+          
           sx={{
             backgroundColor: "rgba(20, 20, 20, 0.9)",
             backdropFilter: "blur(6px)",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             color: "#E0E0E0",
             borderBottom: "2px solid white",
+            width: "100vw", 
           }}
         >
           <IconButton
@@ -185,7 +190,7 @@ const SideNavigation = () => {
             component="img"
             src="/duck_track_white.png"
             alt=""
-            sx={{ height: "30px" }}
+            sx={{ height: "24px" }}
           />
 
           <Box sx={{ flexGrow: 1 }} />
@@ -277,7 +282,7 @@ const SideNavigation = () => {
         <Divider sx={{ color: "white" }} />
 
         <List>
-          {["Overview", "My Applications", "Analytics", "Profile Settings", "Log out"].map(
+          {["Overview", "My Applications", "Interviews", "Analytics", "Profile Settings", "Log out"].map(
             (text, index) => (
               <ListItem
                 key={text}

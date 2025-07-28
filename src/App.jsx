@@ -18,7 +18,7 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 import LandingPageFull from "./components/LandingPageFull.jsx";
 import SigninPage from "./components/SigninPage.jsx"
-
+import InterviewPage from "./components/InterviewPage.jsx";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -98,6 +98,15 @@ function App() {
         element={
           <ProtectedRoute user={user}>
             <StatisctisPage />
+          </ProtectedRoute>
+        }
+      /> 
+
+      <Route
+        path="/my-interviews"
+        element={
+          <ProtectedRoute user={user}>
+            <InterviewPage />
           </ProtectedRoute>
         }
       /> 

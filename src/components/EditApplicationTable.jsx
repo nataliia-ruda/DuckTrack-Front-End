@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import AuthContext from "../core/AuthContext";
@@ -13,9 +13,9 @@ import Select from "@mui/material/Select";
 import CircleIcon from "@mui/icons-material/Circle";
 import DialogBox from "./DialogBox";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import InterviewDetailsDialog from "./InterviewDetailsDialog";
 
 const EditApplicationTable = () => {
-  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -33,24 +33,48 @@ const EditApplicationTable = () => {
     job_link: "",
     work_mode: "",
     status: "applied",
-    notes: ""
+    notes: "",
   });
+
+  const [interviewDialogOpen, setInterviewDialogOpen] = useState(false);
+  const [interviewDetails, setInterviewDetails] = useState({
+    application_id: id,
+    employer: formData.employer_name,
+    date: "",
+    location: "",
+    contact: "",
+    notes: "",
+  });
+
+  const handleStatusChange = (e) => {
+    const newStatus = e.target.value;
+    setFormData({
+      ...formData,
+      status: newStatus,
+    });
+
+    if (newStatus === "interviewing") {
+      setInterviewDialogOpen(true);
+    }
+  };
 
   useEffect(() => {
     const fetchApplicationInfo = async () => {
       try {
-        let response = await fetch(`http://localhost:3000/my-applications/${id}`);
+        let response = await fetch(
+          `http://localhost:3000/my-applications/${id}`
+        );
         if (!response.ok) throw Error("URL does not exist!");
 
         let result = await response.json();
-        
+
         const formattedDate = result.application_date
-          ? result.application_date.split("T")[0] 
+          ? result.application_date.split("T")[0]
           : "";
 
         setFormData({
           ...result,
-          application_date: formattedDate, 
+          application_date: formattedDate,
         });
       } catch (error) {
         alert(error);
@@ -59,6 +83,15 @@ const EditApplicationTable = () => {
 
     fetchApplicationInfo();
   }, [id]);
+
+  useEffect(() => {
+    if (formData.employer_name) {
+      setInterviewDetails((prev) => ({
+        ...prev,
+        employer: formData.employer_name,
+      }));
+    }
+  }, [formData.employer_name]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -75,40 +108,74 @@ const EditApplicationTable = () => {
     });
   };
 
-  const handleStatusChange = (e) => {
-    setFormData({
-      ...formData,
-      status: e.target.value,
-    });
-  };
-
-
   const handleSaveChanges = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/my-applications/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/my-applications/${id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to update the application!");
 
       const result = await response.json();
-      setOpenDialog(true); 
-      setDialogMessage(result.message); 
-      setDialogTitle(<CheckCircleOutlineOutlinedIcon></CheckCircleOutlineOutlinedIcon>)
-    
-    
-     ;
-    } catch(error) {
-        alert(error)
+      setOpenDialog(true);
+      setDialogMessage(result.message);
+      setDialogTitle(
+        <CheckCircleOutlineOutlinedIcon></CheckCircleOutlineOutlinedIcon>
+      );
+    } catch (error) {
+      alert(error);
     }
   };
 
+  const handleSaveInterview = async () => {
+    try {
+      const interviewRes = await fetch("http://localhost:3000/interviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          application_id: id,
+          interview_date: interviewDetails.date,
+          location: interviewDetails.location,
+          contact_person: interviewDetails.contact,
+          notes: interviewDetails.notes,
+        }),
+      });
+
+      if (!interviewRes.ok) throw new Error("Failed to save interview details");
+      const interviewResult = await interviewRes.json();
+
+      const updateStatusRes = await fetch(
+        `http://localhost:3000/my-applications/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, status: "interviewing" }),
+        }
+      );
+
+      if (!updateStatusRes.ok)
+        throw new Error("Failed to update application status");
+
+      const updateResult = await updateStatusRes.json();
+
+      // 3. Show confirmation
+      setInterviewDialogOpen(false);
+      setOpenDialog(true);
+      setDialogMessage(`${interviewResult.message}`);
+    } catch (error) {
+      console.error("Failed to save interview and update status", error);
+      alert("Error saving interview or updating application status");
+    }
+  };
   return (
     <Box sx={{ padding: 3, maxWidth: 700, margin: "auto" }}>
       <Typography variant="h5" mb={3} textAlign={"center"}>
@@ -123,7 +190,7 @@ const EditApplicationTable = () => {
           gap: 2,
           width: "100%",
         }}
-        onSubmit={handleSaveChanges} 
+        onSubmit={handleSaveChanges}
       >
         <TextField
           variant="outlined"
@@ -171,9 +238,21 @@ const EditApplicationTable = () => {
             value={formData.work_mode}
             onChange={handleWorkModeChange}
           >
-            <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
-            <FormControlLabel value="Hybrid" control={<Radio />} label="Hybrid" />
-            <FormControlLabel value="Remote" control={<Radio />} label="Remote" />
+            <FormControlLabel
+              value="On-site"
+              control={<Radio />}
+              label="On-site"
+            />
+            <FormControlLabel
+              value="Hybrid"
+              control={<Radio />}
+              label="Hybrid"
+            />
+            <FormControlLabel
+              value="Remote"
+              control={<Radio />}
+              label="Remote"
+            />
           </RadioGroup>
         </FormControl>
 
@@ -222,71 +301,92 @@ const EditApplicationTable = () => {
             onChange={handleStatusChange}
             label="Application status"
           >
-           <MenuItem value="applied">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
-                           <span>Applied</span>
-                         </Box>
-                       </MenuItem>
-                       <MenuItem value="interviewing">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
-                           <span>Interviewing</span>
-                         </Box>
-                       </MenuItem> 
-                       <MenuItem value="offer">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
-                           <span>Offer</span>
-                         </Box>
-                       </MenuItem>
-                       <MenuItem value="rejected">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#E53935" }} />
-                           <span>Rejected</span>
-                         </Box>
-                       </MenuItem>
-                       <MenuItem value="ghosted">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
-                           <span>Ghosted</span>
-                         </Box>
-                       </MenuItem> 
-                        <MenuItem value="withdrawn">
-                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                           <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
-                           <span>Withdrawn</span>
-                         </Box>
-                       </MenuItem>
+            <MenuItem value="applied">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
+                <span>Applied</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="interviewing">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
+                <span>Interviewing</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="offer">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
+                <span>Offer</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="rejected">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#E53935" }} />
+                <span>Rejected</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="ghosted">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
+                <span>Ghosted</span>
+              </Box>
+            </MenuItem>
+            <MenuItem value="withdrawn">
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
+                <span>Withdrawn</span>
+              </Box>
+            </MenuItem>
           </Select>
         </FormControl>
 
         <TextField
-                  label="Notes:"
-                  name="notes"
-                  value={formData.notes}
-                  onChange={handleChange}
-                  fullWidth
-                  multiline
-                  minRows={4}
-                />
+          label="Notes:"
+          name="notes"
+          value={formData.notes}
+          onChange={handleChange}
+          fullWidth
+          multiline
+          minRows={4}
+        />
 
-        <Button type="submit" variant="contained"  sx={{ mt: 2, backgroundColor: "rgba(20, 20, 20, 0.9)"}}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 2, backgroundColor: "rgba(20, 20, 20, 0.9)" }}
+        >
           Save changes
         </Button>
       </Box>
 
       <DialogBox
-              open={openDialog}
-              setOpen={setOpenDialog}
-              title={dialogTitle}
-              message={dialogMessage}
-              buttons={[
-                { text: "Go to My Applications", onClick: () =>  navigate("/my-applications"), variant: "contained" },
-                { text: "Close", onClick: () => setOpenDialog(false), variant: "outlined", bgColor: "black", textColor: "white" }
-              ]}
-            />
-       
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={dialogTitle}
+        message={dialogMessage}
+        buttons={[
+          {
+            text: "Go to My Applications",
+            onClick: () => navigate("/my-applications"),
+            variant: "contained",
+          },
+          {
+            text: "Close",
+            onClick: () => setOpenDialog(false),
+            variant: "outlined",
+            bgColor: "black",
+            textColor: "white",
+          },
+        ]}
+      />
+
+      <InterviewDetailsDialog
+        open={interviewDialogOpen}
+        onClose={() => setInterviewDialogOpen(false)}
+        interviewDetails={interviewDetails}
+        setInterviewDetails={setInterviewDetails}
+        onSave={handleSaveInterview}
+      />
     </Box>
   );
 };
