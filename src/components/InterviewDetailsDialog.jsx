@@ -11,6 +11,10 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  RadioGroup,
+  Radio,
+  FormLabel,
+  FormControlLabel,
 } from "@mui/material";
 
 const InterviewDetailsDialog = ({
@@ -56,12 +60,7 @@ const InterviewDetailsDialog = ({
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <form onSubmit={handleSubmit}>
         <DialogTitle>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            gap={1}
-          >
+          <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
             <img
               src="/duck_verification_successful.png"
               alt="Duck celebrating"
@@ -80,7 +79,6 @@ const InterviewDetailsDialog = ({
             </Typography>
           </Box>
 
-         
           {interviewDetails.application_id ? (
             <TextField
               label="Employer"
@@ -117,13 +115,41 @@ const InterviewDetailsDialog = ({
             onChange={handleChange("date")}
           />
 
-          <TextField
-            label="Location or Link"
-            fullWidth
-            margin="normal"
-            value={interviewDetails.location}
-            onChange={handleChange("location")}
-          />
+          {/* NEW: Interview Type Selector */}
+          <Box display="flex" alignItems="center" marginY={1}>
+  <Typography variant="subtitle1" sx={{ marginRight: 2 }}>
+    Interview Type:
+  </Typography>
+  <RadioGroup
+    row
+    value={interviewDetails.type || "On-site"}
+    onChange={handleChange("type")}
+  >
+    <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
+    <FormControlLabel value="Online" control={<Radio />} label="Online" />
+  </RadioGroup>
+</Box>
+
+          {/* Conditional Input based on type */}
+          {interviewDetails.type === "Online" ? (
+            <TextField
+              label="Meeting Link"
+              fullWidth
+              margin="normal"
+              placeholder="e.g. https://zoom.us/..."
+              value={interviewDetails.location}
+              onChange={handleChange("location")}
+            />
+          ) : (
+            <TextField
+              label="Location Address"
+              fullWidth
+              margin="normal"
+              placeholder="e.g. Main St 123, Hamburg"
+              value={interviewDetails.location}
+              onChange={handleChange("location")}
+            />
+          )}
 
           <TextField
             label="Contact Person"
@@ -174,3 +200,4 @@ const InterviewDetailsDialog = ({
 };
 
 export default InterviewDetailsDialog;
+

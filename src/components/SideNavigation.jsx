@@ -232,52 +232,52 @@ const SideNavigation = () => {
         <Divider />
 
         <List>
-          {open && (
-            <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
-              <ListItem
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  width: "100%",
-                  gap: 0.5,
-                  alignItems: "center",
-                  minHeight: 48,
-                  px: 2.5,
-                  color: "white",
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: "center",
-                    color: "white",
-                  }}
-                >
-                  <Avatar
-                    alt="duck avatar"
-                    src={
-                      user.gender === "female"
-                        ? "/FemaleAv.png"
-                        : user.gender === "male"
-                        ? "/MaleAv.png"
-                        : "/OtherAv.png"
-                    }
-                    sx={{
-                      border: "2px solid black",
-                      width: 50,
-                      height: 50,
-                      bgcolor: "white",
-                    }}
-                  />
-                </ListItemIcon>
-                <ListItemText>
-                  &nbsp;{user.user_first_name} {user.user_last_name}{" "}
-                </ListItemText>
-              </ListItem>
-            </ListItem>
-          )}
-        </List>
+  {open && (
+    <ListItem disablePadding sx={{ display: "block", mb: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          width: "100%",
+          gap: 0.5,
+          alignItems: "center",
+          minHeight: 48,
+          px: 2.5,
+          color: "white",
+        }}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            justifyContent: "center",
+            color: "white",
+          }}
+        >
+          <Avatar
+            alt="duck avatar"
+            src={
+              user.gender === "female"
+                ? "/FemaleAv.png"
+                : user.gender === "male"
+                ? "/MaleAv.png"
+                : "/OtherAv.png"
+            }
+            sx={{
+              border: "2px solid black",
+              width: 50,
+              height: 50,
+              bgcolor: "white",
+            }}
+          />
+        </ListItemIcon>
+        <ListItemText>
+          &nbsp;{user.user_first_name} {user.user_last_name}
+        </ListItemText>
+      </Box>
+    </ListItem>
+  )}
+</List>
 
         <Divider sx={{ color: "white" }} />
 

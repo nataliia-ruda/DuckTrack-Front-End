@@ -44,6 +44,7 @@ const EditApplicationTable = () => {
     location: "",
     contact: "",
     notes: "",
+    type: "On-site",
   });
 
   const handleStatusChange = (e) => {
@@ -147,6 +148,7 @@ const EditApplicationTable = () => {
           location: interviewDetails.location,
           contact_person: interviewDetails.contact,
           notes: interviewDetails.notes,
+          type: interviewDetails.type,
         }),
       });
 
