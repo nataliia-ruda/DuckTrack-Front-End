@@ -17,12 +17,12 @@ import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import StorageOutlinedIcon from "@mui/icons-material/StorageOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AuthContext from "../core/AuthContext";
+import AuthContext from "../../core/AuthContext.jsx";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { gsap } from "gsap";
 
-const LandingPageFull = () => {
+const LandingPagePart1 = () => {
   const imgSrc = "/duck1.png";
   const { user, isLogged, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const LandingPageFull = () => {
       { x: -totalWidth },
       {
         x: 0,
-        duration: 80, 
+        duration: 80,
         ease: "linear",
         repeat: -1,
       }
@@ -59,7 +59,6 @@ const LandingPageFull = () => {
       animation.kill();
     };
   }, []);
-
   return (
     <>
       <Box
@@ -82,13 +81,13 @@ const LandingPageFull = () => {
             height: "430px",
             backgroundColor: "#FCC708",
             clipPath: `polygon(
-            100% 0%,
-            80% 10%,
-            60% 20%,
-            30% 35%,
-            0% 50%,
-            0% 0%
-          )`,
+                100% 0%,
+                80% 10%,
+                60% 20%,
+                30% 35%,
+                0% 50%,
+                0% 0%
+              )`,
             zIndex: -1,
           }}
         />
@@ -446,20 +445,20 @@ const LandingPageFull = () => {
           sx={{
             /* border: "2px solid black", */
             backgroundImage: `linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(255, 255, 255, 0.6) 60%,
-      rgba(214, 236, 255, 0.6) 70%,
-      rgba(153, 204, 255, 0.6) 80%,
-      rgba(77, 166, 255, 0.6) 90%,
-      rgba(26, 95, 180, 0.6) 100%
-    )`,
+          to bottom,
+          rgba(255, 255, 255, 0.6) 0%,
+          rgba(255, 255, 255, 0.6) 60%,
+          rgba(214, 236, 255, 0.6) 70%,
+          rgba(153, 204, 255, 0.6) 80%,
+          rgba(77, 166, 255, 0.6) 90%,
+          rgba(26, 95, 180, 0.6) 100%
+        )`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%",
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
             display: "flex",
-            gap: 8, 
+            gap: 8,
             width: "max-content",
           }}
         >
@@ -482,4 +481,4 @@ const LandingPageFull = () => {
   );
 };
 
-export default LandingPageFull;
+export default LandingPagePart1;
