@@ -197,7 +197,7 @@ const SideNavigation = () => {
 
           <Button
             onClick={handleAddApplication}
-            sx={{ color: "black", backgroundColor: "#FFC107" }}
+            sx={{ color: "black", backgroundColor: "#FFC107", mx: 1 }}
           >
             <AddIcon sx={{ mx: 0.5, fontSize: "14px" }} />
 
