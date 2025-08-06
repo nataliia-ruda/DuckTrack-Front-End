@@ -7,7 +7,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
@@ -20,10 +20,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AuthContext from "../../core/AuthContext.jsx";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { gsap } from "gsap";
 
 const LandingPagePart1 = () => {
-  const imgSrc = "/duck1.png";
   const { user, isLogged, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -36,29 +34,6 @@ const LandingPagePart1 = () => {
     setAnchorEl(null);
   };
 
-  const containerRef = useRef(null);
-  const sliderRef = useRef(null);
-
-  useEffect(() => {
-    const slider = sliderRef.current;
-
-    const totalWidth = slider.scrollWidth / 2;
-
-    const animation = gsap.fromTo(
-      slider,
-      { x: -totalWidth },
-      {
-        x: 0,
-        duration: 80,
-        ease: "linear",
-        repeat: -1,
-      }
-    );
-
-    return () => {
-      animation.kill();
-    };
-  }, []);
   return (
     <>
       <Box
@@ -70,6 +45,7 @@ const LandingPagePart1 = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          bgcolor: "#f9f9f9",
         }}
       >
         <Box
@@ -88,7 +64,7 @@ const LandingPagePart1 = () => {
                 0% 50%,
                 0% 0%
               )`,
-            zIndex: -1,
+            zIndex: 1,
           }}
         />
 
@@ -99,6 +75,7 @@ const LandingPagePart1 = () => {
             justifyContent: "space-between",
             width: "80%",
             py: 2,
+            zIndex: 3,
           }}
         >
           <Box sx={{ display: "flex", gap: 3 }}>
@@ -119,7 +96,7 @@ const LandingPagePart1 = () => {
                 },
               }}
             >
-              About
+              Features
             </Button>
             <Button
               sx={{
@@ -138,7 +115,7 @@ const LandingPagePart1 = () => {
                 },
               }}
             >
-              Features
+              How it works?
             </Button>
             <Button
               sx={{
@@ -426,55 +403,6 @@ const LandingPagePart1 = () => {
           >
             Discover More
           </Button>
-        </Box>
-      </Box>
-
-      <Box
-        ref={containerRef}
-        sx={{
-          overflow: "hidden",
-          width: "100%",
-          position: "relative",
-          height: "200px",
-          backgroundColor: "#fff",
-          background: "blur",
-        }}
-      >
-        <Box
-          ref={sliderRef}
-          sx={{
-            /* border: "2px solid black", */
-            backgroundImage: `linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0.6) 0%,
-          rgba(255, 255, 255, 0.6) 60%,
-          rgba(214, 236, 255, 0.6) 70%,
-          rgba(153, 204, 255, 0.6) 80%,
-          rgba(77, 166, 255, 0.6) 90%,
-          rgba(26, 95, 180, 0.6) 100%
-        )`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
-            display: "flex",
-            gap: 8,
-            width: "max-content",
-          }}
-        >
-          {[...Array(2)].flatMap((_, groupIndex) =>
-            [...Array(40)].map((_, i) => (
-              <img
-                key={`${groupIndex}-${i}`}
-                src={imgSrc}
-                alt={`scrolling-duck-${groupIndex}-${i}`}
-                style={{
-                  width: "4vw",
-                  flexShrink: 0,
-                }}
-              />
-            ))
-          )}
         </Box>
       </Box>
     </>

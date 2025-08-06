@@ -118,25 +118,36 @@ const InterviewPage = () => {
   };
 
   const updateInterview = async () => {
-    try {
-      const res = await fetch(
-        `http://localhost:3000/interviews/${editingInterviewId}`,
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(interviewDetails),
-        }
-      );
+  try {
+    const payload = {
+      interview_date: interviewDetails.date,
+      location: interviewDetails.location,
+      contact_person: interviewDetails.contact,
+      notes: interviewDetails.notes,
+    };
 
-      if (!res.ok) throw new Error("Failed to update interview");
-      resetDialog();
-      fetchInterviews();
-      showSuccessDialog("Interview updated successfully!");
-    } catch (error) {
-      console.error("Error updating interview", error);
+    const res = await fetch(
+      `http://localhost:3000/interviews/${editingInterviewId}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error("Failed to update interview: " + errorText);
     }
-  };
+
+    resetDialog();
+    fetchInterviews();
+    showSuccessDialog("Interview updated successfully!");
+  } catch (error) {
+    console.error("Error updating interview", error);
+  }
+};
 
   const handleSaveInterview = () => {
     isEditing ? updateInterview() : createInterview();

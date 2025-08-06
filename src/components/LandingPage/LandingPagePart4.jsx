@@ -7,36 +7,21 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const LandingPagePart3 = () => { 
-  
-  const navigate = useNavigate(); 
-
+const LandingPagePart4 = () => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontWeight: 800,
-          textAlign: "center",
-          mb: 8,
-          py: 3,
-        }}
-      >
-        How DuckTrack Works?
-      </Typography>
-
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: 4,
+          flexDirection: { xs: "column", md: "row-reverse" },
           alignItems: "stretch",
           width: "100%",
         }}
       >
         <Box
           sx={{
-            width: { xs: "100%", md: "50%" },
+            width: { xs: "100%", md: "45%" },
             px: { xs: 2, md: 9 },
             py: 4,
             display: "flex",
@@ -48,14 +33,14 @@ const LandingPagePart3 = () => {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 800, fontSize: "35px" }}>
-            All Your Applications in One Place
+            Job Search Progress Visualization
           </Typography>
 
           <List>
             {[
-              "Quickly log all application details using a user-friendly form.",
-              "View every application in one clean, organized table.",
-              "Edit details, update your application status, or delete entries with a single click.",
+              "Track your personal application trends with daily progress charts.",
+              "Identify the most effective job search platforms.",
+              "Monitor your response rate to stay motivated and informed.",
             ].map((text, index) => (
               <ListItem key={index}>
                 <ListItemAvatar>
@@ -71,11 +56,10 @@ const LandingPagePart3 = () => {
             ))}
           </List>
 
-          <Button 
+          <Button
             onClick={() => navigate("/signin")}
-            variant="contained"
             sx={{
-              bgcolor: "#141E27",
+              bgcolor: "#ffdb4d",
               width: "35%",
               alignSelf: "center",
               px: 4,
@@ -83,32 +67,36 @@ const LandingPagePart3 = () => {
               fontWeight: 600,
               textTransform: "none",
               borderRadius: "8px",
+              color: "#141E27",
               transition: "all 0.3s ease",
               "&:hover": {
-                backgroundColor: "#001a42e3",
+                backgroundColor: "#ffdb4d",
                 color: "white",
                 transform: "translateY(-2px)",
                 boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
               },
             }}
           >
-            Start Tracking Now
+            Try It Now
           </Button>
         </Box>
 
         <Box
           sx={{
-            width: { xs: "100%", md: "50%" },
-            p: 0,
+            width: { xs: "100%", md: "55%" },
+            p: 4,
             m: 0,
             overflow: "hidden",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <img
-            src="/lp3_img.png"
+            src="/lp4_img.png"
             alt="table of applications and form"
             style={{
-              width: "100%",
+              width: "85%",
               height: "auto",
               objectFit: "cover",
               display: "block",
@@ -123,4 +111,4 @@ const LandingPagePart3 = () => {
   );
 };
 
-export default LandingPagePart3;
+export default LandingPagePart4;

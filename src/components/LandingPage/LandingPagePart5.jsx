@@ -7,23 +7,13 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const LandingPagePart3 = () => { 
+const LandingPagePart5 = () => { 
   
   const navigate = useNavigate(); 
 
   return (
     <Box sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontWeight: 800,
-          textAlign: "center",
-          mb: 8,
-          py: 3,
-        }}
-      >
-        How DuckTrack Works?
-      </Typography>
+
 
       <Box
         sx={{
@@ -48,14 +38,14 @@ const LandingPagePart3 = () => {
           }}
         >
           <Typography variant="h4" sx={{ fontWeight: 800, fontSize: "35px" }}>
-            All Your Applications in One Place
+            Interview Reminders
           </Typography>
 
           <List>
             {[
-              "Quickly log all application details using a user-friendly form.",
-              "View every application in one clean, organized table.",
-              "Edit details, update your application status, or delete entries with a single click.",
+              "Log your upcoming interviews with time, date, and location or link.",
+              "Receive timely email reminders before each interview.",
+              "Stay prepared and reduce last-minute stress.",
             ].map((text, index) => (
               <ListItem key={index}>
                 <ListItemAvatar>
@@ -92,7 +82,7 @@ const LandingPagePart3 = () => {
               },
             }}
           >
-            Start Tracking Now
+            Create Account
           </Button>
         </Box>
 
@@ -105,7 +95,7 @@ const LandingPagePart3 = () => {
           }}
         >
           <img
-            src="/lp3_img.png"
+            src="/lp5_img.png"
             alt="table of applications and form"
             style={{
               width: "100%",
@@ -114,7 +104,7 @@ const LandingPagePart3 = () => {
               display: "block",
               borderTopLeftRadius: "12px",
               borderBottomLeftRadius: "12px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+              boxShadow: 5,
             }}
           />
         </Box>
@@ -123,4 +113,4 @@ const LandingPagePart3 = () => {
   );
 };
 
-export default LandingPagePart3;
+export default LandingPagePart5;
