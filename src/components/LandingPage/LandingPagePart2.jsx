@@ -48,9 +48,9 @@ const benefits = [
   },
 ];
 
-const LandingPagePart2 = () => {
+const LandingPagePart2 = ({featuresSectionRef }) => {
   return (
-    <Box sx={{ px: 4, py: 6, bgcolor: "#f9f9f9"}}>
+    <Box ref={featuresSectionRef } sx={{ px: 4, py: 6, bgcolor: "#f9f9f9"}}>
       <Typography
         variant="h3"
         textAlign="center"

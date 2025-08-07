@@ -7,12 +7,12 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const LandingPagePart3 = () => { 
+const LandingPagePart3 = ({instructionsSectionRef}) => { 
   
   const navigate = useNavigate(); 
 
   return (
-    <Box sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
+    <Box  ref={instructionsSectionRef}  sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
       <Typography
         variant="h3"
         sx={{

@@ -8,7 +8,7 @@ import { useRef, useEffect } from "react";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 
-const LandingPagePart6 = () => {
+const LandingPagePart6 = ({ contactSectionRef }) => {
   const imgSrc = "/duck1.png";
 
   const containerRef = useRef(null);
@@ -84,6 +84,7 @@ const LandingPagePart6 = () => {
         </Box>
       </Box>
       <Box
+        ref={contactSectionRef}
         sx={{
           width: "100%",
           height: "auto",

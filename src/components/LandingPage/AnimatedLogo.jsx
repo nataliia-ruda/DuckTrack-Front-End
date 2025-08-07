@@ -180,7 +180,6 @@ const AnimatedLogo = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-       /*  backgroundColor: "#F5F8FF", */
       }}
     >
       <Typography
@@ -191,7 +190,7 @@ const AnimatedLogo = () => {
           fontWeight: 800,
           justifyContent: "center",
           alignItems: "center",
-          fontSize: 70,
+          fontSize: {xs: 45, md:70},
         }}
       >
         <span
@@ -206,7 +205,7 @@ const AnimatedLogo = () => {
             src="/d_logo.png"
             alt="Logo"
             style={{
-              height: "0.85em",
+              height :"0.85em",
               verticalAlign: "baseline",
             }}
           />

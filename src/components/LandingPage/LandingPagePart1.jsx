@@ -7,7 +7,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import { useState, useContext} from "react";
+import { useState, useContext,} from "react";
 import { useNavigate } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
@@ -21,7 +21,7 @@ import AuthContext from "../../core/AuthContext.jsx";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
-const LandingPagePart1 = () => {
+const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick}) => {
   const { user, isLogged, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const LandingPagePart1 = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
+  }; 
 
   return (
     <>
@@ -40,11 +40,10 @@ const LandingPagePart1 = () => {
         sx={{
           position: "relative",
           overflow: "hidden",
-          height: "100vh",
+          minHeight: "100vh",
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           bgcolor: "#f9f9f9",
         }}
       >
@@ -53,17 +52,25 @@ const LandingPagePart1 = () => {
             position: "absolute",
             top: 0,
             left: 0,
-            width: "70%",
-            height: "430px",
+            width: { xs: "80%", md: "70%" },
+            height: { xs: "200px", md: "430px" },
             backgroundColor: "#FCC708",
-            clipPath: `polygon(
-                100% 0%,
-                80% 10%,
-                60% 20%,
-                30% 35%,
-                0% 50%,
-                0% 0%
-              )`,
+            clipPath: {
+              xs: `polygon(
+        50% 0%,
+        55% 0%,
+        0% 40%,
+        0% 0%
+      )`,
+              md: `polygon(
+        100% 0%,
+        80% 10%,
+        60% 20%,
+        30% 35%,
+        0% 50%,
+        0% 0%
+      )`,
+            },
             zIndex: 1,
           }}
         />
@@ -73,13 +80,24 @@ const LandingPagePart1 = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width: "80%",
+            alignItems: "center",
+            px: { xs: 2, md: 6 },
             py: 2,
-            zIndex: 3,
+            width: "100%",
+            maxWidth: "1440px",
+            mx: "auto",
+            zIndex: 2,
           }}
         >
-          <Box sx={{ display: "flex", gap: 3 }}>
-            <Button
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              gap: 3,
+              width: "60%",
+            }}
+          >
+            <Button 
+              onClick={onFeaturesClick}
               sx={{
                 color: "#001A42",
                 fontSize: "1em",
@@ -98,12 +116,13 @@ const LandingPagePart1 = () => {
             >
               Features
             </Button>
-            <Button
+            <Button 
+              onClick={onInstructionsClick}
               sx={{
                 color: "#001A42",
                 fontSize: "1em",
                 px: 3,
-                py: 1,
+                py: 0.5,
                 borderRadius: "999px",
                 textTransform: "none",
                 fontWeight: 600,
@@ -117,7 +136,8 @@ const LandingPagePart1 = () => {
             >
               How it works?
             </Button>
-            <Button
+            <Button 
+              onClick={onContactClick}
               sx={{
                 color: "#001A42",
                 fontSize: "1em",
@@ -144,13 +164,16 @@ const LandingPagePart1 = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  textAlign: "center",
+                  position: { xs: "absolute", md: "static" },
+                  top: { xs: 16, md: "auto" },
+                  right: { xs: 16, md: "auto" },
                 }}
               >
                 <Tooltip title="Menu">
                   <IconButton
                     sx={{
                       display: "flex",
+
                       gap: 1,
                       transition: "box-shadow 0.2s ease",
                       px: 4,
@@ -289,7 +312,15 @@ const LandingPagePart1 = () => {
               </Menu>
             </>
           ) : (
-            <Box sx={{ display: "flex", gap: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                width: { xs: "100%" },
+                justifyContent: "flex-end",
+                px: { xs: 4 },
+                gap: 2,
+              }}
+            >
               <Button
                 onClick={(event) => {
                   event.preventDefault();
@@ -303,7 +334,7 @@ const LandingPagePart1 = () => {
                   py: 1,
                   borderRadius: "999px",
                   textTransform: "none",
-                  fontSize: "1.1rem",
+                  fontSize: { xs: "0.8rem", md: "1.1rem" },
                   fontWeight: 600,
                   transition: "all 0.3s ease",
                   "&:hover": {
@@ -330,7 +361,7 @@ const LandingPagePart1 = () => {
                   py: 1,
                   borderRadius: "999px",
                   textTransform: "none",
-                  fontSize: "1.1rem",
+                  fontSize: { xs: "0.8rem", md: "1.1rem" },
                   fontWeight: 600,
                   transition: "all 0.3s ease",
                   "&:hover": {
@@ -349,22 +380,26 @@ const LandingPagePart1 = () => {
 
         <Box
           sx={{
-            flex: 1,
+            flexGrow: 1,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: { xs: "flex-start", md: "center" },
             textAlign: "center",
+            py: { xs: 8, md: 0 },
             px: 2,
+            mt: { xs: 8, md: 0 },
+            gap: { xs: 0.4, md: 1 },
           }}
         >
           <AnimatedLogo />
           <Typography
             variant="h3"
             sx={{
+              fontSize: { xs: "20px", md: "45px" },
               color: "#001A42",
               fontWeight: 800,
-              mt: 4,
+              mt: { xs: 1.5, md: 3 },
             }}
           >
             Never Lose Track of Your Dream Job
@@ -372,15 +407,17 @@ const LandingPagePart1 = () => {
           <Typography
             variant="subtitle1"
             sx={{
+              fontSize: { xs: "13px", md: "16px" },
               color: "#4F6073",
-              mt: 2,
+              mt: { xs: 1, md: 2 },
               maxWidth: 500,
             }}
           >
             Organize, track, and stay motivated on your job hunt — all in one
             place.
           </Typography>
-          <Button
+          <Button 
+            onClick={onFeaturesClick}
             variant="contained"
             endIcon={<ArrowDownwardIcon />}
             sx={{
@@ -391,7 +428,7 @@ const LandingPagePart1 = () => {
               py: 1.5,
               borderRadius: "999px",
               textTransform: "none",
-              fontSize: "1.1rem",
+              fontSize: { xs: "0.7rem", md: "1.1rem" },
               fontWeight: 600,
               transition: "all 0.3s ease",
               "&:hover": {
