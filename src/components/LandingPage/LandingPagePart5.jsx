@@ -6,10 +6,13 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../core/AuthContext.jsx";
+import { useContext } from "react";
 
 const LandingPagePart5 = () => {
   const navigate = useNavigate();
-
+  const { isLogged } = useContext(AuthContext);
+  const handleClick = () => navigate(isLogged ? "/home" : "/signup");
   return (
     <Box
       sx={{
@@ -69,7 +72,7 @@ const LandingPagePart5 = () => {
           </List>
 
           <Button
-            onClick={() => navigate("/signin")}
+            onClick={handleClick}
             variant="contained"
             sx={{
               bgcolor: "#141E27",

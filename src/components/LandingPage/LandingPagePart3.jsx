@@ -6,10 +6,13 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../core/AuthContext.jsx";
+import { useContext } from "react";
 
 const LandingPagePart3 = ({ instructionsSectionRef }) => {
   const navigate = useNavigate();
-
+  const { isLogged } = useContext(AuthContext);
+  const handleClick = () => navigate(isLogged ? "/home" : "/signin");
   return (
     <Box
       ref={instructionsSectionRef}
@@ -79,7 +82,7 @@ const LandingPagePart3 = ({ instructionsSectionRef }) => {
           </List>
 
           <Button
-            onClick={() => navigate("/signin")}
+            onClick={handleClick}
             variant="contained"
             sx={{
               bgcolor: "#141E27",
