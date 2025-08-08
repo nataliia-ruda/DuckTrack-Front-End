@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import { gsap } from "gsap";
 import { useRef, useEffect } from "react";
@@ -64,18 +62,19 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
             backdropFilter: "blur(10px)",
             WebkitBackdropFilter: "blur(10px)",
             display: "flex",
-            gap: 8,
+            gap: { xs: 4, md: 8 },
             width: "max-content",
           }}
         >
           {[...Array(2)].flatMap((_, groupIndex) =>
             [...Array(40)].map((_, i) => (
-              <img
+              <Box
+                component="img"
                 key={`${groupIndex}-${i}`}
                 src={imgSrc}
                 alt={`scrolling-duck-${groupIndex}-${i}`}
-                style={{
-                  width: "4vw",
+                sx={{
+                  width: { xs: "8vw", md: "4vw" },
                   flexShrink: 0,
                 }}
               />
@@ -89,7 +88,7 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           width: "100%",
           height: "auto",
           bgcolor: "rgba(26, 95, 180, 0.6) ",
-          pt: { xs: 6, md: 3 },
+          pt: { xs: 2, md: 3 },
           pb: 1,
           textAlign: "center",
           display: "flex",
@@ -104,7 +103,7 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
             color: "#f9f9f9",
             fontWeight: "800",
             mb: 1,
-            fontSize: { xs: "1.6rem", md: "1.5rem" },
+            fontSize: { xs: "1rem", md: "1.5rem" },
           }}
         >
           Do you have questions or suggestions?
@@ -115,7 +114,7 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           sx={{
             color: "#f9f9f9",
             mb: 2,
-            fontSize: "1rem",
+            fontSize: { xs: "0.7rem", md: "1rem" },
             px: 2,
           }}
         >
@@ -124,8 +123,20 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
         </Typography>
 
         <Box sx={{ mb: 1.5 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <EmailIcon sx={{ color: "#f9f9f9" }} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            }}
+          >
+            <EmailIcon
+              sx={{
+                color: "#f9f9f9",
+                fontSize: { xs: "1.1rem", md: "1.4rem" },
+              }}
+            />
             <Link
               href="mailto:support@ducktrack.com"
               style={{ color: "#f9f9f9", textDecoration: "underline" }}
@@ -135,9 +146,21 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <PhoneIcon sx={{ color: "#f9f9f9" }} />
-            <Typography variant="body1" sx={{ color: "#f9f9f9", mt: 1 }}>
-              +49 123 4567890
+            <PhoneIcon
+              sx={{
+                color: "#f9f9f9",
+                fontSize: { xs: "1.1rem", md: "1.4rem" },
+              }}
+            />
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#f9f9f9",
+                mt: 1,
+                fontSize: { xs: "0.7rem", md: "1rem" },
+              }}
+            >
+              +491234567890
             </Typography>
           </Box>
         </Box>
@@ -145,7 +168,12 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ display: "block", color: "#f9f9f9", justifySelf: "flex-end" }}
+          sx={{
+            display: "block",
+            color: "#f9f9f9",
+            justifySelf: "flex-end",
+            fontSize: { xs: "0.5rem", md: "0.8rem" },
+          }}
         >
           © {new Date().getFullYear()} DuckTrack. All rights reserved.
         </Typography>

@@ -9,7 +9,7 @@ const benefits = [
   {
     title: "Efficient Application Management",
     icon: <WorkIcon sx={{ color: "#A1887F", fontSize: "30px" }} />,
-    bgColor: "#EFEBE9", 
+    bgColor: "#EFEBE9",
     points: [
       "Keep all applications organized in one place",
       "Save important details to review before interviews",
@@ -19,7 +19,7 @@ const benefits = [
   {
     title: "Personal Job Search Analytics",
     icon: <BarChartIcon sx={{ color: "#EF5350", fontSize: "30px" }} />,
-    bgColor: "#FDECEA", 
+    bgColor: "#FDECEA",
     points: [
       "Visualize your application activity",
       "Track response rates",
@@ -29,7 +29,7 @@ const benefits = [
   {
     title: "Interview Scheduling",
     icon: <CalendarMonthIcon sx={{ color: "#2196F3", fontSize: "30px" }} />,
-    bgColor: "#E3F2FD", 
+    bgColor: "#E3F2FD",
     points: [
       "Plan and track upcoming interviews",
       "Never miss important dates",
@@ -48,13 +48,26 @@ const benefits = [
   },
 ];
 
-const LandingPagePart2 = ({featuresSectionRef }) => {
+const LandingPagePart2 = ({ featuresSectionRef }) => {
   return (
-    <Box ref={featuresSectionRef } sx={{ px: 4, py: 6, bgcolor: "#f9f9f9"}}>
+    <Box
+      ref={featuresSectionRef}
+      sx={{
+        px: 4,
+        pt: { xs: 3, md: 6 },
+        pb: { xs: 4, md: 6 },
+        bgcolor: "#f9f9f9",
+      }}
+    >
       <Typography
         variant="h3"
         textAlign="center"
-        sx={{ fontWeight: 800, color: "#001A42", mb: 7 }}
+        sx={{
+          fontWeight: 800,
+          color: "#001A42",
+          mb: 7,
+          fontSize: { xs: 28, md: 50 },
+        }}
       >
         Why You’ll Love DuckTrack
       </Typography>
@@ -62,6 +75,7 @@ const LandingPagePart2 = ({featuresSectionRef }) => {
       <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", md: "row" },
           flexWrap: "wrap",
           justifyContent: "center",
           gap: 4,
@@ -72,11 +86,11 @@ const LandingPagePart2 = ({featuresSectionRef }) => {
           <Box
             key={index}
             sx={{
-              width: "40%",
+              width: { xs: "100%", md: "40%" },
               boxSizing: "border-box",
               borderRadius: "16px",
-              py: 6,
-              px: 2,
+              py: { xs: 5, md: 6 },
+              px: { xs: 4.5, md: 2 },
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -106,7 +120,12 @@ const LandingPagePart2 = ({featuresSectionRef }) => {
 
             <Typography
               variant="h6"
-              sx={{ fontWeight: 600, color: "#001A42", mt: 1 }}
+              sx={{
+                fontWeight: 600,
+                color: "#001A42",
+                mt: 1,
+                fontSize: { xs: "16px", md: "20px" },
+              }}
             >
               {benefit.title}
             </Typography>
@@ -124,7 +143,10 @@ const LandingPagePart2 = ({featuresSectionRef }) => {
             >
               {benefit.points.map((point, i) => (
                 <li key={i}>
-                  <Typography variant="body2" sx={{ fontSize: "16px" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontSize: { xs: "14px", md: "16px" } }}
+                  >
                     {point}
                   </Typography>
                 </li>

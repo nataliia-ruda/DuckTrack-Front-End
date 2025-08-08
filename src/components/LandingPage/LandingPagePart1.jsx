@@ -7,7 +7,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
-import { useState, useContext,} from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
@@ -21,7 +21,11 @@ import AuthContext from "../../core/AuthContext.jsx";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
-const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick}) => {
+const LandingPagePart1 = ({
+  onFeaturesClick,
+  onInstructionsClick,
+  onContactClick,
+}) => {
   const { user, isLogged, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -32,7 +36,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
   };
   const handleClose = () => {
     setAnchorEl(null);
-  }; 
+  };
 
   return (
     <>
@@ -40,7 +44,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
         sx={{
           position: "relative",
           overflow: "hidden",
-          minHeight: "100vh",
+          minHeight: { xs: "90vh", md: "100vh" },
           width: "100%",
           display: "flex",
           flexDirection: "column",
@@ -96,7 +100,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
               width: "60%",
             }}
           >
-            <Button 
+            <Button
               onClick={onFeaturesClick}
               sx={{
                 color: "#001A42",
@@ -116,7 +120,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
             >
               Features
             </Button>
-            <Button 
+            <Button
               onClick={onInstructionsClick}
               sx={{
                 color: "#001A42",
@@ -136,7 +140,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
             >
               How it works?
             </Button>
-            <Button 
+            <Button
               onClick={onContactClick}
               sx={{
                 color: "#001A42",
@@ -416,7 +420,7 @@ const LandingPagePart1 = ({ onFeaturesClick, onInstructionsClick, onContactClick
             Organize, track, and stay motivated on your job hunt — all in one
             place.
           </Typography>
-          <Button 
+          <Button
             onClick={onFeaturesClick}
             variant="contained"
             endIcon={<ArrowDownwardIcon />}

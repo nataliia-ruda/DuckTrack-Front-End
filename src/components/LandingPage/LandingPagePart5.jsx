@@ -7,18 +7,22 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const LandingPagePart5 = () => { 
-  
-  const navigate = useNavigate(); 
+const LandingPagePart5 = () => {
+  const navigate = useNavigate();
 
   return (
-    <Box sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
-
-
+    <Box
+      sx={{
+        width: "100%",
+        pt: { xs: 3, md: 8 },
+        pb: { xs: 11, md: 13 },
+        bgcolor: "#f9f9f9",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
+          flexDirection: { xs: "column-reverse", md: "row" },
           gap: 4,
           alignItems: "stretch",
           width: "100%",
@@ -37,7 +41,10 @@ const LandingPagePart5 = () => {
             boxSizing: "border-box",
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: 800, fontSize: "35px" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 800, fontSize: { xs: "18px", md: "35px" } }}
+          >
             Interview Reminders
           </Typography>
 
@@ -61,16 +68,17 @@ const LandingPagePart5 = () => {
             ))}
           </List>
 
-          <Button 
+          <Button
             onClick={() => navigate("/signin")}
             variant="contained"
             sx={{
               bgcolor: "#141E27",
-              width: "35%",
+              width: { xs: "50%", md: "35%" },
               alignSelf: "center",
               px: 4,
               py: 1.5,
               fontWeight: 600,
+              fontSize: { xs: "12px", md: "15px" },
               textTransform: "none",
               borderRadius: "8px",
               transition: "all 0.3s ease",

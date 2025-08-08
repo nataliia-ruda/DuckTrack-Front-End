@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 const LandingPagePart4 = () => {
   const navigate = useNavigate();
   return (
-    <Box sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
+    <Box sx={{ width: "100vw", py: { xs: 3, md: 8 }, bgcolor: "#f9f9f9" }}>
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row-reverse" },
-          alignItems: "stretch",
+          flexDirection: { xs: "column-reverse", md: "row-reverse" },
+          alignItems: { xs: "center", md: "stretch" },
           width: "100%",
         }}
       >
@@ -32,7 +32,10 @@ const LandingPagePart4 = () => {
             boxSizing: "border-box",
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: 800, fontSize: "35px" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 800, fontSize: { xs: "18px", md: "35px" } }}
+          >
             Job Search Progress Visualization
           </Typography>
 
@@ -60,11 +63,12 @@ const LandingPagePart4 = () => {
             onClick={() => navigate("/signin")}
             sx={{
               bgcolor: "#ffdb4d",
-              width: "35%",
+              width: { xs: "50%", md: "35%" },
               alignSelf: "center",
               px: 4,
               py: 1.5,
               fontWeight: 600,
+              fontSize: { xs: "12px", md: "15px" },
               textTransform: "none",
               borderRadius: "8px",
               color: "#141E27",
@@ -84,7 +88,7 @@ const LandingPagePart4 = () => {
         <Box
           sx={{
             width: { xs: "100%", md: "55%" },
-            p: 4,
+            p: { xs: 4, md: 4 },
             m: 0,
             overflow: "hidden",
             display: "flex",
@@ -92,11 +96,12 @@ const LandingPagePart4 = () => {
             alignItems: "center",
           }}
         >
-          <img
+          <Box
+            component="img"
             src="/lp4_img.png"
             alt="table of applications and form"
-            style={{
-              width: "85%",
+            sx={{
+              width: { xs: "100%", md: "85%" },
               height: "auto",
               objectFit: "cover",
               display: "block",

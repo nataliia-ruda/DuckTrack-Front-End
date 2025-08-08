@@ -7,19 +7,23 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-const LandingPagePart3 = ({instructionsSectionRef}) => { 
-  
-  const navigate = useNavigate(); 
+const LandingPagePart3 = ({ instructionsSectionRef }) => {
+  const navigate = useNavigate();
 
   return (
-    <Box  ref={instructionsSectionRef}  sx={{ width: "100%", py: 8, bgcolor: "#f9f9f9" }}>
+    <Box
+      ref={instructionsSectionRef}
+      sx={{ width: "100%", py: { xs: 3, md: 8 }, bgcolor: "#f9f9f9" }}
+    >
       <Typography
         variant="h3"
         sx={{
           fontWeight: 800,
+          fontSize: { xs: 28, md: 50 },
           textAlign: "center",
-          mb: 8,
-          py: 3,
+          mb: { xs: 2, md: 9 },
+          mt: { xs: 7, md: 1 },
+          py: { xs: 2, md: 1 },
         }}
       >
         How DuckTrack Works?
@@ -28,9 +32,9 @@ const LandingPagePart3 = ({instructionsSectionRef}) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          gap: 4,
-          alignItems: "stretch",
+          flexDirection: { xs: "column-reverse", md: "row" },
+          gap: { xs: 2, md: 4 },
+          alignItems: { xs: "center", md: "stretch" },
           width: "100%",
         }}
       >
@@ -47,7 +51,10 @@ const LandingPagePart3 = ({instructionsSectionRef}) => {
             boxSizing: "border-box",
           }}
         >
-          <Typography variant="h4" sx={{ fontWeight: 800, fontSize: "35px" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 800, fontSize: { xs: "18px", md: "35px" } }}
+          >
             All Your Applications in One Place
           </Typography>
 
@@ -71,16 +78,17 @@ const LandingPagePart3 = ({instructionsSectionRef}) => {
             ))}
           </List>
 
-          <Button 
+          <Button
             onClick={() => navigate("/signin")}
             variant="contained"
             sx={{
               bgcolor: "#141E27",
-              width: "35%",
+              width: { xs: "50%", md: "35%" },
               alignSelf: "center",
               px: 4,
               py: 1.5,
               fontWeight: 600,
+              fontSize: { xs: "12px", md: "15px" },
               textTransform: "none",
               borderRadius: "8px",
               transition: "all 0.3s ease",
@@ -99,7 +107,7 @@ const LandingPagePart3 = ({instructionsSectionRef}) => {
         <Box
           sx={{
             width: { xs: "100%", md: "50%" },
-            p: 0,
+            p: { xs: 2, md: 0 },
             m: 0,
             overflow: "hidden",
           }}
