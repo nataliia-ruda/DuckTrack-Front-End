@@ -18,7 +18,6 @@ const LandingPage = () => {
 
     tl.current = gsap.timeline({ id: "path followers" });
 
-    
     const circleData = [
       {
         text: "LinkedIn",
@@ -81,35 +80,32 @@ const LandingPage = () => {
       let newCircle = document.createElementNS(ns, "circle");
       let newText = document.createElementNS(ns, "text");
 
-      
-      const { text, color, radius, textColor, fontWeight, fontSize } = circleData[i];
+      const { text, color, radius, textColor, fontWeight, fontSize } =
+        circleData[i];
 
-     
       newCircle.setAttributeNS(null, "cx", 300);
-      newCircle.setAttributeNS(null, "cy", 300); 
+      newCircle.setAttributeNS(null, "cy", 300);
       newCircle.setAttributeNS(null, "r", radius);
       /* newCircle.setAttributeNS(null, "stroke", "white");
       newCircle.setAttributeNS(null, "stroke-width", 3); */
 
-      
-      newText.setAttributeNS(null, "x", 300); 
-      newText.setAttributeNS(null, "y", 300); 
+      newText.setAttributeNS(null, "x", 300);
+      newText.setAttributeNS(null, "y", 300);
       newText.setAttributeNS(null, "fill", textColor);
       newText.setAttributeNS(null, "font-size", fontSize);
       newText.setAttributeNS(null, "text-anchor", "middle");
       newText.setAttributeNS(null, "font-weight", fontWeight);
-      newText.textContent = text; 
+      newText.textContent = text;
 
       svg.appendChild(newCircle);
       svg.appendChild(newText);
 
-      let start = i / numCircles; 
+      let start = i / numCircles;
 
       gsap.set(newCircle, {
-        fill: color, 
+        fill: color,
       });
 
-      
       tl.current.to(
         [newCircle, newText],
         {
@@ -121,7 +117,7 @@ const LandingPage = () => {
             end: start + 1,
           },
           ease: "none",
-          duration: 10, 
+          duration: 10,
           repeat: -1,
         },
         0
@@ -156,17 +152,18 @@ const LandingPage = () => {
           },
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
           height: "100vh",
         }}
       >
         <Box
           sx={{
-            width: "70%",
+            width: { xs: "80%", md: "70%" },
             height: "auto",
             boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
             borderRadius: "10px",
-            py: 10,
+            py: { xs: 6, md: 10 },
+            mt: {xs: 6,md:0}, 
             px: 3,
             backgroundColor: "#fff",
           }}
@@ -187,7 +184,7 @@ const LandingPage = () => {
             lg: "50%",
           },
           height: "100%",
-          display: "flex",
+          display: { xs: "none", md: "flex" },
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#FFC107",
@@ -196,23 +193,21 @@ const LandingPage = () => {
         <svg
           ref={svgRef}
           width="600"
-          height="600" 
+          height="600"
           viewBox="0 0 600 600"
           xmlns="http://www.w3.org/2000/svg"
         >
-         
           <path
             className="myPath"
-            d="M 300,50 A 250,250 0 1,1 299,50 Z" 
+            d="M 300,50 A 250,250 0 1,1 299,50 Z"
             fill="none"
             stroke="transparent"
           />
 
-          
           <image
             href="/LoginImg.png"
-            x="150" 
-            y="150" 
+            x="150"
+            y="150"
             width="300"
             height="300"
             style={{ borderRadius: "50%" }}

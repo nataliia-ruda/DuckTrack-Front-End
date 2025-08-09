@@ -113,7 +113,7 @@ const SigninForm = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "600" }}>
+        <Typography variant="h4" sx={{ fontWeight: "600", fontSize: {xs: 25, md: 33}}}>
           Let's{" "}
           <Typography
             component="span"
@@ -123,12 +123,13 @@ const SigninForm = () => {
               backgroundColor: "#FFC107",
               color: "#141E27",
               padding: 1,
-              fontWeight: "600",
+              fontWeight: "600", 
+              fontSize: {xs: 25, md: 33},
             }}
           ></Typography>
         </Typography>
         <br />
-        <Typography variant="h4" sx={{ fontWeight: "600" }} gutterBottom>
+        <Typography variant="h4" sx={{ fontWeight: "600",fontSize: {xs: 25, md: 33} }} gutterBottom>
           {" "}
           your job applications!{" "}
         </Typography>
