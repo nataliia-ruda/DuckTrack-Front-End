@@ -33,7 +33,7 @@ const ForgotPasswordPage = () => {
       .then((res) => res.json())
       .then((data) => {
         setStatus(data.message || "Check your email for reset link.");
-        setEmail(""); 
+        setEmail("");
       })
       .catch(() => {
         setStatus("Something went wrong. Please try again.");
@@ -58,7 +58,7 @@ const ForgotPasswordPage = () => {
   return (
     <Box
       sx={{
-        height: "auto",
+        height: "100vh",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -94,20 +94,24 @@ const ForgotPasswordPage = () => {
           maxWidth: 400,
           margin: "auto",
           mt: 16,
-          p: 9,
+          p: { xs: 7, md: 9 },
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           gap: 2,
           textAlign: "center",
-          width: "70%",
+          width: { xs: "65%", md: "70%" },
           height: "auto",
           boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
           borderRadius: "10px",
           backgroundColor: "#fff",
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ fontSize: { xs: 20, md: 25 } }}
+        >
           Forgot password?
         </Typography>
 
