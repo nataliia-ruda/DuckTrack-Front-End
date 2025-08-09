@@ -216,7 +216,11 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
       <Typography
         variant="h5"
         gutterBottom
-        sx={{ color: "#ffffff", fontWeight: "600" }}
+        sx={{
+          color: "#ffffff",
+          fontWeight: "600",
+          fontSize: { xs: 19, md: 24 },
+        }}
       >
         LET'S CREATE AN ACCOUNT!
       </Typography>
@@ -330,14 +334,18 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
             lg: "85%",
           },
           display: "flex",
+          flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
           justifyContent: "center",
-          gap: "2.1em",
+          gap: { xs: "0.8em", md: "2.1em" },
         }}
       >
         <FormLabel
           id="demo-row-radio-buttons-group-label"
-          sx={{ color: " #cccccc" }}
+          sx={{
+            color: " #cccccc",
+            alignSelf: { xs: "flex-start", md: "center" },
+          }}
           required
         >
           Gender:
@@ -574,6 +582,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
           backgroundColor: "#FFC107",
           color: "#141E27",
           fontWeight: "500",
+          fontSize: { xs: 12, md: 16 },
           "&:hover": { backgroundColor: "#e0a800" },
         }}
       >

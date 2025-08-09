@@ -41,8 +41,6 @@ const Registration = () => {
       );
       setOpenDialog(true);
       setCleanForm(true);
-
-  
     } catch (error) {
       setDialogTitle(<ErrorOutlineOutlinedIcon sx={{ color: "red" }} />);
       setDialogMessage(error.message);
@@ -57,7 +55,7 @@ const Registration = () => {
         width: "100%",
         height: "100vh",
         display: "flex",
-        alignItems: "center",
+        alignItems: { xs: "flex-start", md: "center" },
         justifyContent: "center",
         backgroundColor: "#f4f4f4",
         boxSizing: "border-box",
@@ -70,7 +68,7 @@ const Registration = () => {
           alignItems: "stretch",
           justifyContent: "center",
           padding: 1,
-          width: "70%",
+          width: { xs: "100%", md: "70%" },
           backgroundColor: "white",
           borderRadius: "10px",
           boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
@@ -80,7 +78,7 @@ const Registration = () => {
           sx={{
             width: { xs: "100%", md: "50%" },
             height: "100%",
-            display: "flex",
+            display: { xs: "none", md: "flex" },
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "flex-start",
@@ -91,7 +89,12 @@ const Registration = () => {
           {/* Header */}
           <Typography
             variant="h5"
-            sx={{ fontWeight: "600", color: "#141E27", marginBottom: "2.5em" }}
+            sx={{
+              fontWeight: "600",
+              color: "#141E27",
+              marginBottom: "2.5em",
+              fontSize: { xs: 20, md: 24 },
+            }}
           >
             NEW HERE?
           </Typography>
@@ -128,7 +131,7 @@ const Registration = () => {
           <RegistrationForm
             onSubmitForm={handleUserCreate}
             cleanForm={cleanForm}
-            setDialogMessage={setDialogMessage} 
+            setDialogMessage={setDialogMessage}
             onFormCleaned={() => setCleanForm(false)}
           />
         </Box>
