@@ -57,26 +57,26 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
         >
          
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <WorkIcon sx={{ fontSize: 14 }} />
-            <Typography variant="body1" sx={{ fontSize: 13, fontWeight: 700 }}>
+            <WorkIcon sx={{ fontSize: {xs: 12, md: 14}}} />
+            <Typography variant="body1" sx={{ fontSize: {xs: 10, md: 13}, fontWeight: 700 }}>
               {application.position_name}
             </Typography>
           </Box>
   
           
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <ApartmentIcon sx={{ fontSize: 14}} />
-            <Typography variant="body2" sx={{ fontSize: 13 }}>
+            <ApartmentIcon sx={{fontSize: {xs: 12, md: 14}}} />
+            <Typography variant="body2" sx={{ fontSize: {xs: 10, md: 13} }}>
               {application.employer_name}
             </Typography>
           </Box>
   
           
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: 12, fontWeight: 600 }}>
+            <Typography variant="body2" sx={{ fontSize: {xs: 10, md: 12}, fontWeight: 600 }}>
               Last update:
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: 12 }}>
+            <Typography variant="body2" sx={{ fontSize: {xs: 9, md: 13} }}>
               {new Date(application.updated_at).toLocaleDateString()}
             </Typography>
           </Box>
@@ -92,7 +92,7 @@ const OldApplicationsBox = ({ application, handleOldApplicationEdit }) => {
             }}
             onClick={() => handleOldApplicationEdit(application.application_id)}
           >
-            <ModeEditIcon sx={{ fontSize: 16 }} />
+            <ModeEditIcon sx={{  fontSize: {xs: 13, md: 16} }} />
           </IconButton>
         </CardActions>
       </Box>

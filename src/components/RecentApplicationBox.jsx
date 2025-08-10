@@ -97,26 +97,26 @@ const RecentApplicationBox = ({ application }) => {
         >
           {/* Position name */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <WorkIcon sx={{ fontSize: 14 }} />
-            <Typography variant="body1" sx={{ fontSize: 13, fontWeight: 700 }}>
+            <WorkIcon sx={{fontSize: {xs: 12, md: 14}}} />
+            <Typography variant="body1" sx={{ fontSize: {xs: 10, md: 13}, fontWeight: 700 }}>
               {application.position_name}
             </Typography>
           </Box>
 
           {/* Employer name */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <ApartmentIcon sx={{ fontSize: 14 }} />
-            <Typography variant="body2" sx={{ fontSize: 13 }}>
+            <ApartmentIcon sx={{ fontSize: {xs: 12, md: 14}}} />
+            <Typography variant="body2" sx={{ fontSize: {xs: 10, md: 13} }}>
               {application.employer_name}
             </Typography>
           </Box>
 
           {/* Created date */}
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Typography variant="body2" sx={{ fontSize: 12, fontWeight: 600 }}>
+            <Typography variant="body2" sx={{ fontSize: {xs: 10, md: 12}, fontWeight: 600 }}>
               Created:
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: 12 }}>
+            <Typography variant="body2" sx={{ fontSize: {xs: 9, md: 13} }}>
               {getRelativeDate(application.created_at)}
             </Typography>
           </Box>
@@ -132,7 +132,7 @@ const RecentApplicationBox = ({ application }) => {
             }}
             onClick={handleRecentApplicationEdit}
           >
-            <ModeEditIcon sx={{ fontSize: 16 }} />
+            <ModeEditIcon sx={{ fontSize: {xs: 13, md: 16} }} />
           </IconButton>
         </CardActions>
       </Box>

@@ -73,14 +73,25 @@ const OverviewBoard = () => {
   }, [user]);
 
   return (
-    <Box sx={{ display: "flex", gap: 3.5, my: 5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: { xs: 1, md: 3.5 },
+        my: { xs: 2, md: 5 },
+        flexWrap: { xs: "wrap", md: "nowrap" },
+        "& > *": {
+          width: { xs: "calc(50% - 8px)", md: "auto" },
+          flex: { md: 1 },
+          minWidth: { xs: "unset", md: "200px" },
+        },
+      }}
+    >
       {/* Total Applications */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flex: 1,
           borderRadius: "10px",
           boxShadow:
             "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
@@ -89,14 +100,16 @@ const OverviewBoard = () => {
         }}
       >
         <Box>
-          <Typography sx={{ color: "#6c757d", fontSize: "14px" }}>
+          <Typography sx={{ color: "#6c757d", fontSize: { xs: 10, md: 14 } }}>
             Total Applications
           </Typography>
-          <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: { xs: 14, md: 25 }, fontWeight: 600 }}>
             {applications ? applications.length : 0}
           </Typography>
         </Box>
-        <WorkOutlineIcon sx={{ fontSize: 30, color: "#FFC107" }} />
+        <WorkOutlineIcon
+          sx={{ fontSize: { xs: 20, md: 30 }, color: "#FFC107" }}
+        />
       </Box>
 
       {/* This Week */}
@@ -105,7 +118,6 @@ const OverviewBoard = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flex: 1,
           borderRadius: "10px",
           boxShadow:
             "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
@@ -114,14 +126,16 @@ const OverviewBoard = () => {
         }}
       >
         <Box>
-          <Typography sx={{ color: "#6c757d", fontSize: "14px" }}>
+          <Typography sx={{ color: "#6c757d", fontSize: { xs: 10, md: 14 } }}>
             This Week
           </Typography>
-          <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: { xs: 14, md: 25 }, fontWeight: 600 }}>
             {applications ? thisWeekCount : 0}
           </Typography>
         </Box>
-        <CalendarTodayOutlinedIcon sx={{ fontSize: 30, color: "#2196F3" }} />
+        <CalendarTodayOutlinedIcon
+          sx={{ fontSize: { xs: 20, md: 30 }, color: "#2196F3" }}
+        />
       </Box>
 
       {/* Interviews */}
@@ -130,7 +144,6 @@ const OverviewBoard = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flex: 1,
           borderRadius: "10px",
           boxShadow:
             "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
@@ -139,14 +152,16 @@ const OverviewBoard = () => {
         }}
       >
         <Box>
-          <Typography sx={{ color: "#6c757d", fontSize: "14px" }}>
+          <Typography sx={{ color: "#6c757d", fontSize: { xs: 10, md: 14 } }}>
             Interviews
           </Typography>
-          <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: { xs: 14, md: 25 }, fontWeight: 600 }}>
             {applications ? interviewCount : 0}
           </Typography>
         </Box>
-        <PeopleAltOutlinedIcon sx={{ fontSize: 30, color: "#4CAF50" }} />
+        <PeopleAltOutlinedIcon
+          sx={{ fontSize: { xs: 20, md: 30 }, color: "#4CAF50" }}
+        />
       </Box>
 
       {/* Response Rate */}
@@ -155,7 +170,6 @@ const OverviewBoard = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          flex: 1,
           borderRadius: "10px",
           boxShadow:
             "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
@@ -164,14 +178,16 @@ const OverviewBoard = () => {
         }}
       >
         <Box>
-          <Typography sx={{ color: "#6c757d", fontSize: "14px" }}>
+          <Typography sx={{ color: "#6c757d", fontSize: { xs: 10, md: 14 } }}>
             Response Rate
           </Typography>
-          <Typography sx={{ fontSize: "25px", fontWeight: 600 }}>
+          <Typography sx={{ fontSize: { xs: 14, md: 25 }, fontWeight: 600 }}>
             {applications ? `${responseRate}%` : "0%"}
           </Typography>
         </Box>
-        <TrendingUpOutlinedIcon sx={{ fontSize: 30, color: "#9C27B0" }} />
+        <TrendingUpOutlinedIcon
+          sx={{ fontSize: { xs: 20, md: 30 }, color: "#9C27B0" }}
+        />
       </Box>
     </Box>
   );
