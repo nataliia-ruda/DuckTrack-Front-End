@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import AuthContext from "../core/AuthContext";
 import Radio from "@mui/material/Radio";
@@ -9,11 +9,11 @@ import FormLabel from "@mui/material/FormLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import CircleIcon from "@mui/icons-material/Circle"; 
+import CircleIcon from "@mui/icons-material/Circle";
 import DialogBox from "./DialogBox";
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
@@ -23,6 +23,8 @@ const NewApplicationForm = () => {
   const [dialogMessage, setDialogMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [formData, setFormData] = useState({
     position_name: "",
@@ -34,7 +36,7 @@ const NewApplicationForm = () => {
     job_link: "",
     work_mode: "",
     status: "applied",
-    notes: ""
+    notes: "",
   });
 
   const handleChange = (e) => {
@@ -50,11 +52,18 @@ const NewApplicationForm = () => {
     const applicationData = {
       ...formData,
       user_id: user.user_id,
-      employment_type: formData.employment_type === "Other" ? customEmploymentType : formData.employment_type,
+      employment_type:
+        formData.employment_type === "Other"
+          ? customEmploymentType
+          : formData.employment_type,
       source: formData.source === "Other" ? customSource : formData.source,
     };
 
-    if (!applicationData.position_name || !applicationData.employer_name || !applicationData.application_date) {
+    if (
+      !applicationData.position_name ||
+      !applicationData.employer_name ||
+      !applicationData.application_date
+    ) {
       setOpenDialog(true);
       setDialogMessage("Please fill in all required fields.");
       setDialogTitle(<PriorityHighIcon />);
@@ -86,7 +95,7 @@ const NewApplicationForm = () => {
           job_link: "",
           work_mode: "",
           status: "applied",
-          notes: ""
+          notes: "",
         });
         setCustomSource("");
         setCustomEmploymentType("");
@@ -104,8 +113,23 @@ const NewApplicationForm = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, maxWidth: 700, margin: "auto" }}>
-      <Typography variant="h5" gutterBottom>
+    <Box
+      sx={{
+        padding: { xs: 1.5, md: 3 },
+        maxWidth: 700,
+        margin: "auto",
+        height: "auto",
+      }}
+    >
+      <Typography
+        variant="h5"
+        gutterBottom
+        sx={{
+          fontSize: { xs: 18, md: 24 },
+          textAlign: "center",
+          mb: { xs: 2, md: 2 },
+        }}
+      >
         Add New Application
       </Typography>
       <Box
@@ -120,6 +144,15 @@ const NewApplicationForm = () => {
           onChange={handleChange}
           fullWidth
           required
+          size={isSmallScreen ? "small" : "medium"}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
         <TextField
           label="Employer:"
@@ -128,7 +161,17 @@ const NewApplicationForm = () => {
           onChange={handleChange}
           fullWidth
           required
+          size={isSmallScreen ? "small" : "medium"}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
+
         <TextField
           label="Application date:"
           name="application_date"
@@ -137,11 +180,25 @@ const NewApplicationForm = () => {
           onChange={handleChange}
           fullWidth
           required
+          size={isSmallScreen ? "small" : "medium"}
           InputLabelProps={{ shrink: true }}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
 
-        <FormControl fullWidth>
-          <InputLabel id="employment-type-label">Employment type:</InputLabel>
+        <FormControl fullWidth size={isSmallScreen ? "small" : "medium"}>
+          <InputLabel
+            id="employment-type-label"
+            sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+          >
+            Employment type:
+          </InputLabel>
           <Select
             labelId="employment-type-label"
             value={formData.employment_type}
@@ -149,13 +206,51 @@ const NewApplicationForm = () => {
               setFormData({ ...formData, employment_type: e.target.value })
             }
             label="Employment type"
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           >
-            <MenuItem value="Full-time">Full-time</MenuItem>
-            <MenuItem value="Part-time">Part-time</MenuItem>
-            <MenuItem value="Minijob">Minijob</MenuItem>
-            <MenuItem value="Internship">Internship</MenuItem>
-            <MenuItem value="Temporary">Temporary</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
+            <MenuItem
+              value="Full-time"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Full-time
+            </MenuItem>
+            <MenuItem
+              value="Part-time"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Part-time
+            </MenuItem>
+            <MenuItem
+              value="Minijob"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Minijob
+            </MenuItem>
+            <MenuItem
+              value="Internship"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Internship
+            </MenuItem>
+            <MenuItem
+              value="Temporary"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Temporary
+            </MenuItem>
+            <MenuItem
+              value="Other"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Other
+            </MenuItem>
           </Select>
 
           {formData.employment_type === "Other" && (
@@ -165,27 +260,73 @@ const NewApplicationForm = () => {
               label="Enter employment type here:"
               value={customEmploymentType}
               onChange={(e) => setCustomEmploymentType(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
           )}
         </FormControl>
 
-        <FormControl sx={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }}>
-          <FormLabel id="work-mode-label">Work mode:</FormLabel>
+        <FormControl
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FormLabel
+            id="work-mode-label"
+            sx={{
+              alignSelf: { xs: "flex-start", md: "center" },
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            }}
+          >
+            Work mode:
+          </FormLabel>
           <RadioGroup
             row
             aria-labelledby="work-mode-label"
             name="work_mode"
             value={formData.work_mode}
             onChange={handleChange}
+            sx={{
+              alignSelf: "flex-start",
+              "& .MuiFormControlLabel-label": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           >
-            <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
-            <FormControlLabel value="Hybrid" control={<Radio />} label="Hybrid" />
-            <FormControlLabel value="Remote" control={<Radio />} label="Remote" />
+            <FormControlLabel
+              value="On-site"
+              control={<Radio />}
+              label="On-site"
+            />
+            <FormControlLabel
+              value="Hybrid"
+              control={<Radio />}
+              label="Hybrid"
+            />
+            <FormControlLabel
+              value="Remote"
+              control={<Radio />}
+              label="Remote"
+            />
           </RadioGroup>
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel id="job-search-source-label">Source:</InputLabel>
+        <FormControl fullWidth size={isSmallScreen ? "small" : "medium"}>
+          <InputLabel
+            id="job-search-source-label"
+            sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+          >
+            Source:
+          </InputLabel>
           <Select
             labelId="job-search-source-label"
             value={formData.source}
@@ -193,15 +334,63 @@ const NewApplicationForm = () => {
               setFormData({ ...formData, source: e.target.value })
             }
             label="Source"
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           >
-            <MenuItem value="StepStone">StepStone</MenuItem>
-            <MenuItem value="Indeed">Indeed</MenuItem>
-            <MenuItem value="LinkedIn">LinkedIn</MenuItem>
-            <MenuItem value="Xing">Xing</MenuItem>
-            <MenuItem value="Arbeitsagentur">Arbeitsagentur</MenuItem>
-            <MenuItem value="Monster">Monster</MenuItem>
-            <MenuItem value="Corporate website">Corporate website</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
+            <MenuItem
+              value="StepStone"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              StepStone
+            </MenuItem>
+            <MenuItem
+              value="Indeed"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Indeed
+            </MenuItem>
+            <MenuItem
+              value="LinkedIn"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              LinkedIn
+            </MenuItem>
+            <MenuItem
+              value="Xing"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Xing
+            </MenuItem>
+            <MenuItem
+              value="Arbeitsagentur"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Arbeitsagentur
+            </MenuItem>
+            <MenuItem
+              value="Monster"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Monster
+            </MenuItem>
+            <MenuItem
+              value="Corporate website"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Corporate website
+            </MenuItem>
+            <MenuItem
+              value="Other"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Other
+            </MenuItem>
           </Select>
 
           {formData.source === "Other" && (
@@ -211,6 +400,14 @@ const NewApplicationForm = () => {
               label="Enter source here:"
               value={customSource}
               onChange={(e) => setCustomSource(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
           )}
         </FormControl>
@@ -223,6 +420,14 @@ const NewApplicationForm = () => {
           fullWidth
           multiline
           minRows={4}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
 
         <TextField
@@ -231,10 +436,28 @@ const NewApplicationForm = () => {
           value={formData.job_link}
           onChange={handleChange}
           fullWidth
+          size={isSmallScreen ? "small" : "medium"}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
 
-        <FormControl fullWidth required>
-          <InputLabel id="status-select-label">Application status:</InputLabel>
+        <FormControl
+          fullWidth
+          required
+          size={isSmallScreen ? "small" : "medium"}
+        >
+          <InputLabel
+            id="status-select-label"
+            sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+          >
+            Application status:
+          </InputLabel>
           <Select
             labelId="status-select-label"
             value={formData.status}
@@ -242,38 +465,64 @@ const NewApplicationForm = () => {
             onChange={(e) =>
               setFormData({ ...formData, status: e.target.value })
             }
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           >
-            <MenuItem value="applied">
+            <MenuItem
+              value="applied"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#FFC107" }} />
                 <span>Applied</span>
               </Box>
             </MenuItem>
-            <MenuItem value="interviewing">
+            <MenuItem
+              value="interviewing"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#C8E6C9" }} />
                 <span>Interviewing</span>
               </Box>
             </MenuItem>
-            <MenuItem value="offer">
+            <MenuItem
+              value="offer"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
                 <span>Offer</span>
               </Box>
             </MenuItem>
-            <MenuItem value="rejected">
+            <MenuItem
+              value="rejected"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#E53935" }} />
                 <span>Rejected</span>
               </Box>
             </MenuItem>
-            <MenuItem value="ghosted">
+            <MenuItem
+              value="ghosted"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#1E88E5" }} />
                 <span>Ghosted</span>
               </Box>
             </MenuItem>
-            <MenuItem value="withdrawn">
+            <MenuItem
+              value="withdrawn"
+              sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <CircleIcon fontSize="small" sx={{ color: "#9E9E9E" }} />
                 <span>Withdrawn</span>
@@ -290,12 +539,24 @@ const NewApplicationForm = () => {
           fullWidth
           multiline
           minRows={4}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
 
         <Button
           type="submit"
           variant="contained"
-          sx={{ mt: 2, backgroundColor: "rgba(20, 20, 20, 0.9)" }}
+          sx={{
+            mt: 2,
+            backgroundColor: "rgba(20, 20, 20, 0.9)",
+            fontSize: { xs: 11, md: 15 },
+          }}
         >
           Add new application
         </Button>
@@ -307,7 +568,11 @@ const NewApplicationForm = () => {
         title={dialogTitle}
         message={dialogMessage}
         buttons={[
-          { text: "Close", onClick: () => setOpenDialog(false), variant: "filled" },
+          {
+            text: "Close",
+            onClick: () => setOpenDialog(false),
+            variant: "filled",
+          },
         ]}
       />
     </Box>

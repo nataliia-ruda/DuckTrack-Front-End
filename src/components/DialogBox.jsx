@@ -32,7 +32,7 @@ const DialogBox = ({
       </DialogTitle>
 
       <DialogContent sx={{ textAlign: "center", padding: 3 }}>
-        <DialogContentText id="dialog-message" variant="h6">
+        <DialogContentText id="dialog-message" variant="h6" sx={{fontSize: {xs: 15, md: 18}}}>
           {message}
         </DialogContentText>
       </DialogContent>
@@ -44,6 +44,7 @@ const DialogBox = ({
             onClick={onClick} 
             variant={variant} 
             sx={{
+              fontSize: {xs: 11, md: 13},
               backgroundColor: bgColor || "#FFC107",  
               color: textColor || "#0D1117",  
               "&:hover": { backgroundColor: bgColor ? bgColor : "#e0a800" } 
