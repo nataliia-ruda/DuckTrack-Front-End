@@ -119,6 +119,11 @@ const NewApplicationForm = () => {
         maxWidth: 700,
         margin: "auto",
         height: "auto",
+        width: "100%",
+        boxSizing: "border-box",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Typography

@@ -1,28 +1,19 @@
-import React from 'react'
-import SideNavigation, { DrawerHeader }  from './SideNavigation.jsx'
-import Box from '@mui/material/Box';
-import AuthContext from '../core/AuthContext';
-import EditApplicationTable from './EditApplicationTable.jsx';
-import Typography from "@mui/material/Typography";
+import SideNavigation, { DrawerHeader } from "./SideNavigation.jsx";
+import Box from "@mui/material/Box";
+import EditApplicationTable from "./EditApplicationTable.jsx";
 
 const EditApplicationPage = () => {
-
   return (
-    <Box sx={{ display: 'flex' }} > 
-          
-    <SideNavigation></SideNavigation>
-    
-     <Box component="main"  sx={{ flexGrow: 1, p: 3 }} >
-     <DrawerHeader />
+    <Box sx={{ display: "flex" }}>
+      <SideNavigation />
 
-   {/*    <Typography variant= "h5" sx={{ marginBottom: 2 }}>
-        Edit Application
-      </Typography> */}
-       
-       <EditApplicationTable></EditApplicationTable>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, height: "auto" }}>
+        <DrawerHeader />
+
+        <EditApplicationTable />
+      </Box>
     </Box>
-  </Box>
-)
-}
+  );
+};
 
-export default EditApplicationPage
+export default EditApplicationPage;

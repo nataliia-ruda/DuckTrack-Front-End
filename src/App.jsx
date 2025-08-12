@@ -16,8 +16,8 @@ import VerifyEmailPage from "./components/VerifyEmailPage.jsx";
 import VerifyRequiredPage from "./components/VerifyRequiredPage.jsx";
 import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
-import LandingPageFull from "./components/LandingPage/LandingPageFull.jsx"
-import SigninPage from "./components/SigninPage.jsx"
+import LandingPageFull from "./components/LandingPage/LandingPageFull.jsx";
+import SigninPage from "./components/SigninPage.jsx";
 import InterviewPage from "./components/InterviewPage.jsx";
 
 function App() {
@@ -39,14 +39,13 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<LandingPageFull/>} />
+      <Route path="/" element={<LandingPageFull />} />
       <Route path="/signin" element={<SigninPage />} />
       <Route path="signup" element={<Registration />} />
-      <Route path="/verify-email" element={<VerifyEmailPage/>}/>
-      <Route path="/verify-required" element={<VerifyRequiredPage />} /> 
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
+      <Route path="/verify-required" element={<VerifyRequiredPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      
 
       <Route
         path="home"
@@ -100,7 +99,7 @@ function App() {
             <StatisctisPage />
           </ProtectedRoute>
         }
-      /> 
+      />
 
       <Route
         path="/my-interviews"
@@ -109,8 +108,7 @@ function App() {
             <InterviewPage />
           </ProtectedRoute>
         }
-      /> 
-
+      />
     </Routes>
   );
 }
