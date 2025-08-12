@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormControlLabel,
 } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const InterviewDetailsDialog = ({
   open,
@@ -25,6 +26,9 @@ const InterviewDetailsDialog = ({
   onSave,
   applications = [],
 }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const handleChange = (field) => (e) => {
     const value = e.target.value;
 
@@ -60,13 +64,24 @@ const InterviewDetailsDialog = ({
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <form onSubmit={handleSubmit}>
         <DialogTitle>
-          <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
-            <img
+          <Box
+            sx={{ display: "flex" }}
+            flexDirection="column"
+            alignItems="center"
+            gap={1}
+          >
+            <Box
+              sx={{ display: { xs: "none", md: "flex" } }}
+              component="img"
               src="/duck_verification_successful.png"
               alt="Duck celebrating"
-              width="100"
+              width="20%"
             />
-            <Typography variant="h6" textAlign="center">
+            <Typography
+              variant="h6"
+              textAlign="center"
+              sx={{ fontSize: { xs: 12, md: 17 } }}
+            >
               Congratulations! You've been invited to an interview.
             </Typography>
           </Box>
@@ -74,7 +89,11 @@ const InterviewDetailsDialog = ({
 
         <DialogContent dividers>
           <Box textAlign="center">
-            <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
+            <Typography
+              variant="body1"
+              gutterBottom
+              sx={{ mb: 2, fontSize: { xs: 10, md: 13 } }}
+            >
               Would you like to add more details so we can remind you on time?
             </Typography>
           </Box>
@@ -86,17 +105,45 @@ const InterviewDetailsDialog = ({
               fullWidth
               margin="normal"
               disabled
+              size={isSmallScreen ? "small" : "medium"}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
           ) : (
-            <FormControl fullWidth margin="normal" required>
-              <InputLabel>Employer</InputLabel>
+            <FormControl
+              fullWidth
+              margin="normal"
+              required
+              size={isSmallScreen ? "small" : "medium"}
+            >
+              <InputLabel sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}>
+                Employer
+              </InputLabel>
               <Select
                 value={interviewDetails.application_id || ""}
                 onChange={handleChange("application_id")}
                 label="Employer"
+                sx={{
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                }}
               >
                 {applications.map((app) => (
-                  <MenuItem key={app.application_id} value={app.application_id}>
+                  <MenuItem
+                    sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+                    key={app.application_id}
+                    value={app.application_id}
+                  >
                     {app.employer_name}
                   </MenuItem>
                 ))}
@@ -113,24 +160,48 @@ const InterviewDetailsDialog = ({
             InputLabelProps={{ shrink: true }}
             value={interviewDetails.date?.slice(0, 16)}
             onChange={handleChange("date")}
+            size={isSmallScreen ? "small" : "medium"}
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           />
 
-          {/* NEW: Interview Type Selector */}
           <Box display="flex" alignItems="center" marginY={1}>
-  <Typography variant="subtitle1" sx={{ marginRight: 2 }}>
-    Interview Type:
-  </Typography>
-  <RadioGroup
-    row
-    value={interviewDetails.type || "On-site"}
-    onChange={handleChange("type")}
-  >
-    <FormControlLabel value="On-site" control={<Radio />} label="On-site" />
-    <FormControlLabel value="Online" control={<Radio />} label="Online" />
-  </RadioGroup>
-</Box>
+            <Typography
+              variant="subtitle1"
+              sx={{ marginRight: 2, fontSize: { xs: "0.8rem", md: "1rem" } }}
+            >
+              Interview Type:
+            </Typography>
+            <RadioGroup
+              row
+              value={interviewDetails.type || "On-site"}
+              onChange={handleChange("type")}
+              sx={{
+                alignSelf: "flex-start",
+                "& .MuiFormControlLabel-label": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
+            >
+              <FormControlLabel
+                value="On-site"
+                control={<Radio />}
+                label="On-site"
+              />
+              <FormControlLabel
+                value="Online"
+                control={<Radio />}
+                label="Online"
+              />
+            </RadioGroup>
+          </Box>
 
-          {/* Conditional Input based on type */}
           {interviewDetails.type === "Online" ? (
             <TextField
               label="Meeting Link"
@@ -139,6 +210,15 @@ const InterviewDetailsDialog = ({
               placeholder="e.g. https://zoom.us/..."
               value={interviewDetails.location}
               onChange={handleChange("location")}
+              size={isSmallScreen ? "small" : "medium"}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
           ) : (
             <TextField
@@ -148,6 +228,15 @@ const InterviewDetailsDialog = ({
               placeholder="e.g. Main St 123, Hamburg"
               value={interviewDetails.location}
               onChange={handleChange("location")}
+              size={isSmallScreen ? "small" : "medium"}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
           )}
 
@@ -157,6 +246,15 @@ const InterviewDetailsDialog = ({
             margin="normal"
             value={interviewDetails.contact}
             onChange={handleChange("contact")}
+            size={isSmallScreen ? "small" : "medium"}
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           />
 
           <TextField
@@ -167,6 +265,14 @@ const InterviewDetailsDialog = ({
             rows={3}
             value={interviewDetails.notes}
             onChange={handleChange("notes")}
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
           />
         </DialogContent>
 
@@ -175,7 +281,11 @@ const InterviewDetailsDialog = ({
             onClick={onClose}
             variant="outlined"
             type="button"
-            sx={{ color: "#001A42", borderColor: "#001A42" }}
+            sx={{
+              color: "#001A42",
+              borderColor: "#001A42",
+              fontSize: { xs: 11, md: 15 },
+            }}
           >
             Skip
           </Button>
@@ -186,6 +296,7 @@ const InterviewDetailsDialog = ({
             sx={{
               backgroundColor: "#001A42",
               color: "#fff",
+              fontSize: { xs: 11, md: 15 },
               "&:hover": {
                 backgroundColor: "#001A42",
               },
@@ -200,4 +311,3 @@ const InterviewDetailsDialog = ({
 };
 
 export default InterviewDetailsDialog;
-

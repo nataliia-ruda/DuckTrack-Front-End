@@ -42,7 +42,8 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           position: "relative",
           backgroundColor: "#f9f9f9",
           background: "blur",
-          height: "auto",
+          height: { xs: "auto", md: "auto" },
+          minHeight: { xs: "unset", md: "unset" },
         }}
       >
         <Box
@@ -86,15 +87,16 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
         ref={contactSectionRef}
         sx={{
           width: "100%",
-          height: "auto",
-          bgcolor: "rgba(26, 95, 180, 0.6) ",
+          bgcolor: "rgba(26, 95, 180, 0.6)",
           pt: { xs: 2, md: 3 },
-          pb: 1,
+          pb: { xs: 4, md: 3 },
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         <Typography

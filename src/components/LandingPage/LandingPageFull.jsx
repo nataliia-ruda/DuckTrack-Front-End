@@ -27,7 +27,11 @@ const LandingPageFull = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%",
+  overflowX: "hidden",
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column" }}>
       <LandingPagePart1
         onFeaturesClick={scrollToFeatures}
         onInstructionsClick={scrollToInstructions}
