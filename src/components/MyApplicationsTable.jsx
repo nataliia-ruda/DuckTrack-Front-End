@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import {
   Table,
@@ -29,7 +29,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ButtonGroup from "@mui/material/ButtonGroup";
 
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
@@ -88,21 +87,56 @@ function Row({ row, fetchApplications }) {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
+      <TableRow
+        sx={{
+          "& .MuiTableCell-root": {
+            borderBottom: {
+              xs: "none",
+              md: "1px solid rgba(224, 224, 224, 1)",
+            },
+          },
+          py: { xs: 0.5, md: 1.5 },
+          px: { xs: 2, md: 2 },
+          pr: { xs: 7, md: 0 },
+          display: { xs: "flex", md: "table-row" },
+          flexDirection: { xs: "column", md: "unset" },
+          position: { xs: "relative", md: "static" },
+          mb: { xs: 1, md: 0 },
+          borderRadius: { xs: 1, md: 0 },
+          boxShadow: { xs: 1, md: "none" },
+        }}
+      >
+        <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
           <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{row.position_name}</TableCell>
-        <TableCell>{row.employer_name}</TableCell>
+        <TableCell
+          sx={{ fontSize: { xs: 11, md: 14 }, py: { xs: 0.5, md: 0 } }}
+        >
+          {row.position_name}
+        </TableCell>
+        <TableCell
+          sx={{ fontSize: { xs: 11, md: 14 }, py: { xs: 0.5, md: 0 } }}
+        >
+          {row.employer_name}
+        </TableCell>
 
-        <TableCell>{new Date(row.created_at).toLocaleDateString()}</TableCell>
+        <TableCell
+          sx={{ fontSize: { xs: 11, md: 14 }, py: { xs: 0.5, md: 0 } }}
+        >
+          {new Date(row.created_at).toLocaleDateString()}
+        </TableCell>
 
-        <TableCell sx={{ height: "100%" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <TableCell sx={{ height: "100%", py: { xs: 0.5, md: 0 } }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 1, md: 2 },
+            }}
+          >
             <CircleIcon
-              fontSize="small"
               className={
                 row.status === "applied"
                   ? "applied"
@@ -116,33 +150,44 @@ function Row({ row, fetchApplications }) {
                   ? "ghosted"
                   : "withdrawn"
               }
-              sx={{ backgroundColor: "inherit" }}
+              sx={{ backgroundColor: "inherit", fontSize: { xs: 13, md: 20 } }}
             />
-            <Typography>{row.status}</Typography>
+            <Typography
+              sx={{ fontSize: { xs: 11, md: 16 }, py: { xs: 0.5, md: 0 } }}
+            >
+              {row.status}
+            </Typography>
           </Box>
         </TableCell>
 
-        <TableCell>
+        <TableCell
+          sx={{
+            position: { xs: "absolute", md: "inherit" },
+            top: { xs: 4, md: "auto" },
+            right: { xs: 8, md: "auto" },
+            p: { xs: 0.25, md: "auto" },
+            gap: { xs: 0.5, md: 1 },
+            zIndex: { xs: 1, md: "auto" },
+          }}
+        >
           <Tooltip title="Edit">
             <IconButton onClick={handleEditClick}>
-              <ModeEditIcon />
+              <ModeEditIcon sx={{ fontSize: { xs: 15, md: 22 } }} />
             </IconButton>
           </Tooltip>
 
           <Tooltip title="Delete">
             <IconButton onClick={() => confirmDelete(row.application_id)}>
-              <DeleteIcon />
+              <DeleteIcon sx={{ fontSize: { xs: 15, md: 22 } }} />
             </IconButton>
           </Tooltip>
         </TableCell>
       </TableRow>
+
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Application Details
-              </Typography>
               <Table size="small" aria-label="details">
                 <TableBody>
                   <TableRow>
@@ -305,9 +350,9 @@ export default function MyApplicationsTable({ searchInput }) {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="job applications">
-        <TableHead>
+    <TableContainer component={Paper} sx={{ width: "100%" }}>
+      <Table aria-label="job applications" sx={{ width: "100%" }}>
+        <TableHead sx={{ display: { xs: "none", md: "table-header-group" } }}>
           <TableRow>
             <TableCell />
 
@@ -395,7 +440,7 @@ export default function MyApplicationsTable({ searchInput }) {
           ) : (
             <TableRow>
               <TableCell colSpan={6} align="center">
-                No applications found. 
+                No applications found.
               </TableCell>
             </TableRow>
           )}
