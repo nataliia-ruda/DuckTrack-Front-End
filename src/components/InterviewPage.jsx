@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SideNavigation, { DrawerHeader } from "./SideNavigation.jsx";
 import InterviewDetailsDialog from "./InterviewDetailsDialog.jsx";
 import DialogBox from "./DialogBox.jsx";
 import {
   Box,
   Typography,
-  Button,
   Card,
   IconButton,
-  Divider,
   Link,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -118,36 +116,36 @@ const InterviewPage = () => {
   };
 
   const updateInterview = async () => {
-  try {
-    const payload = {
-      interview_date: interviewDetails.date,
-      location: interviewDetails.location,
-      contact_person: interviewDetails.contact,
-      notes: interviewDetails.notes,
-    };
+    try {
+      const payload = {
+        interview_date: interviewDetails.date,
+        location: interviewDetails.location,
+        contact_person: interviewDetails.contact,
+        notes: interviewDetails.notes,
+      };
 
-    const res = await fetch(
-      `http://localhost:3000/interviews/${editingInterviewId}`,
-      {
-        method: "PATCH",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      const res = await fetch(
+        `http://localhost:3000/interviews/${editingInterviewId}`,
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error("Failed to update interview: " + errorText);
       }
-    );
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error("Failed to update interview: " + errorText);
+      resetDialog();
+      fetchInterviews();
+      showSuccessDialog("Interview updated successfully!");
+    } catch (error) {
+      console.error("Error updating interview", error);
     }
-
-    resetDialog();
-    fetchInterviews();
-    showSuccessDialog("Interview updated successfully!");
-  } catch (error) {
-    console.error("Error updating interview", error);
-  }
-};
+  };
 
   const handleSaveInterview = () => {
     isEditing ? updateInterview() : createInterview();
@@ -255,7 +253,11 @@ const InterviewPage = () => {
             <Typography
               variant="subtitle2"
               gutterBottom
-              sx={{ color: "#5A5A5A", fontWeight: 500 }}
+              sx={{
+                color: "#5A5A5A",
+                fontWeight: 500,
+                fontSize: { xs: 10, md: 13 },
+              }}
             >
               {new Date(interview.interview_date).toLocaleString([], {
                 year: "numeric",
@@ -268,20 +270,34 @@ const InterviewPage = () => {
             </Typography>
 
             <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-              <WorkIcon sx={{ mr: 1, color: "#A1887F" }} />
-              <Typography variant="body2" fontWeight="bold">
+              <WorkIcon
+                sx={{ mr: 1, color: "#A1887F", fontSize: { xs: 16, md: 22 } }}
+              />
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{ fontSize: { xs: 12, md: 14 } }}
+              >
                 {interview.employer_name}
               </Typography>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
-              <LocationOnIcon sx={{ mr: 1, mt: "2px", color: "#EF5350" }} />
+              <LocationOnIcon
+                sx={{
+                  mr: 1,
+                  mt: "2px",
+                  color: "#EF5350",
+                  fontSize: { xs: 16, md: 22 },
+                }}
+              />
               <Typography
                 variant="body2"
                 sx={{
                   wordBreak: "break-word",
                   overflowWrap: "anywhere",
                   flex: 1,
+                  fontSize: { xs: 12, md: 14 },
                 }}
               >
                 {renderLocation(interview)}
@@ -289,19 +305,29 @@ const InterviewPage = () => {
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mb: 0.5 }}>
-              <PersonIcon sx={{ mr: 1, color: "#4CAF50" }} />
-              <Typography variant="body2">
+              <PersonIcon
+                sx={{ mr: 1, color: "#4CAF50", fontSize: { xs: 16, md: 22 } }}
+              />
+              <Typography variant="body2" sx={{ fontSize: { xs: 12, md: 14 } }}>
                 {interview.contact_person || " "}
               </Typography>
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-              <StickyNote2Icon sx={{ mr: 1, mt: "2px", color: "#FFD54F" }} />
+              <StickyNote2Icon
+                sx={{
+                  mr: 1,
+                  mt: "2px",
+                  color: "#FFD54F",
+                  fontSize: { xs: 16, md: 22 },
+                }}
+              />
               <Typography
                 variant="body2"
                 sx={{
                   wordBreak: "break-word",
                   overflowWrap: "anywhere",
+                  fontSize: { xs: 12, md: 14 },
                 }}
               >
                 {interview.notes || ""}
@@ -327,7 +353,7 @@ const InterviewPage = () => {
                 "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.1)" },
               }}
             >
-              <EditIcon fontSize="small" />
+              <EditIcon sx={{ fontSize: { xs: 15, md: 22 } }} />
             </IconButton>
             <IconButton
               onClick={() => handleDelete(interview.interview_id)}
@@ -337,7 +363,7 @@ const InterviewPage = () => {
                 "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.1)" },
               }}
             >
-              <DeleteIcon fontSize="small" />
+              <DeleteIcon sx={{ fontSize: { xs: 15, md: 22 } }} />
             </IconButton>
           </Box>
         </Card>
@@ -345,24 +371,42 @@ const InterviewPage = () => {
     ));
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <SideNavigation />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          lexGrow: 1,
+          p: { xs: 2, md: 3 },
+          overflowY: "auto", 
+          height: "auto",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <DrawerHeader />
 
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            my: 1,
+            justifyContent: {xs: "center", md: "flex-start"},
+            my: {xs: 0, md: 1},
           }}
         >
-          <Typography variant="h5">Upcoming Interviews</Typography>
+          <Typography variant="h5" sx={{ fontSize: { xs: 18, md: 24 } }}>
+            Upcoming Interviews
+          </Typography>
 
           <Tooltip title="Add New Interview">
             <Fab
               size="small"
-              sx={{mx: 2}}
+              sx={{
+                mx: 2,
+                width: { xs: 32, md: 40 },
+                height: { xs: 32, md: 40 },
+                minHeight: "unset",
+              }}
               aria-label="add"
               onClick={() => {
                 setDialogOpen(true);
@@ -378,7 +422,7 @@ const InterviewPage = () => {
                 });
               }}
             >
-              <AddIcon />
+              <AddIcon sx={{ fontSize: { xs: 16, md: 20 } }} />
             </Fab>
           </Tooltip>
         </Box>
@@ -388,14 +432,14 @@ const InterviewPage = () => {
             display: "flex",
             flexWrap: "wrap",
             gap: 3,
-            justifyContent: "flex-start",
+            justifyContent: {xs: "center",md:"flex-start"},
             my: 4,
           }}
         >
           {renderCards(upcoming)}
         </Box>
 
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: 18, md: 24 }, textAlign: {xs: "center", md: "start"} }}>
           Previous Interviews
         </Typography>
         <Box
@@ -403,7 +447,9 @@ const InterviewPage = () => {
             display: "flex",
             flexWrap: "wrap",
             gap: 3,
-            justifyContent: "flex-start",
+            justifyContent: {xs: "center",md:"flex-start"},
+            mb: {xs: 4, md: 0},
+            pb: 2,
           }}
         >
           {renderCards(past)}

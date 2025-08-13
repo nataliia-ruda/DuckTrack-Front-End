@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import AuthContext from "../core/AuthContext";
 import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +32,9 @@ const Charts = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterMode, setFilterMode] = useState("currentMonth");
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (!user) return;
@@ -173,9 +178,10 @@ const Charts = () => {
 
   return (
     <>
-      <Box sx={{ my: 1, display: "flex", flexDirection: "column", gap: 3 }}>
+      <Box sx={{ my: 1, pb: {xs: 4, md: 0}, display: "flex", flexDirection: "column", gap: 3 }}>
         <Box
           sx={{
+            width: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -183,9 +189,22 @@ const Charts = () => {
             gap: 1,
           }}
         >
-          <Box sx={{ width: "60%", height: "300px", py: 1.5, px: 2 }}>
+          <Box
+            sx={{
+              width: { xs: "100%", md: "60%" },
+              height: "300px",
+              py: 1.5,
+              px: { xs: 0, md: 2 },
+            }}
+          >
             <Box
-              sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 1 }}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 2,
+                mb: 1,
+                fontSize: { xs: 11, md: 16 },
+              }}
             >
               <h3 style={{ textAlign: "center", marginRight: "20px" }}>
                 Application Activity Graph
@@ -193,6 +212,7 @@ const Charts = () => {
               <button
                 onClick={() => setFilterMode("currentMonth")}
                 style={{
+                  fontSize: isSmallScreen ? 10 : 13,
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border: "1px solid #ccc",
@@ -207,6 +227,7 @@ const Charts = () => {
               <button
                 onClick={() => setFilterMode("allTime")}
                 style={{
+                  fontSize: isSmallScreen ? 10 : 13,
                   padding: "6px 12px",
                   borderRadius: "5px",
                   border: "1px solid #ccc",
@@ -251,11 +272,17 @@ const Charts = () => {
                       },
                       maxRotation: 0,
                       minRotation: 0,
+                      font: {
+                        size: window.innerWidth < 900 ? 8 : 12,
+                      },
                     },
                   },
                   y: {
                     beginAtZero: true,
                     max: 10,
+                    font: {
+                      size: window.innerWidth < 900 ? 8 : 12,
+                    },
                   },
                 },
               }}
@@ -264,7 +291,7 @@ const Charts = () => {
           <Box
             sx={{
               width: "25%",
-              display: "flex",
+              display: { xs: "none", md: "flex" },
               justifyContent: "center",
               alignItems: "flex-end",
               height: "300px",
@@ -282,11 +309,20 @@ const Charts = () => {
           </Box>
         </Box>
 
-        <Box sx={{ display: "flex", justifyContent: "center", gap: 3, mt: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "center",
+            gap: 3,
+            mt: 2,
+          }}
+        >
           <Box
             sx={{
-              width: "40%",
-              height: "320px",
+              width: { xs: "100%", md: "40%" },
+              fontSize: { xs: 12, md: 16 },
+              height: isSmallScreen ? "270px" : "320px",
               borderRadius: "10px",
               boxShadow:
                 "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
@@ -303,7 +339,7 @@ const Charts = () => {
                     data: statusCounts,
                     backgroundColor: doughnutColors,
                     borderWidth: 1,
-                    radius: "80%",
+                    radius: isSmallScreen ? "65%" : "80%",
                   },
                 ],
               }}
@@ -321,12 +357,13 @@ const Charts = () => {
 
           <Box
             sx={{
-              width: "40%",
-              height: "320px",
+              width: { xs: "100%", md: "40%" },
+              fontSize: { xs: 12, md: 16 },
+              height: isSmallScreen ? "270px" : "320px",
               borderRadius: "10px",
               boxShadow:
                 "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
-              p: 1,
+              py: 1,
             }}
           >
             <h3 style={{ textAlign: "center" }}>Career Platforms Report</h3>
@@ -339,7 +376,7 @@ const Charts = () => {
                     data: sourceCounts,
                     backgroundColor: pieColors,
                     borderWidth: 1,
-                    radius: "80%",
+                    radius: isSmallScreen ? "75%" : "80%",
                   },
                 ],
               }}
