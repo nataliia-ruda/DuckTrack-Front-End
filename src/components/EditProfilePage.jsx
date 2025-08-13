@@ -21,6 +21,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -44,6 +45,9 @@ const EditProfilePage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (user) {
@@ -185,7 +189,7 @@ const EditProfilePage = () => {
           lastName,
           gender,
           user_id: user.user_id,
-          autoGhostEnabled: checked, 
+          autoGhostEnabled: checked,
           ...(isChangingPassword && {
             currentPassword,
             newPassword,
@@ -220,24 +224,38 @@ const EditProfilePage = () => {
       alert("Something went wrong.");
     }
   };
-   
-  const [checked, setChecked] = useState(false);
-  
-    const handleSwitchChange = (event) => {
-      setChecked(event.target.checked);
-    };
 
+  const [checked, setChecked] = useState(false);
+
+  const handleSwitchChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideNavigation />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography variant="h5" sx={{ mb: 5, fontWeight: 600 }}>
+        <Typography
+          variant="h5"
+          sx={{
+            mb: { xs: 3, md: 5 },
+            fontWeight: 600,
+            fontSize: { xs: 18, md: 24 },
+            textAlign: { xs: "center", md: "left" },
+          }}
+        >
           Edit Your Profile
         </Typography>
 
-        <Box sx={{ display: "flex", gap: 5 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "center", md: "flex-start" },
+            gap: 5,
+          }}
+        >
           {/* Avatar */}
           <Box
             sx={{
@@ -255,7 +273,12 @@ const EditProfilePage = () => {
                   : "/OtherAv.png"
               }
               alt="Profile"
-              sx={{ width: 120, height: 120, mb: 2, border: "1px solid black" }}
+              sx={{
+                width: { xs: 80, md: 120 },
+                height: { xs: 80, md: 120 },
+                mb: { xs: 0, md: 2 },
+                border: "1px solid black",
+              }}
             />
           </Box>
 
@@ -268,8 +291,7 @@ const EditProfilePage = () => {
               flexDirection: "column",
               justifyContent: "center",
               gap: 3,
-              width: "60%",
-             /*  border: "2px solid black" */
+              width: { xs: "85%", md: "60%" },
             }}
           >
             {/* First Name */}
@@ -282,6 +304,14 @@ const EditProfilePage = () => {
               error={firstNameError}
               helperText={errors.firstNameError}
               size="small"
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
 
             {/* Last Name */}
@@ -294,11 +324,21 @@ const EditProfilePage = () => {
               error={lastNameError}
               helperText={errors.lastNameError}
               size="small"
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
 
             {/* Gender */}
             <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
-              <FormLabel>Gender:</FormLabel>
+              <FormLabel sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}>
+                Gender:
+              </FormLabel>
               <RadioGroup
                 row
                 name="gender"
@@ -309,16 +349,31 @@ const EditProfilePage = () => {
                   value="female"
                   control={<Radio />}
                   label="Female"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: { xs: "0.8rem", md: "1rem" },
+                    },
+                  }}
                 />
                 <FormControlLabel
                   value="male"
                   control={<Radio />}
                   label="Male"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: { xs: "0.8rem", md: "1rem" },
+                    },
+                  }}
                 />
                 <FormControlLabel
                   value="other"
                   control={<Radio />}
                   label="Other"
+                  sx={{
+                    "& .MuiFormControlLabel-label": {
+                      fontSize: { xs: "0.8rem", md: "1rem" },
+                    },
+                  }}
                 />
               </RadioGroup>
             </Box>
@@ -330,11 +385,22 @@ const EditProfilePage = () => {
               value={formFields.email}
               disabled
               size="small"
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
             />
 
             {/* Current Password */}
             <FormControl size="small" variant="outlined">
-              <InputLabel htmlFor="currentPassword">
+              <InputLabel
+                sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+                htmlFor="currentPassword"
+              >
                 Current Password
               </InputLabel>
               <OutlinedInput
@@ -344,9 +410,18 @@ const EditProfilePage = () => {
                 onChange={handleChange}
                 onBlur={handlePasswordBlur}
                 type={showPassword ? "text" : "password"}
+                sx={{
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                }}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
+                      sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       onMouseUp={handleMouseUpPassword}
@@ -362,7 +437,12 @@ const EditProfilePage = () => {
 
             {/* New Password */}
             <FormControl size="small" variant="outlined">
-              <InputLabel htmlFor="newPassword">New Password</InputLabel>
+              <InputLabel
+                sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+                htmlFor="newPassword"
+              >
+                New Password
+              </InputLabel>
               <OutlinedInput
                 id="newPassword"
                 name="newPassword"
@@ -370,6 +450,14 @@ const EditProfilePage = () => {
                 onChange={handleChange}
                 onBlur={handlePasswordBlur}
                 type={showPassword ? "text" : "password"}
+                sx={{
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                }}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -388,7 +476,10 @@ const EditProfilePage = () => {
 
             {/* Confirm Password */}
             <FormControl size="small" variant="outlined">
-              <InputLabel htmlFor="confirmNewPassword">
+              <InputLabel
+                sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+                htmlFor="confirmNewPassword"
+              >
                 Confirm New Password
               </InputLabel>
               <OutlinedInput
@@ -398,6 +489,14 @@ const EditProfilePage = () => {
                 onChange={handleChange}
                 onBlur={handlePasswordBlur}
                 type={showPassword ? "text" : "password"}
+                sx={{
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: { xs: "0.8rem", md: "1rem" },
+                  },
+                }}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -421,7 +520,13 @@ const EditProfilePage = () => {
               </Typography>
             )}
 
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              }}
+            >
               <label>
                 Automatically change outdated applications status to "Ghosted"
                 <Tooltip title='If enabled, applications in status "Applied" with no updates for 3 weeks will be automatically marked as "Ghosted". You can turn this off anytime.'>
@@ -440,7 +545,14 @@ const EditProfilePage = () => {
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 2, backgroundColor: "#FCC708", color: "black", width: "20%", alignSelf: "center" }}
+              sx={{
+                mt: 2,
+                backgroundColor: "#FCC708",
+                color: "black",
+                width: { xs: "40%", md: "20%" },
+                alignSelf: "center",
+                fontSize: { xs: 11, md: 15 },
+              }}
             >
               Save Changes
             </Button>
