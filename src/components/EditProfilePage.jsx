@@ -21,7 +21,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { useMediaQuery, useTheme } from "@mui/material";
+
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -45,9 +45,6 @@ const EditProfilePage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     if (user) {

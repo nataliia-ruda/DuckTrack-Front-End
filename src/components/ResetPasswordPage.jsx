@@ -17,6 +17,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const ResetPasswordPage = () => {
   const [params] = useSearchParams();
@@ -26,6 +27,9 @@ const ResetPasswordPage = () => {
   const [status, setStatus] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleComparePassword = () => {
     if (confirmPassword && password !== confirmPassword) {
@@ -81,7 +85,7 @@ const ResetPasswordPage = () => {
   return (
     <Box
       sx={{
-        height: "auto",
+        height: "100vh",
         width: "100%",
         display: "flex",
         flexDirection: "column",
@@ -115,6 +119,7 @@ const ResetPasswordPage = () => {
         onSubmit={handleSubmit}
         sx={{
           maxWidth: 400,
+          height: "auto",
           margin: "auto",
           mt: 16,
           p: 9,
@@ -124,13 +129,17 @@ const ResetPasswordPage = () => {
           alignItems: "center",
           gap: 2,
           textAlign: "center",
-          width: "70%",
+          width: { xs: "60%", md: "70%" },
           boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.2)",
           borderRadius: "10px",
           backgroundColor: "#fff",
         }}
       >
-        <Typography variant="h5" gutterBottom>
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{ fontSize: { xs: 18, md: 24 } }}
+        >
           Reset Password
         </Typography>
 
@@ -141,14 +150,28 @@ const ResetPasswordPage = () => {
           variant="outlined"
           required
         >
-          <InputLabel htmlFor="new-password">New Password</InputLabel>
+          <InputLabel
+            htmlFor="new-password"
+            sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+          >
+            New Password
+          </InputLabel>
           <OutlinedInput
             id="new-password"
             name="password"
             error={!!confirmPasswordError}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            size={isSmallScreen ? "small" : "medium"}
             type={showPassword ? "text" : "password"}
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
             endAdornment={
               <InputAdornment position="end" sx={{ color: "#cccccc" }}>
                 <IconButton
@@ -176,15 +199,29 @@ const ResetPasswordPage = () => {
           variant="outlined"
           required
         >
-          <InputLabel htmlFor="confirm-password">Confirm Password</InputLabel>
+          <InputLabel
+            htmlFor="confirm-password"
+            sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}
+          >
+            Confirm Password
+          </InputLabel>
           <OutlinedInput
             id="confirm-password"
             name="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            size={isSmallScreen ? "small" : "medium"}
             onBlur={handleComparePassword}
             type={showPassword ? "text" : "password"}
             error={!!confirmPasswordError}
+            sx={{
+              "& .MuiInputBase-input": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+              "& .MuiInputLabel-root": {
+                fontSize: { xs: "0.8rem", md: "1rem" },
+              },
+            }}
             endAdornment={
               <InputAdornment position="end" sx={{ color: "#cccccc" }}>
                 <IconButton
@@ -213,19 +250,24 @@ const ResetPasswordPage = () => {
             mt: 2,
             width: "90%",
             backgroundColor: "#FFC107",
+            fontSize: { xs: 11, md: 15 },
           }}
         >
           Reset Password
         </Button>
 
         {confirmPasswordError && (
-          <Typography sx={{ mt: 1, color: "red", fontSize: "14px" }}>
+          <Typography
+            sx={{ mt: 1, color: "red", fontSize: { xs: "12px", md: "14px" } }}
+          >
             {confirmPasswordError}
           </Typography>
         )}
         {status && (
           <>
-            <Typography sx={{ mt: 2, fontSize: "15px" }}>{status}</Typography>
+            <Typography sx={{ mt: 2, fontSize: { xs: "12px", md: "15px" } }}>
+              {status}
+            </Typography>
 
             {status === "Password has been reset successfully!" && (
               <Link
@@ -235,13 +277,18 @@ const ResetPasswordPage = () => {
                   display: "flex",
                   alignItems: "center",
                   gap: 0.5,
-                  fontSize: "18px",
+                  fontSize: { xs: "14px", md: "18px" },
                   justifyContent: "center",
                   mt: 2,
                 }}
               >
-                <ArrowBackIcon sx={{ width: "18px", height: "18px" }} /> Go back
-                to login
+                <ArrowBackIcon
+                  sx={{
+                    width: { xs: "16px", md: "18px" },
+                    height: { xs: "16px", md: "18px" },
+                  }}
+                />{" "}
+                Go back to login
               </Link>
             )}
           </>
