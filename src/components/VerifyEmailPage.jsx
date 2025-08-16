@@ -54,7 +54,6 @@ const VerifyEmailPage = () => {
     setSending(true);
     setMessage("");
 
-    
     fetch("http://localhost:3000/resend-verification", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,62 +71,83 @@ const VerifyEmailPage = () => {
   };
 
   return (
-    <Box sx={{ height: "100vh", width: "100%" }}>
+    <Box sx={{ minHeight: "100vh", width: "100%", position: "relative" }}>
+      {/* Fixed AppBar */}
       <AppBar
         position="fixed"
         elevation={0}
-        sx={{ backgroundColor: "transparent" }}
+        sx={{
+          backgroundColor: "transparent",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(6px)",
+        }}
       >
         <Toolbar
           sx={{
             backgroundColor: "rgba(20, 20, 20, 0.9)",
-            backdropFilter: "blur(6px)",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             color: "#E0E0E0",
             borderBottom: "2px solid white",
-            height: "64px",
-            minHeight: "64px",
+            minHeight: { xs: "56px", sm: "64px" },
           }}
         >
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+          >
             DuckTrack - Job Applications Tracker
           </Typography>
         </Toolbar>
       </AppBar>
 
+      {/* Main Content */}
       <Box
         sx={{
-          height: "calc(100vh - 64px)",
+          pt: { xs: "25%", sm: "64px" },
+          minHeight: "100vh",
           display: "flex",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
           justifyContent: "center",
-          paddingTop: "64px",
           paddingX: "1rem",
           boxSizing: "border-box",
+          textAlign: "center",
         }}
       >
         <Box
           sx={{
             maxWidth: "600px",
             width: "100%",
-            textAlign: "center",
+            py: { xs: 2, sm: 4 },
           }}
         >
-          <img
+          <Box
+            component="img"
             src={
               isSuccess
                 ? "/duck_verification_successful.png"
                 : "/duck_something_went_wrong.png"
             }
             alt="duck"
-            style={{
+            sx={{
+              width: { xs: "70%", sm: "60%", md: "100%" },
               maxWidth: "300px",
               height: "auto",
-              marginBottom: "2rem",
+              mb: { xs: "1.5rem", sm: "2rem" },
+              mx: "auto",
             }}
           />
 
-          <Typography variant="h5" gutterBottom>
+          {/* Status Message */}
+          <Typography
+            variant="h5"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "1.1rem", sm: "1.3rem", md: "1.5rem" },
+              mb: { xs: 2, sm: 3 },
+            }}
+          >
             {status}
           </Typography>
 
@@ -144,7 +164,7 @@ const VerifyEmailPage = () => {
                   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)",
                   "&:hover": {
                     backgroundColor: "black",
-                    transform: "scale(1.05)",
+                    transform: "scale(1.03)",
                     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.35)",
                   },
                   "&.Mui-disabled": {
@@ -153,17 +173,26 @@ const VerifyEmailPage = () => {
                     boxShadow: "none",
                     transform: "none",
                   },
-                  paddingX: 3,
-                  paddingY: 1.5,
+                  px: 3,
+                  py: 1.5,
                   borderRadius: "5px",
-                  fontSize: "1rem",
+                  fontSize: { xs: "0.9rem", sm: "1rem" },
                   textTransform: "none",
+                  width: { xs: "100%", sm: "auto" },
+                  mb: 2,
                 }}
               >
                 {sending ? "Resending..." : "Resend Verification Email"}
               </Button>
+
               {message && (
-                <Typography sx={{ color: "green", mt: 2 }}>
+                <Typography
+                  sx={{
+                    color: "green",
+                    mt: 2,
+                    fontSize: { xs: "0.85rem", sm: "1rem" },
+                  }}
+                >
                   {message}
                 </Typography>
               )}

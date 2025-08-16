@@ -5,11 +5,15 @@ import AppBar from "@mui/material/AppBar";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [status, setStatus] = useState("");
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -121,6 +125,7 @@ const ForgotPasswordPage = () => {
         </Typography>
 
         <TextField
+          size={isSmallScreen ? "small" : "medium"}
           onBlur={handleEmailBlur}
           label="Email"
           fullWidth
@@ -128,6 +133,14 @@ const ForgotPasswordPage = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           error={emailError}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+            "& .MuiInputLabel-root": {
+              fontSize: { xs: "0.8rem", md: "1rem" },
+            },
+          }}
         />
 
         <Button
@@ -135,7 +148,7 @@ const ForgotPasswordPage = () => {
           variant="contained"
           fullWidth
           disabled={!email || !!emailError}
-          sx={{ backgroundColor: "#FFC107" }}
+          sx={{ backgroundColor: "#FFC107", fontSize: { xs: 11, md: 15 } }}
         >
           Send Reset Link
         </Button>
@@ -147,13 +160,15 @@ const ForgotPasswordPage = () => {
             display: "flex",
             alignItems: "center",
             gap: 0.5,
-            fontSize: "18px",
             justifyContent: "center",
             mt: 2,
+            fontSize: { xs: 15, md: 18 },
           }}
         >
-          <ArrowBackIcon sx={{ width: "18px", height: "18px" }} /> Go back to
-          login
+          <ArrowBackIcon
+            sx={{ width: { xs: 15, md: 18 }, height: { xs: 15, md: 18 } }}
+          />{" "}
+          Go back to login
         </Link>
 
         {emailError && (

@@ -18,7 +18,8 @@ import ForgotPasswordPage from "./components/ForgotPasswordPage.jsx";
 import ResetPasswordPage from "./components/ResetPasswordPage.jsx";
 import LandingPageFull from "./components/LandingPage/LandingPageFull.jsx";
 import SigninPage from "./components/SigninPage.jsx";
-import InterviewPage from "./components/InterviewPage.jsx";
+import InterviewPage from "./components/InterviewPage.jsx"; 
+
 
 function App() {
   const { user, loading } = useContext(AuthContext);

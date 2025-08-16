@@ -370,7 +370,8 @@ const InterviewPage = () => {
       </Box>
     ));
 
-  return (
+  return ( 
+
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <SideNavigation />
       <Box
@@ -384,8 +385,21 @@ const InterviewPage = () => {
           flexDirection: "column",
         }}
       >
-        <DrawerHeader />
-
+        <DrawerHeader /> 
+       
+       {interviews.length === 0 ? (
+        <Typography
+          variant="h6"
+          sx={{
+            fontSize:{xs: 12, md: 18},
+            color: "text.secondary",
+          }}
+        >
+          There are no interviews yet.
+        </Typography>
+      ) : (
+        
+        <>
         <Box
           sx={{
             display: "flex",
@@ -453,7 +467,9 @@ const InterviewPage = () => {
           }}
         >
           {renderCards(past)}
-        </Box>
+        </Box> 
+        </> 
+        )}
 
         <InterviewDetailsDialog
           open={dialogOpen}

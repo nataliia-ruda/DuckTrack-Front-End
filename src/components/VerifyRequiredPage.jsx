@@ -75,7 +75,7 @@ const VerifyRequiredPage = () => {
           src="/duck_verify_email.png"
           alt="Duck with an envelope"
           sx={{
-            width: { xs: "50%", md: "100%" },
+            width: "50%",
             maxWidth: 300,
             height: "auto",
             mb: { xs: 2, md: 4 },

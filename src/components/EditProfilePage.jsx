@@ -22,7 +22,6 @@ import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
-
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
   const [formFields, setFormFields] = useState({
@@ -271,8 +270,8 @@ const EditProfilePage = () => {
               }
               alt="Profile"
               sx={{
-                width: { xs: 80, md: 120 },
-                height: { xs: 80, md: 120 },
+                width: { xs: 60, md: 90 },
+                height: { xs: 60, md: 90 },
                 mb: { xs: 0, md: 2 },
                 border: "1px solid black",
               }}
@@ -333,7 +332,7 @@ const EditProfilePage = () => {
 
             {/* Gender */}
             <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
-              <FormLabel sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}>
+              <FormLabel sx={{ fontSize: { xs: "0.7rem", md: "1rem" } }}>
                 Gender:
               </FormLabel>
               <RadioGroup
@@ -348,7 +347,7 @@ const EditProfilePage = () => {
                   label="Female"
                   sx={{
                     "& .MuiFormControlLabel-label": {
-                      fontSize: { xs: "0.8rem", md: "1rem" },
+                      fontSize: { xs: "0.7rem", md: "1rem" },
                     },
                   }}
                 />
@@ -358,7 +357,7 @@ const EditProfilePage = () => {
                   label="Male"
                   sx={{
                     "& .MuiFormControlLabel-label": {
-                      fontSize: { xs: "0.8rem", md: "1rem" },
+                      fontSize: { xs: "0.7rem", md: "1rem" },
                     },
                   }}
                 />
@@ -368,7 +367,7 @@ const EditProfilePage = () => {
                   label="Other"
                   sx={{
                     "& .MuiFormControlLabel-label": {
-                      fontSize: { xs: "0.8rem", md: "1rem" },
+                      fontSize: { xs: "0.7rem", md: "1rem" },
                     },
                   }}
                 />
@@ -519,19 +518,41 @@ const EditProfilePage = () => {
 
             <Box
               sx={{
+                width: "100%",
                 display: "flex",
                 alignItems: "center",
-                fontSize: { xs: "0.8rem", md: "1rem" },
+                fontSize: { xs: "0.6rem", md: "1rem" },
               }}
             >
-              <label>
-                Automatically change outdated applications status to "Ghosted"
-                <Tooltip title='If enabled, applications in status "Applied" with no updates for 3 weeks will be automatically marked as "Ghosted". You can turn this off anytime.'>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <label>
+                  Automatically change outdated applications status to "Ghosted"
+                </label>
+                <Tooltip
+                  title='If enabled, applications in status "Applied" with no updates for 3 weeks will be automatically marked as "Ghosted". You can turn this off anytime.'
+                  placement="top"
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        maxWidth: 220,
+                        fontSize: { xs: "0.7rem", md: "0.8rem" },
+                        bgcolor: "common.black",
+                        "& .MuiTooltip-arrow": {
+                          color: "common.black",
+                        },
+                      },
+                    },
+                  }}
+                  arrow
+                  disableTouchListener={false}
+                  enterTouchDelay={0} 
+                  leaveTouchDelay={3000} 
+                >
                   <IconButton size="small" sx={{ marginLeft: "4px" }}>
-                    <HelpOutlineIcon fontSize="small" />
+                    <HelpOutlineIcon sx={{ fontSize: { xs: 14, md: 18 } }} />
                   </IconButton>
                 </Tooltip>
-              </label>
+              </Box>
               <Switch
                 checked={checked}
                 onChange={handleSwitchChange}
@@ -548,7 +569,7 @@ const EditProfilePage = () => {
                 color: "black",
                 width: { xs: "40%", md: "20%" },
                 alignSelf: "center",
-                fontSize: { xs: 11, md: 15 },
+                fontSize: { xs: 10, md: 14 },
               }}
             >
               Save Changes

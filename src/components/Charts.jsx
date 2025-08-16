@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Line, Doughnut, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,8 +13,11 @@ import {
 } from "chart.js";
 import AuthContext from "../core/AuthContext";
 import { Box } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 ChartJS.register(
   CategoryScale,
@@ -59,8 +62,16 @@ const Charts = () => {
     fetchApplications();
   }, [user]);
 
-  if (loading) return <p>Loading charts...</p>;
-  if (!applications.length) return <p>No applications found.</p>;
+  if (loading) return <Backdrop
+        open={true}
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+        })}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>;
+  if (!applications.length) return <Box  sx={{width: "100%"}} > <Typography variant="h6"  sx={{fontSize:{xs: 12, md: 18}, color: "text.secondary",}}> Get started by registering an application to unlock your analytics. </Typography> </Box>;
 
   let dateLabels = [];
   let applicationsPerDay = [];
