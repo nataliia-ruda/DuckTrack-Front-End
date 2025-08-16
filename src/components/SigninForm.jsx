@@ -23,7 +23,6 @@ import Box from "@mui/material/Box";
 gsap.registerPlugin(TextPlugin);
 
 const SigninForm = () => {
-
   /* typing animation */
   const words = ["organize", "store", "track"];
   useGSAP(() => {
@@ -50,7 +49,6 @@ const SigninForm = () => {
   const { login } = useContext(AuthContext);
 
   async function handleLogin(event) {
-    
     event.preventDefault();
 
     try {
@@ -113,7 +111,10 @@ const SigninForm = () => {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: "600", fontSize: {xs: 25, md: 33}}}>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "600", fontSize: { xs: 25, md: 33 } }}
+        >
           Let's{" "}
           <Typography
             component="span"
@@ -123,13 +124,17 @@ const SigninForm = () => {
               backgroundColor: "#FFC107",
               color: "#141E27",
               padding: 1,
-              fontWeight: "600", 
-              fontSize: {xs: 25, md: 33},
+              fontWeight: "600",
+              fontSize: { xs: 25, md: 33 },
             }}
           ></Typography>
         </Typography>
         <br />
-        <Typography variant="h4" sx={{ fontWeight: "600",fontSize: {xs: 25, md: 33} }} gutterBottom>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: "600", fontSize: { xs: 25, md: 33 } }}
+          gutterBottom
+        >
           {" "}
           your job applications!{" "}
         </Typography>
@@ -197,7 +202,11 @@ const SigninForm = () => {
                   onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? (
+                    <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  ) : (
+                    <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  )}
                 </IconButton>
               </InputAdornment>
             }

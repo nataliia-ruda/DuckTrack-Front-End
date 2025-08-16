@@ -184,7 +184,11 @@ const ResetPasswordPage = () => {
                   onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? (
+                    <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  ) : (
+                    <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  )}
                 </IconButton>
               </InputAdornment>
             }
@@ -234,7 +238,11 @@ const ResetPasswordPage = () => {
                   onMouseUp={handleMouseUpPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? (
+                    <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  ) : (
+                    <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                  )}
                 </IconButton>
               </InputAdornment>
             }

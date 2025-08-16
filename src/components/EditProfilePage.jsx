@@ -228,9 +228,26 @@ const EditProfilePage = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        pb: { xs: 6, md: 0 },
+        overflow: "hidden",
+      }}
+    >
       <SideNavigation />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          overflowY: "auto",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <DrawerHeader />
         <Typography
           variant="h5"
@@ -331,7 +348,13 @@ const EditProfilePage = () => {
             />
 
             {/* Gender */}
-            <Box sx={{ display: "flex", gap: 4, alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: { xs: 3, md: 4 },
+                alignItems: "center",
+              }}
+            >
               <FormLabel sx={{ fontSize: { xs: "0.7rem", md: "1rem" } }}>
                 Gender:
               </FormLabel>
@@ -423,7 +446,7 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -462,7 +485,7 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -501,7 +524,7 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -524,7 +547,13 @@ const EditProfilePage = () => {
                 fontSize: { xs: "0.6rem", md: "1rem" },
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <label>
                   Automatically change outdated applications status to "Ghosted"
                 </label>
@@ -545,8 +574,8 @@ const EditProfilePage = () => {
                   }}
                   arrow
                   disableTouchListener={false}
-                  enterTouchDelay={0} 
-                  leaveTouchDelay={3000} 
+                  enterTouchDelay={0}
+                  leaveTouchDelay={3000}
                 >
                   <IconButton size="small" sx={{ marginLeft: "4px" }}>
                     <HelpOutlineIcon sx={{ fontSize: { xs: 14, md: 18 } }} />

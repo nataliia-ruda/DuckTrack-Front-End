@@ -152,7 +152,7 @@ const SideNavigation = () => {
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             color: "#E0E0E0",
             borderBottom: "2px solid white",
-            width: "100vw",
+            width: "100%",
           }}
         >
           <IconButton

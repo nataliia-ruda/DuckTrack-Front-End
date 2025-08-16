@@ -62,7 +62,9 @@ const Charts = () => {
     fetchApplications();
   }, [user]);
 
-  if (loading) return <Backdrop
+  if (loading)
+    return (
+      <Backdrop
         open={true}
         sx={(theme) => ({
           color: "#fff",
@@ -70,8 +72,21 @@ const Charts = () => {
         })}
       >
         <CircularProgress color="inherit" />
-      </Backdrop>;
-  if (!applications.length) return <Box  sx={{width: "100%"}} > <Typography variant="h6"  sx={{fontSize:{xs: 12, md: 18}, color: "text.secondary",}}> Get started by registering an application to unlock your analytics. </Typography> </Box>;
+      </Backdrop>
+    );
+  if (!applications.length)
+    return (
+      <Box sx={{ width: "100%" }}>
+        {" "}
+        <Typography
+          variant="h6"
+          sx={{ fontSize: { xs: 12, md: 18 }, color: "text.secondary" }}
+        >
+          {" "}
+          Get started by registering an application to unlock your analytics.{" "}
+        </Typography>{" "}
+      </Box>
+    );
 
   let dateLabels = [];
   let applicationsPerDay = [];
@@ -189,7 +204,15 @@ const Charts = () => {
 
   return (
     <>
-      <Box sx={{ my: 1, pb: {xs: 4, md: 0}, display: "flex", flexDirection: "column", gap: 3 }}>
+      <Box
+        sx={{
+          my: 1,
+          pb: { xs: 7, md: 0 },
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+        }}
+      >
         <Box
           sx={{
             width: "100%",
@@ -337,7 +360,7 @@ const Charts = () => {
               borderRadius: "10px",
               boxShadow:
                 "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
-              p: 1,
+              p: { xs: 1, md: 3 },
             }}
           >
             <h3 style={{ textAlign: "center" }}>Application Status Report</h3>
@@ -374,7 +397,7 @@ const Charts = () => {
               borderRadius: "10px",
               boxShadow:
                 "0px 4px 10px rgba(0, 0, 0, 0.05), 0px 2px 6px rgba(0, 0, 0, 0.03)",
-              py: 1,
+              p: { xs: 1, md: 3 },
             }}
           >
             <h3 style={{ textAlign: "center" }}>Career Platforms Report</h3>
