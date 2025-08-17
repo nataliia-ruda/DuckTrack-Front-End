@@ -29,6 +29,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Tooltip from "@mui/material/Tooltip";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
@@ -46,7 +47,15 @@ function Row({ row, fetchApplications }) {
 
   const confirmDelete = (id) => {
     setDeleteId(id);
-    setDialogTitle(<QuestionMarkIcon />);
+    setDialogTitle(
+      <QuestionMarkIcon
+        sx={{
+          width: { xs: 24, md: 30 },
+          height: { xs: 24, md: 30 },
+          color: "error.main",
+        }}
+      />
+    );
     setDialogMessage("Are you sure you want to delete this application?");
     setIsConfirmDialog(true);
     setOpenDialog(true);
@@ -68,21 +77,37 @@ function Row({ row, fetchApplications }) {
       }
 
       const result = await response.json();
-
-      setOpenDialog(false);
-
-      setTimeout(() => {
-        setDialogTitle(<CheckCircleOutlineIcon />);
-        setDialogMessage(result.message);
-      }, 200);
-
+      setIsConfirmDialog(false);
+      setDialogTitle(
+        <CheckCircleOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}
+        />
+      );
+      setDialogMessage(result.message || "Application deleted.");
       setDeleteId(null);
-      fetchApplications();
     } catch (error) {
       console.error("Error deleting application:", error);
-      alert("Failed to delete the application.");
-      setOpenDialog(false);
+      setIsConfirmDialog(false);
+      setDialogTitle(
+        <ErrorOutlineOutlinedIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Something went wrong. Please try again.");
     }
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    fetchApplications();
   };
 
   return (
@@ -262,25 +287,36 @@ function Row({ row, fetchApplications }) {
           isConfirmDialog
             ? [
                 {
-                  text: "OK",
+                  text: "DELETE",
                   onClick: handleApplicationDelete,
                   variant: "contained",
+                  closeOnClick: false,
+                  sx: {
+                    backgroundColor: "#141E27",
+                    fontSize: { xs: 11, md: 13 },
+                    width: "15%",
+                    my: 1.5,
+                  },
                 },
                 {
                   text: "Cancel",
                   onClick: () => setOpenDialog(false),
                   variant: "outlined",
-                  bgColor: "black",
-                  textColor: "white",
+                  sx: {
+                    color: "#141E27",
+                    borderColor: "#141E27",
+                    fontSize: { xs: 11, md: 13 },
+                    width: "15%",
+                    my: 1.5,
+                  },
                 },
               ]
             : [
                 {
                   text: "Close",
-                  onClick: () => setOpenDialog(false),
+                  onClick: handleDialogClose,
                   variant: "outlined",
-                  bgColor: "black",
-                  textColor: "white",
+                  sx: { color: "#141E27", borderColor: "#141E27", my: 1.5 },
                 },
               ]
         }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid2";
 import gsap from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";

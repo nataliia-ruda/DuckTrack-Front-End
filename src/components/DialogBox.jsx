@@ -1,60 +1,141 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContentText from "@mui/material/DialogContentText";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { styled } from "@mui/material/styles";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+/**
+ * Styled dialog to match the MUI "Customized Dialog" demo
+ */
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
 
-const DialogBox = ({ 
-  open, 
-  setOpen, 
-  title, 
-  message, 
-  buttons = []  
+const DialogBox = ({
+  open,
+  setOpen,
+  title,
+  message,
+  buttons = [],
+  children,
+  maxWidth = "sm",
+  fullWidth = true,
+  dividers = true,
+  showCloseIcon = true,
+  ...dialogProps
 }) => {
+  const handleClose = () => setOpen(false);
+
+  const handleButtonClick = (btn) => () => {
+    if (typeof btn.onClick === "function") {
+      btn.onClick();
+    }
+    if (btn.closeOnClick !== false) {
+      handleClose();
+    }
+  };
+
   return (
-    <Dialog
-      TransitionComponent={Transition}
-      keepMounted
+    <StyledDialog
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={handleClose}
       aria-labelledby="dialog-title"
       aria-describedby="dialog-message"
+      maxWidth={maxWidth}
+      fullWidth={fullWidth}
+      {...dialogProps}
     >
-      <DialogTitle id="dialog-title" sx={{ textAlign: "center", padding: 2 }}>
+      <DialogTitle id="dialog-title" sx={{ m: 0, p: 2, textAlign: "center" }}>
         {title}
       </DialogTitle>
 
-      <DialogContent sx={{ textAlign: "center", padding: 3 }}>
-        <DialogContentText id="dialog-message" variant="h6" sx={{fontSize: {xs: 15, md: 18}}}>
-          {message}
-        </DialogContentText>
+      {showCloseIcon && (
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={(theme) => ({
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
+
+      <DialogContent /* dividers={dividers} */ sx={{ textAlign: "center" }}>
+        {children ? (
+          children
+        ) : (
+          <DialogContentText
+            id="dialog-message"
+            variant="h6"
+            sx={{ fontSize: { xs: 15, md: 18 }, py: 2 }}
+          >
+            {message}
+          </DialogContentText>
+        )}
       </DialogContent>
 
-      <DialogActions sx={{ padding: 2 }}>
-        {buttons.map(({ text, onClick, variant = "contained", bgColor, textColor }, index) => (
-          <Button 
-            key={index} 
-            onClick={onClick} 
-            variant={variant} 
-            sx={{
-              fontSize: {xs: 11, md: 13},
-              backgroundColor: bgColor || "#FFC107",  
-              color: textColor || "#0D1117",  
-              "&:hover": { backgroundColor: bgColor ? bgColor : "#e0a800" } 
-            }}
-          >
-            {text}
-          </Button>
-        ))}
-      </DialogActions>
-    </Dialog>
+      {buttons.length > 0 && (
+        <DialogActions sx={{ justifyContent: "center", py: 2 }}>
+          {buttons.map(
+            (
+              {
+                text,
+                onClick,
+                variant = "contained",
+                color = "primary",
+                bgColor,
+                textColor,
+                startIcon,
+                autoFocus,
+                closeOnClick,
+                ...btnProps
+              },
+              index
+            ) => (
+              <Button
+                key={index}
+                onClick={handleButtonClick({
+                  onClick,
+                  closeOnClick,
+                })}
+                variant={variant}
+                color={color}
+                autoFocus={autoFocus}
+                startIcon={startIcon}
+                sx={{
+                  my: 2,
+                  fontSize: { xs: 11, md: 13 },
+                  ...(variant === "contained" && {
+                    backgroundColor: bgColor || undefined,
+                    color: textColor || undefined,
+                    "&:hover": {
+                      backgroundColor: bgColor ? bgColor : undefined,
+                    },
+                  }),
+                }}
+                {...btnProps}
+              >
+                {text}
+              </Button>
+            )
+          )}
+        </DialogActions>
+      )}
+    </StyledDialog>
   );
 };
 

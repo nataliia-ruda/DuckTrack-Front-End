@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import SideNavigation, { DrawerHeader } from "./SideNavigation.jsx";
 import InterviewDetailsDialog from "./InterviewDetailsDialog.jsx";
 import DialogBox from "./DialogBox.jsx";
-import {
-  Box,
-  Typography,
-  Card,
-  IconButton,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Card, IconButton, Link } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
@@ -19,7 +13,8 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import WorkIcon from "@mui/icons-material/Work";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@mui/material/Tooltip"; 
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const InterviewPage = () => {
   const [interviews, setInterviews] = useState([]);
@@ -54,10 +49,17 @@ const InterviewPage = () => {
       const res = await fetch("http://localhost:3000/interviews", {
         credentials: "include",
       });
+      if (!res.ok) {
+        const { message } = await res.json().catch(() => ({}));
+        openErrorDialog(
+          message || "Failed to fetch interviews. Please try again."
+        );
+        return;
+      }
       const data = await res.json();
       setInterviews(data.interviews || []);
-    } catch (error) {
-      console.error("Error fetching interviews", error);
+    } catch {
+      openErrorDialog("Network problem. Please try again.");
     }
   };
 
@@ -66,10 +68,17 @@ const InterviewPage = () => {
       const res = await fetch("http://localhost:3000/my-employers", {
         credentials: "include",
       });
+      if (!res.ok) {
+        const { message } = await res.json().catch(() => ({}));
+        openErrorDialog(
+          message || "Failed to fetch employers. Please try again."
+        );
+        return;
+      }
       const data = await res.json();
       setEmployers(data.employers || []);
-    } catch (error) {
-      console.error("Error fetching employers", error);
+    } catch {
+      openErrorDialog("Network problem. Please try again.");
     }
   };
 
@@ -90,9 +99,33 @@ const InterviewPage = () => {
 
   const showSuccessDialog = (message) => {
     setDialogBoxConfig({
-      title: <CheckCircleOutlineIcon sx={{ fontSize: "35px" }} />,
+      title: (
+        <CheckCircleOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}
+        />
+      ),
       message,
-      buttons: [{ text: "OK", onClick: () => setDialogBoxOpen(false) }],
+      buttons: undefined,
+    });
+    setDialogBoxOpen(true);
+  };
+
+  const openErrorDialog = (message) => {
+    setDialogBoxConfig({
+      title: (
+        <ErrorOutlineOutlinedIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      ),
+      message,
     });
     setDialogBoxOpen(true);
   };
@@ -111,7 +144,8 @@ const InterviewPage = () => {
       fetchInterviews();
       showSuccessDialog("Interview created successfully!");
     } catch (error) {
-      console.error("Error creating interview", error);
+      openErrorDialog("Error creating interview. PLease try again.");
+      console.error(error);
     }
   };
 
@@ -143,7 +177,8 @@ const InterviewPage = () => {
       fetchInterviews();
       showSuccessDialog("Interview updated successfully!");
     } catch (error) {
-      console.error("Error updating interview", error);
+      openErrorDialog("Error updating interview. Please try again.");
+      console.error(error);
     }
   };
 
@@ -168,16 +203,26 @@ const InterviewPage = () => {
 
   const handleDelete = (id) => {
     setDialogBoxConfig({
-      title: <HelpOutlineIcon sx={{ fontSize: "35px" }} />,
+      title: (
+        <HelpOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      ),
       message: "Are you sure you want to delete this interview?",
       buttons: [
         {
           text: "Cancel",
           onClick: () => setDialogBoxOpen(false),
           variant: "outlined",
+          sx: { color: "#141E27", borderColor: "#141E27" },
         },
         {
           text: "Delete",
+          closeOnClick: false,
           onClick: async () => {
             try {
               const res = await fetch(
@@ -190,8 +235,16 @@ const InterviewPage = () => {
               if (!res.ok) throw new Error("Delete failed");
               setDialogBoxOpen(false);
               fetchInterviews();
+              showSuccessDialog("Interview deleted.");
             } catch (error) {
               console.error("Failed to delete interview", error);
+              setDialogBoxConfig({
+                title: (<ErrorOutlineOutlinedIcon
+                   sx={{ fontSize: 35, color: "error.main" }} />
+                ),
+                message: "Failed to delete interview. Please try again.",
+              });
+              setDialogBoxOpen(true);
             }
           },
           bgColor: "#001A42",
@@ -370,105 +423,110 @@ const InterviewPage = () => {
       </Box>
     ));
 
-  return ( 
-
+  return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
       <SideNavigation />
       <Box
         component="main"
         sx={{
-          lexGrow: 1,
+          flexGrow: 1,
           p: { xs: 2, md: 3 },
-          overflowY: "auto", 
+          overflowY: "auto",
           height: "auto",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <DrawerHeader /> 
-       
-       {interviews.length === 0 ? (
-        <Typography
-          variant="h6"
-          sx={{
-            fontSize:{xs: 12, md: 18},
-            color: "text.secondary",
-          }}
-        >
-          There are no interviews yet.
-        </Typography>
-      ) : (
-        
-        <>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: {xs: "center", md: "flex-start"},
-            my: {xs: 0, md: 1},
-          }}
-        >
-          <Typography variant="h5" sx={{ fontSize: { xs: 18, md: 24 } }}>
-            Upcoming Interviews
-          </Typography>
+        <DrawerHeader />
 
-          <Tooltip title="Add New Interview">
-            <Fab
-              size="small"
+        {interviews.length === 0 ? (
+          <Typography
+            variant="h6"
+            sx={{
+              fontSize: { xs: 12, md: 18 },
+              color: "text.secondary",
+            }}
+          >
+            There are no interviews yet.
+          </Typography>
+        ) : (
+          <>
+            <Box
               sx={{
-                mx: 2,
-                width: { xs: 32, md: 40 },
-                height: { xs: 32, md: 40 },
-                minHeight: "unset",
-              }}
-              aria-label="add"
-              onClick={() => {
-                setDialogOpen(true);
-                setIsEditing(false);
-                setInterviewDetails({
-                  application_id: "",
-                  employer: "",
-                  date: "",
-                  location: "",
-                  contact: "",
-                  notes: "",
-                  type: "On-site",
-                });
+                display: "flex",
+                alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
+                my: { xs: 0, md: 1 },
               }}
             >
-              <AddIcon sx={{ fontSize: { xs: 16, md: 20 } }} />
-            </Fab>
-          </Tooltip>
-        </Box>
+              <Typography variant="h5" sx={{ fontSize: { xs: 18, md: 24 } }}>
+                Upcoming Interviews
+              </Typography>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 3,
-            justifyContent: {xs: "center",md:"flex-start"},
-            my: 4,
-          }}
-        >
-          {renderCards(upcoming)}
-        </Box>
+              <Tooltip title="Add New Interview">
+                <Fab
+                  size="small"
+                  sx={{
+                    mx: 2,
+                    width: { xs: 32, md: 40 },
+                    height: { xs: 32, md: 40 },
+                    minHeight: "unset",
+                  }}
+                  aria-label="add"
+                  onClick={() => {
+                    setDialogOpen(true);
+                    setIsEditing(false);
+                    setInterviewDetails({
+                      application_id: "",
+                      employer: "",
+                      date: "",
+                      location: "",
+                      contact: "",
+                      notes: "",
+                      type: "On-site",
+                    });
+                  }}
+                >
+                  <AddIcon sx={{ fontSize: { xs: 16, md: 20 } }} />
+                </Fab>
+              </Tooltip>
+            </Box>
 
-        <Typography variant="h5" sx={{ mb: 2, fontSize: { xs: 18, md: 24 }, textAlign: {xs: "center", md: "start"} }}>
-          Previous Interviews
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 3,
-            justifyContent: {xs: "center",md:"flex-start"},
-            mb: {xs: 4, md: 0},
-            pb: 2,
-          }}
-        >
-          {renderCards(past)}
-        </Box> 
-        </> 
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 3,
+                justifyContent: { xs: "center", md: "flex-start" },
+                my: 4,
+              }}
+            >
+              {renderCards(upcoming)}
+            </Box>
+
+            <Typography
+              variant="h5"
+              sx={{
+                mb: 2,
+                fontSize: { xs: 18, md: 24 },
+                textAlign: { xs: "center", md: "start" },
+              }}
+            >
+              Previous Interviews
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 3,
+                justifyContent: { xs: "center", md: "flex-start" },
+                mb: { xs: 4, md: 0 },
+                pb: 2,
+              }}
+            >
+              {renderCards(past)}
+            </Box>
+          </>
         )}
 
         <InterviewDetailsDialog

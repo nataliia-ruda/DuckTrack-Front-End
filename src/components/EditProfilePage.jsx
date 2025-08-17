@@ -21,6 +21,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import DialogBox from "./DialogBox.jsx";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -45,6 +48,10 @@ const EditProfilePage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState(null);
+  const [dialogMessage, setDialogMessage] = useState("");
+
   useEffect(() => {
     if (user) {
       const fetchUserData = async () => {
@@ -63,10 +70,31 @@ const EditProfilePage = () => {
             }));
             setChecked(data.auto_ghost_enabled === 1);
           } else {
-            console.error("Error fetching user data");
+            setOpenDialog(true);
+            setDialogTitle(
+              <ErrorOutlineIcon
+                sx={{
+                  width: { xs: 24, md: 30 },
+                  height: { xs: 24, md: 30 },
+                  color: "error.main",
+                }}
+              />
+            );
+            setDialogMessage("Something went wrong. Please try again.");
           }
         } catch (error) {
           console.error("Error:", error);
+          setOpenDialog(true);
+          setDialogTitle(
+            <ErrorOutlineIcon
+              sx={{
+                width: { xs: 24, md: 30 },
+                height: { xs: 24, md: 30 },
+                color: "error.main",
+              }}
+            />
+          );
+          setDialogMessage("Something went wrong. Please try again.");
         }
       };
 
@@ -196,7 +224,17 @@ const EditProfilePage = () => {
       const result = await response.json();
 
       if (response.ok) {
-        alert("Profile updated successfully!");
+        setDialogTitle(
+          <CheckCircleIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "success.main",
+            }}
+          />
+        );
+        setDialogMessage(result.message || "Profile updated successfully!");
+        setOpenDialog(true);
 
         setFormFields((prev) => ({
           ...prev,
@@ -210,14 +248,31 @@ const EditProfilePage = () => {
           comparePasswordError: "",
         }));
       } else {
-        setErrors((prev) => ({
-          ...prev,
-          comparePasswordError: result.message || "Update failed.",
-        }));
+        setDialogTitle(
+          <ErrorOutlineIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "error.main",
+            }}
+          />
+        );
+        setDialogMessage(result.message || "Update failed.");
+        setOpenDialog(true);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Something went wrong.");
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Something went wrong. Please try again.");
+      setOpenDialog(true);
     }
   };
 
@@ -446,7 +501,11 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
+                      {showPassword ? (
+                        <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      ) : (
+                        <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -485,7 +544,11 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
+                      {showPassword ? (
+                        <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      ) : (
+                        <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -524,7 +587,11 @@ const EditProfilePage = () => {
                       onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff sx={{fontSize: {xs: 18, md: 24}}}/> : <Visibility sx={{fontSize: {xs: 18, md: 24}}}/>}
+                      {showPassword ? (
+                        <VisibilityOff sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      ) : (
+                        <Visibility sx={{ fontSize: { xs: 18, md: 24 } }} />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -606,6 +673,13 @@ const EditProfilePage = () => {
           </Box>
         </Box>
       </Box>
+
+      <DialogBox
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={dialogTitle}
+        message={dialogMessage}
+      />
     </Box>
   );
 };

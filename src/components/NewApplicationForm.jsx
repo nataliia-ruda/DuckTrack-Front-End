@@ -11,9 +11,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import CircleIcon from "@mui/icons-material/Circle";
 import DialogBox from "./DialogBox";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useMediaQuery, useTheme } from "@mui/material";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
@@ -66,7 +66,11 @@ const NewApplicationForm = () => {
     ) {
       setOpenDialog(true);
       setDialogMessage("Please fill in all required fields.");
-      setDialogTitle(<PriorityHighIcon />);
+      setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }} />);
       return;
     }
 
@@ -84,7 +88,11 @@ const NewApplicationForm = () => {
       if (response.ok) {
         setOpenDialog(true);
         setDialogMessage(result.message);
-        setDialogTitle(<CheckCircleOutlineOutlinedIcon />);
+        setDialogTitle(<CheckCircleIcon sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}/>);
         setFormData({
           position_name: "",
           employer_name: "",
@@ -102,12 +110,20 @@ const NewApplicationForm = () => {
       } else {
         setOpenDialog(true);
         setDialogMessage("Failed to submit application. Please try again.");
-        setDialogTitle(<PriorityHighIcon />);
+        setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }} />);
       }
     } catch (error) {
       setOpenDialog(true);
       setDialogMessage("Error submitting application. Please try again.");
-      setDialogTitle(<PriorityHighIcon />);
+      setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }} />);
       console.error("Error submitting application:", error);
     }
   };
@@ -572,13 +588,6 @@ const NewApplicationForm = () => {
         setOpen={setOpenDialog}
         title={dialogTitle}
         message={dialogMessage}
-        buttons={[
-          {
-            text: "Close",
-            onClick: () => setOpenDialog(false),
-            variant: "filled",
-          },
-        ]}
       />
     </Box>
   );

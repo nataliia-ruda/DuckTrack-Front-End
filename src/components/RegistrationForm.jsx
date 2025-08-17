@@ -1,11 +1,9 @@
-import React from "react";
 import TextField from "@mui/material/TextField";
 import { Button, Link, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
-import DialogBox from "./DialogBox.jsx";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -17,6 +15,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+
 
 const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
   const [formFields, setFormFields] = useState({
@@ -32,8 +32,7 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
   const [lastNameError, setLastNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPassowrdError] = useState(false);
-
-  const [openDialog, setOpenDialog] = useState(false);
+ 
 
   const [errors, setErrors] = useState({
     firstNameError: "",
@@ -52,7 +51,6 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
         confirmPassword: "",
         gender: "",
       });
-      setOpenDialog(false);
       if (typeof onFormCleaned === "function") {
         onFormCleaned();
       }
@@ -62,31 +60,41 @@ const RegistrationForm = ({ cleanForm, onSubmitForm, onFormCleaned }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let isThereErrors = false;
-    for (let property in errors) {
-      if (errors[property] !== "") {
-        isThereErrors = true;
-      }
-    }
-
+    let hasErrors = Object.values(errors).some(error => error !== "");
+    
     if (!formFields.gender) {
-      alert("Please select a gender.");
+      onSubmitForm({
+        error: { 
+          title: <ErrorOutlineOutlinedIcon sx={{ width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",}} />,
+          message: "Please select a gender." 
+        }
+      });
       return;
     }
-    if (!isThereErrors) {
-      const dataToInsert = {
-        user_first_name: formFields.firstName,
-        user_last_name: formFields.lastName,
-        email: formFields.email,
-        password: formFields.password,
-        gender: formFields.gender,
-      };
-      onSubmitForm(dataToInsert);
-      setOpenDialog(true);
-    } else {
-      alert("There is still some errors");
+
+    if (hasErrors) {
+      onSubmitForm({
+        error: { 
+          title: <ErrorOutlineOutlinedIcon sx={{ width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",}} />,
+          message: "There are still some errors." 
+        }
+      });
+      return;
     }
+    const dataToInsert = {
+      user_first_name: formFields.firstName,
+      user_last_name: formFields.lastName,
+      email: formFields.email,
+      password: formFields.password,
+      gender: formFields.gender,
+    };
+    onSubmitForm({ data: dataToInsert });
   };
+   
 
   const handleChange = (event) => {
     const { name, value } = event.target;

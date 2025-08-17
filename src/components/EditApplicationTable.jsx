@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography } from "@mui/material";
-import AuthContext from "../core/AuthContext";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,12 +11,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import CircleIcon from "@mui/icons-material/Circle";
 import DialogBox from "./DialogBox";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import InterviewDetailsDialog from "./InterviewDetailsDialog";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 const EditApplicationTable = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const [dialogMessage, setDialogMessage] = useState("");
@@ -95,7 +94,18 @@ const EditApplicationTable = () => {
         });
         setCustomEmploymentType(isPreset ? "" : dbType);
       } catch (error) {
-        alert(error);
+        console.error(error);
+        setOpenDialog(true);
+        setDialogTitle(
+          <ErrorOutlineIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "error.main",
+            }}
+          />
+        );
+        setDialogMessage("Failed to load application details.");
       }
     };
 
@@ -135,7 +145,17 @@ const EditApplicationTable = () => {
         : formData.employment_type;
 
     if (formData.employment_type === "Other" && !resolvedEmploymentType) {
-      alert("Please enter an employment type.");
+      setOpenDialog(true);
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Please enter employment type");
       return;
     }
 
@@ -144,7 +164,10 @@ const EditApplicationTable = () => {
         `http://localhost:3000/my-applications/${id}`,
         {
           method: "PATCH",
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            employment_type: resolvedEmploymentType, // ✅ send resolved value
+          }),
           headers: {
             "Content-Type": "application/json; charset=utf-8",
           },
@@ -155,12 +178,29 @@ const EditApplicationTable = () => {
 
       const result = await response.json();
       setOpenDialog(true);
-      setDialogMessage(result.message);
       setDialogTitle(
-        <CheckCircleOutlineOutlinedIcon></CheckCircleOutlineOutlinedIcon>
+        <CheckCircleIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}
+        />
       );
+      setDialogMessage(result.message || "Application updated.");
     } catch (error) {
-      alert(error);
+      console.error(error);
+      setOpenDialog(true);
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Error updating the application.");
     }
   };
 
@@ -171,9 +211,9 @@ const EditApplicationTable = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           application_id: id,
-          interview_date: interviewDetails.date,
+          date: interviewDetails.date,
           location: interviewDetails.location,
-          contact_person: interviewDetails.contact,
+          contact: interviewDetails.contact,
           notes: interviewDetails.notes,
           type: interviewDetails.type,
         }),
@@ -198,10 +238,29 @@ const EditApplicationTable = () => {
 
       setInterviewDialogOpen(false);
       setOpenDialog(true);
-      setDialogMessage(`${interviewResult.message}`);
+      setDialogTitle(
+        <CheckCircleIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}
+        />
+      );
+      setDialogMessage(interviewResult.message || "Interview saved.");
     } catch (error) {
       console.error("Failed to save interview and update status", error);
-      alert("Error saving interview or updating application status");
+      setOpenDialog(true);
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Error saving interview or updating application status");
     }
   };
   return (
@@ -650,20 +709,6 @@ const EditApplicationTable = () => {
         setOpen={setOpenDialog}
         title={dialogTitle}
         message={dialogMessage}
-        buttons={[
-          {
-            text: "Go to My Applications",
-            onClick: () => navigate("/my-applications"),
-            variant: "contained",
-          },
-          {
-            text: "Close",
-            onClick: () => setOpenDialog(false),
-            variant: "outlined",
-            bgColor: "black",
-            textColor: "white",
-          },
-        ]}
       />
 
       <InterviewDetailsDialog

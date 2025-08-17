@@ -1,50 +1,78 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RegistrationForm from "./RegistrationForm.jsx";
 import Grid from "@mui/material/Grid2";
 import DialogBox from "./DialogBox.jsx";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const url = "http://localhost:3000/signup";
 
 const Registration = () => {
   const [cleanForm, setCleanForm] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogConfig, setDialogConfig] = useState({
+    open: false,
+    title: "",
+    message: "",
+  });
 
   const navigate = useNavigate();
-  const handleUserCreate = async (data) => {
+
+  const handleUserCreate = async (submission) => {
+    if (submission.error) {
+      setDialogConfig({
+        open: true,
+        title: submission.error.title,
+        message: submission.error.message,
+      });
+      return;
+    }
     try {
       const response = await fetch(`${url}`, {
         method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
+        body: JSON.stringify(submission.data),
+        headers: { "Content-Type": "application/json" },
       });
+
       if (!response.ok) {
-        if (response.status === 409) {
-          const result = await response.json();
-          throw Error(result.message);
-        } else {
-          throw Error("There was a problem connecting to the database!");
-        }
+        throw Error(
+          response.status === 409
+            ? (await response.json()).message
+            : "Database connection error!"
+        );
       }
+
       const result = await response.json();
-      setDialogMessage(result.message);
-      setDialogTitle(
-        <CheckCircleOutlineOutlinedIcon sx={{ color: "green" }} />
-      );
-      setOpenDialog(true);
+      setDialogConfig({
+        open: true,
+        title: (
+          <CheckCircleIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "success.main",
+            }}
+          />
+        ),
+        message: result.message,
+      });
       setCleanForm(true);
     } catch (error) {
-      setDialogTitle(<ErrorOutlineOutlinedIcon sx={{ color: "red" }} />);
-      setDialogMessage(error.message);
-      setOpenDialog(true);
+      setDialogConfig({
+        open: true,
+        title: (
+          <ErrorOutlineOutlinedIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "error.main",
+            }}
+          />
+        ),
+        message: error.message || "Something went wrong.",
+      });
     }
   };
 
@@ -131,28 +159,42 @@ const Registration = () => {
           <RegistrationForm
             onSubmitForm={handleUserCreate}
             cleanForm={cleanForm}
-            setDialogMessage={setDialogMessage}
             onFormCleaned={() => setCleanForm(false)}
           />
         </Box>
       </Box>
 
       <DialogBox
-        open={openDialog}
-        setOpen={setOpenDialog}
-        title={dialogTitle}
-        message={dialogMessage}
+        open={dialogConfig.open}
+        setOpen={(open) => setDialogConfig((prev) => ({ ...prev, open }))}
+        title={dialogConfig.title}
+        message={dialogConfig.message}
         buttons={[
           {
-            text: "Go to Sign in",
-            onClick: () => navigate("/"),
+            text: "Sign in",
+            onClick: () => {
+              setDialogConfig({ open: false, title: "", message: "" });
+              navigate("/");
+            },
             variant: "contained",
+            sx: {
+              backgroundColor: "#141E27",
+              fontSize: { xs: 11, md: 12 },
+              width: "15%",
+              my: 1.5,
+            },
           },
           {
             text: "Close",
-            onClick: () => setOpenDialog(false),
+            onClick: () =>
+              setDialogConfig({ open: false, title: "", message: "" }),
             variant: "outlined",
-            bgColor: "white",
+            sx: {
+              color: "#141E27",
+              fontSize: { xs: 11, md: 12 },
+              width: "15%",
+              my: 1.5,
+            },
           },
         ]}
       />
