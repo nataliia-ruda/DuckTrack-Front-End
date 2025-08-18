@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import SideNavigation from "./SideNavigation.jsx";
 import { DrawerHeader } from "./SideNavigation";
-import Box from "@mui/material/Box";
+import { Box, Link } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -24,6 +24,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DialogBox from "./DialogBox.jsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Link as RouterLink } from "react-router-dom";
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -51,6 +52,9 @@ const EditProfilePage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState(null);
   const [dialogMessage, setDialogMessage] = useState("");
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -282,9 +286,57 @@ const EditProfilePage = () => {
     setChecked(event.target.checked);
   };
 
+  const handleRequestDelete = async () => {
+    setDeleting(true);
+    try {
+      const resp = await fetch("http://localhost:3000/request-delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // important for session
+        // if you want to require password re-entry, send it in body
+        // body: JSON.stringify({ currentPassword: formFields.currentPassword })
+      });
+      const data = await resp.json();
+
+      setDialogTitle(
+        <CheckCircleIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "success.main",
+          }}
+        />
+      );
+      setDialogMessage(
+        resp.ok
+          ? data.message ||
+              "We sent you an email with a confirmation link to delete your account."
+          : data.message ||
+              "Could not start account deletion. Please try again."
+      );
+      setOpenDialog(true);
+    } catch (error) {
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Network error. Please try again.");
+      setOpenDialog(true);
+    } finally {
+      setDeleting(false);
+      setDeleteOpen(false);
+    }
+  };
+
   return (
     <Box
       sx={{
+        width: "100%",
         display: "flex",
         minHeight: "100vh",
         pb: { xs: 6, md: 0 },
@@ -656,6 +708,24 @@ const EditProfilePage = () => {
               />
             </Box>
 
+            <Box
+              sx={{
+                display: "flex",
+                gap: 1,
+                fontSize: { xs: "0.6rem", md: "1rem" },
+              }}
+            >
+              <Typography sx={{ fontSize: { xs: "0.6rem", md: "1rem" } }}>
+                Do you want to delete your account?
+              </Typography>
+              <Link
+                onClick={() => setDeleteOpen(true)}
+                sx={{ cursor: "pointer" }}
+              >
+                Click here
+              </Link>
+            </Box>
+
             <Button
               type="submit"
               variant="contained"
@@ -679,6 +749,38 @@ const EditProfilePage = () => {
         setOpen={setOpenDialog}
         title={dialogTitle}
         message={dialogMessage}
+      />
+
+      <DialogBox
+        open={deleteOpen}
+        setOpen={setDeleteOpen}
+        showCloseIcon={!deleting}
+        title="Delete your account?"
+        message={`This will permanently delete your DuckTrack account and all data. We'll send you an email to confirm this action.`}
+        buttons={[
+          {
+            text: deleting ? "Sending..." : "Yes, send email",
+            variant: "contained",
+            color: "error",
+            onClick: handleRequestDelete,
+            closeOnClick: false,
+            disabled: deleting,
+            sx: {
+              fontSize: { xs: 10, md: 12 },
+              my: 1.5,
+            },
+          },
+          {
+            text: "Cancel",
+            variant: "outlined",
+            color: "#001A42",
+            disabled: deleting,
+            sx: {
+              fontSize: { xs: 10, md: 12 },
+              my: 1.5,
+            },
+          },
+        ]}
       />
     </Box>
   );

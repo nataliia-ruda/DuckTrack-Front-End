@@ -20,6 +20,8 @@ import LandingPageFull from "./components/LandingPage/LandingPageFull.jsx";
 import SigninPage from "./components/SigninPage.jsx";
 import InterviewPage from "./components/InterviewPage.jsx"; 
 import NotFound from "./components/NotFound.jsx"; 
+import AccountDeleted from "./components/AccountDeleted.jsx";
+import DeleteLinkInvalid from "./components/DeleteLinkInvalid.jsx";
 
 
 function App() {
@@ -48,6 +50,9 @@ function App() {
       <Route path="/verify-required" element={<VerifyRequiredPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/account-deleted" element={<AccountDeleted />} />
+      <Route path="/delete-link-invalid" element={<DeleteLinkInvalid />} />
+
       <Route path="*" element={<NotFound />} />
 
 
