@@ -11,12 +11,21 @@ import {
   Button,
   Toolbar,
   AppBar,
+  Popper,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Link,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Link as RouterLink } from "react-router-dom";
-import { Link } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Link as RouterLink } from "react-router-dom";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 const ResetPasswordPage = () => {
@@ -26,10 +35,49 @@ const ResetPasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [status, setStatus] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [pwHelpOpen, setPwHelpOpen] = useState(false);
+  const [pwAnchorEl, setPwAnchorEl] = useState(null);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const validatePassword = (value) => {
+    const longEnough = value.length >= 8;
+    const hasUpper = /[A-Z]/.test(value);
+    const hasSpecial = /[^\w\s]/.test(value);
+    const ok = longEnough && hasUpper && hasSpecial;
+    return { longEnough, hasUpper, hasSpecial, ok };
+  };
+
+  const PasswordChecklist = ({ value }) => {
+    const { longEnough, hasUpper, hasSpecial } = validatePassword(value);
+    const Row = ({ ok, text }) => (
+      <ListItem dense sx={{ py: 0.5 }}>
+        <ListItemIcon sx={{ minWidth: 28 }}>
+          {ok ? (
+            <CheckCircleIcon color="success" fontSize="small" />
+          ) : (
+            <CancelIcon color="error" fontSize="small" />
+          )}
+        </ListItemIcon>
+        <ListItemText
+          primary={text}
+          primaryTypographyProps={{ fontSize: 13 }}
+          sx={{ m: 0 }}
+        />
+      </ListItem>
+    );
+    return (
+      <List dense sx={{ py: 0.5 }}>
+        <Row ok={longEnough} text="At least 8 characters" />
+        <Row ok={hasUpper} text="Uppercase letter (A–Z)" />
+        <Row ok={hasSpecial} text="Special character (!@#$…)" />
+      </List>
+    );
+  };
 
   const handleComparePassword = () => {
     if (confirmPassword && password !== confirmPassword) {
@@ -42,11 +90,20 @@ const ResetPasswordPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Require both fields
     if (!password || !confirmPassword) {
       setStatus("All fields are required.");
       return;
     }
 
+    const pwRes = validatePassword(password);
+    if (!pwRes.ok) {
+      setPasswordError("Password doesn't meet the requirements.");
+      setStatus("");
+      return;
+    }
+
+    // Match check
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match!");
       setStatus("Passwords don't match.");
@@ -54,6 +111,7 @@ const ResetPasswordPage = () => {
     }
 
     setConfirmPasswordError("");
+    setPasswordError("");
     setStatus("Sending...");
 
     fetch("http://localhost:3000/reset-password", {
@@ -73,14 +131,8 @@ const ResetPasswordPage = () => {
   };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleMouseUpPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleMouseUpPassword = (event) => event.preventDefault();
 
   return (
     <Box
@@ -159,9 +211,31 @@ const ResetPasswordPage = () => {
           <OutlinedInput
             id="new-password"
             name="password"
-            error={!!confirmPasswordError}
+            error={!!passwordError}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setPassword(val);
+              const res = validatePassword(val);
+              setPasswordError(
+                res.ok ? "" : "Password doesn't meet the requirements."
+              );
+              if (!pwHelpOpen) {
+                setPwAnchorEl(e.currentTarget);
+                setPwHelpOpen(true);
+              }
+              // update confirm mismatch live
+              if (confirmPassword) {
+                setConfirmPasswordError(
+                  val === confirmPassword ? "" : "Passwords do not match!"
+                );
+              }
+            }}
+            onFocus={(e) => {
+              setPwAnchorEl(e.currentTarget);
+              setPwHelpOpen(true);
+            }}
+            onBlur={() => setTimeout(() => setPwHelpOpen(false), 120)}
             size={isSmallScreen ? "small" : "medium"}
             type={showPassword ? "text" : "password"}
             sx={{
@@ -213,7 +287,13 @@ const ResetPasswordPage = () => {
             id="confirm-password"
             name="confirmPassword"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setConfirmPassword(val);
+              setConfirmPasswordError(
+                password === val ? "" : "Passwords do not match!"
+              );
+            }}
             size={isSmallScreen ? "small" : "medium"}
             onBlur={handleComparePassword}
             type={showPassword ? "text" : "password"}
@@ -253,7 +333,12 @@ const ResetPasswordPage = () => {
         <Button
           type="submit"
           variant="contained"
-          disabled={!password || !confirmPassword || !!confirmPasswordError}
+          disabled={
+            !password ||
+            !confirmPassword ||
+            !!confirmPasswordError ||
+            !!passwordError
+          }
           sx={{
             mt: 2,
             width: "90%",
@@ -264,6 +349,14 @@ const ResetPasswordPage = () => {
           Reset Password
         </Button>
 
+        {passwordError && (
+          <Typography
+            sx={{ mt: 1, color: "red", fontSize: { xs: "12px", md: "14px" } }}
+          >
+            {passwordError}
+          </Typography>
+        )}
+
         {confirmPasswordError && (
           <Typography
             sx={{ mt: 1, color: "red", fontSize: { xs: "12px", md: "14px" } }}
@@ -271,6 +364,7 @@ const ResetPasswordPage = () => {
             {confirmPasswordError}
           </Typography>
         )}
+
         {status && (
           <>
             <Typography sx={{ mt: 2, fontSize: { xs: "12px", md: "15px" } }}>
@@ -302,6 +396,32 @@ const ResetPasswordPage = () => {
           </>
         )}
       </Box>
+
+      {/* Password Requirements Popper */}
+      <Popper
+        open={pwHelpOpen}
+        anchorEl={pwAnchorEl}
+        placement={isSmallScreen ? "top-start" : "left-start"}
+        sx={{ zIndex: 1300 }}
+      >
+        <Paper
+          elevation={6}
+          sx={{
+            p: 1,
+            bgcolor: "#1F2A38",
+            color: "#fff",
+            border: "1px solid #444",
+            width: 220,
+            fontSize: { xs: 10, md: 14 },
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <Typography sx={{ fontSize: 12, mb: 0.5, color: "#ccc" }}>
+            Password should include:
+          </Typography>
+          <PasswordChecklist value={password} />
+        </Paper>
+      </Popper>
     </Box>
   );
 };

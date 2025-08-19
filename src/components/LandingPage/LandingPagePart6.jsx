@@ -140,10 +140,10 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
               }}
             />
             <Link
-              href="mailto:support@ducktrack.com"
+              href="mailto:info@ducktrack.de"
               style={{ color: "#f9f9f9", textDecoration: "underline" }}
             >
-              support@ducktrack.com
+              info@ducktrack.de
             </Link>
           </Box>
 

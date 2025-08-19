@@ -174,7 +174,7 @@ const Registration = () => {
             text: "Sign in",
             onClick: () => {
               setDialogConfig({ open: false, title: "", message: "" });
-              navigate("/");
+              navigate("/signin");
             },
             variant: "contained",
             sx: {

@@ -24,7 +24,16 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DialogBox from "./DialogBox.jsx";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { Link as RouterLink } from "react-router-dom";
+import CancelIcon from "@mui/icons-material/Cancel";
+import {
+  Popper,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 
 const EditProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -55,6 +64,21 @@ const EditProfilePage = () => {
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  const [checked, setChecked] = useState(false);
+
+  // --- Password validation helpers (same as Registration/Reset): >=8, uppercase, special ---
+  const validatePassword = (value) => {
+    const longEnough = value.length >= 8;
+    const hasUpper = /[A-Z]/.test(value);
+    const hasSpecial = /[^\w\s]/.test(value);
+    const ok = longEnough && hasUpper && hasSpecial;
+    return { longEnough, hasUpper, hasSpecial, ok };
+  };
+
+  // Tooltip-style checklist beside the New Password field
+  const [pwHelpOpen, setPwHelpOpen] = useState(false);
+  const [pwAnchorEl, setPwAnchorEl] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -169,6 +193,14 @@ const EditProfilePage = () => {
           ...prev,
           comparePasswordError: "New passwords do not match.",
         }));
+      } else {
+        const res = validatePassword(newPassword);
+        if (!res.ok) {
+          setErrors((prev) => ({
+            ...prev,
+            comparePasswordError: "Password doesn't meet the requirements.",
+          }));
+        }
       }
     }
   };
@@ -203,6 +235,15 @@ const EditProfilePage = () => {
         setErrors((prev) => ({
           ...prev,
           comparePasswordError: "New passwords do not match.",
+        }));
+        return;
+      }
+
+      const res = validatePassword(newPassword);
+      if (!res.ok) {
+        setErrors((prev) => ({
+          ...prev,
+          comparePasswordError: "Password doesn't meet the requirements.",
         }));
         return;
       }
@@ -280,21 +321,18 @@ const EditProfilePage = () => {
     }
   };
 
-  const [checked, setChecked] = useState(false);
-
   const handleSwitchChange = (event) => {
     setChecked(event.target.checked);
   };
 
+  // Re-added: request account deletion handler (was missing)
   const handleRequestDelete = async () => {
     setDeleting(true);
     try {
       const resp = await fetch("http://localhost:3000/request-delete-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // important for session
-        // if you want to require password re-entry, send it in body
-        // body: JSON.stringify({ currentPassword: formFields.currentPassword })
+        credentials: "include",
       });
       const data = await resp.json();
 
@@ -331,6 +369,34 @@ const EditProfilePage = () => {
       setDeleting(false);
       setDeleteOpen(false);
     }
+  };
+
+  // Live checklist component
+  const PasswordChecklist = ({ value }) => {
+    const { longEnough, hasUpper, hasSpecial } = validatePassword(value);
+    const Row = ({ ok, text }) => (
+      <ListItem dense sx={{ py: 0.5 }}>
+        <ListItemIcon sx={{ minWidth: 28 }}>
+          {ok ? (
+            <CheckCircleIcon color="success" fontSize="small" />
+          ) : (
+            <CancelIcon color="error" fontSize="small" />
+          )}
+        </ListItemIcon>
+        <ListItemText
+          primary={text}
+          primaryTypographyProps={{ fontSize: 13 }}
+          sx={{ m: 0 }}
+        />
+      </ListItem>
+    );
+    return (
+      <List dense sx={{ py: 0.5 }}>
+        <Row ok={longEnough} text="At least 8 characters" />
+        <Row ok={hasUpper} text="Uppercase letter (A–Z)" />
+        <Row ok={hasSpecial} text="Special character (!@#$…)" />
+      </List>
+    );
   };
 
   return (
@@ -577,8 +643,43 @@ const EditProfilePage = () => {
                 id="newPassword"
                 name="newPassword"
                 value={formFields.newPassword}
-                onChange={handleChange}
-                onBlur={handlePasswordBlur}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormFields((prev) => ({ ...prev, newPassword: val }));
+
+                  const res = validatePassword(val);
+                  const mismatch =
+                    formFields.confirmNewPassword &&
+                    val !== formFields.confirmNewPassword;
+
+                  if (mismatch) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      comparePasswordError: "New passwords do not match.",
+                    }));
+                  } else if (!res.ok) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      comparePasswordError:
+                        "Password doesn't meet the requirements.",
+                    }));
+                  } else {
+                    setErrors((prev) => ({
+                      ...prev,
+                      comparePasswordError: "",
+                    }));
+                  }
+
+                  if (!pwHelpOpen) {
+                    setPwAnchorEl(e.currentTarget);
+                    setPwHelpOpen(true);
+                  }
+                }}
+                onFocus={(e) => {
+                  setPwAnchorEl(e.currentTarget);
+                  setPwHelpOpen(true);
+                }}
+                onBlur={() => setTimeout(() => setPwHelpOpen(false), 120)}
                 type={showPassword ? "text" : "password"}
                 sx={{
                   "& .MuiInputBase-input": {
@@ -620,7 +721,30 @@ const EditProfilePage = () => {
                 id="confirmNewPassword"
                 name="confirmNewPassword"
                 value={formFields.confirmNewPassword}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setFormFields((prev) => ({
+                    ...prev,
+                    confirmNewPassword: val,
+                  }));
+
+                  const mismatch =
+                    formFields.newPassword && val !== formFields.newPassword;
+                  if (mismatch) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      comparePasswordError: "New passwords do not match.",
+                    }));
+                  } else {
+                    const res = validatePassword(formFields.newPassword || "");
+                    setErrors((prev) => ({
+                      ...prev,
+                      comparePasswordError: res.ok
+                        ? ""
+                        : "Password doesn't meet the requirements.",
+                    }));
+                  }
+                }}
                 onBlur={handlePasswordBlur}
                 type={showPassword ? "text" : "password"}
                 sx={{
@@ -685,9 +809,7 @@ const EditProfilePage = () => {
                         maxWidth: 220,
                         fontSize: { xs: "0.7rem", md: "0.8rem" },
                         bgcolor: "common.black",
-                        "& .MuiTooltip-arrow": {
-                          color: "common.black",
-                        },
+                        "& .MuiTooltip-arrow": { color: "common.black" },
                       },
                     },
                   }}
@@ -744,6 +866,31 @@ const EditProfilePage = () => {
         </Box>
       </Box>
 
+      {/* Password Requirements Popper */}
+      <Popper
+        open={pwHelpOpen}
+        anchorEl={pwAnchorEl}
+        placement="bottom-start"
+        sx={{ zIndex: 1300 }}
+      >
+        <Paper
+          elevation={6}
+          sx={{
+            p: 1,
+            bgcolor: "#1F2A38",
+            color: "#fff",
+            border: "1px solid #444",
+            width: 260,
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <Typography sx={{ fontSize: 12, mb: 0.5, color: "#ccc" }}>
+            Password must meet:
+          </Typography>
+          <PasswordChecklist value={formFields.newPassword} />
+        </Paper>
+      </Popper>
+
       <DialogBox
         open={openDialog}
         setOpen={setOpenDialog}
@@ -765,20 +912,14 @@ const EditProfilePage = () => {
             onClick: handleRequestDelete,
             closeOnClick: false,
             disabled: deleting,
-            sx: {
-              fontSize: { xs: 10, md: 12 },
-              my: 1.5,
-            },
+            sx: { fontSize: { xs: 10, md: 12 }, my: 1.5 },
           },
           {
             text: "Cancel",
             variant: "outlined",
             color: "#001A42",
             disabled: deleting,
-            sx: {
-              fontSize: { xs: 10, md: 12 },
-              my: 1.5,
-            },
+            sx: { fontSize: { xs: 10, md: 12 }, my: 1.5 },
           },
         ]}
       />
