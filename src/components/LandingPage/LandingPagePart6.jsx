@@ -136,7 +136,7 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
             <EmailIcon
               sx={{
                 color: "#f9f9f9",
-                fontSize: { xs: "1.1rem", md: "1.4rem" },
+                fontSize: { xs: "1.1rem", md: "1.2rem" },
               }}
             />
             <Link
@@ -147,24 +147,6 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
             </Link>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <PhoneIcon
-              sx={{
-                color: "#f9f9f9",
-                fontSize: { xs: "1.1rem", md: "1.4rem" },
-              }}
-            />
-            <Typography
-              variant="body1"
-              sx={{
-                color: "#f9f9f9",
-                mt: 1,
-                fontSize: { xs: "0.7rem", md: "1rem" },
-              }}
-            >
-              +491234567890
-            </Typography>
-          </Box>
         </Box>
 
         <Typography

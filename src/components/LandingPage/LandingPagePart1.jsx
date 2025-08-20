@@ -168,9 +168,10 @@ const LandingPagePart1 = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  position: { xs: "absolute", md: "static" },
+                  position: { xs: "absolute", md: "relative" },
                   top: { xs: 16, md: "auto" },
                   right: { xs: 16, md: "auto" },
+                  
                 }}
               >
                 <Tooltip title="Menu">
@@ -209,6 +210,8 @@ const LandingPagePart1 = ({
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
+                disableScrollLock = {false}
+                sx={{position: "absolute"}}
                 slotProps={{
                   paper: {
                     elevation: 0,
@@ -239,6 +242,7 @@ const LandingPagePart1 = ({
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            
               >
                 <MenuItem
                   onClick={(event) => {
@@ -249,7 +253,7 @@ const LandingPagePart1 = ({
                   <ListItemIcon>
                     <DashboardRoundedIcon fontSize="small" />
                   </ListItemIcon>
-                  Dashboard
+                  Overview
                 </MenuItem>
 
                 <MenuItem

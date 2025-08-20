@@ -13,7 +13,8 @@ import CircleIcon from "@mui/icons-material/Circle";
 import DialogBox from "./DialogBox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useMediaQuery, useTheme } from "@mui/material";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { useRef } from "react";
 
 const NewApplicationForm = () => {
   const { user } = useContext(AuthContext);
@@ -66,11 +67,15 @@ const NewApplicationForm = () => {
     ) {
       setOpenDialog(true);
       setDialogMessage("Please fill in all required fields.");
-      setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
+      setDialogTitle(
+        <ErrorOutlineOutlinedIcon
+          sx={{
             width: { xs: 24, md: 30 },
             height: { xs: 24, md: 30 },
             color: "error.main",
-          }} />);
+          }}
+        />
+      );
       return;
     }
 
@@ -88,11 +93,15 @@ const NewApplicationForm = () => {
       if (response.ok) {
         setOpenDialog(true);
         setDialogMessage(result.message);
-        setDialogTitle(<CheckCircleIcon sx={{
-            width: { xs: 24, md: 30 },
-            height: { xs: 24, md: 30 },
-            color: "success.main",
-          }}/>);
+        setDialogTitle(
+          <CheckCircleIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "success.main",
+            }}
+          />
+        );
         setFormData({
           position_name: "",
           employer_name: "",
@@ -110,23 +119,33 @@ const NewApplicationForm = () => {
       } else {
         setOpenDialog(true);
         setDialogMessage("Failed to submit application. Please try again.");
-        setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
-            width: { xs: 24, md: 30 },
-            height: { xs: 24, md: 30 },
-            color: "error.main",
-          }} />);
+        setDialogTitle(
+          <ErrorOutlineOutlinedIcon
+            sx={{
+              width: { xs: 24, md: 30 },
+              height: { xs: 24, md: 30 },
+              color: "error.main",
+            }}
+          />
+        );
       }
     } catch (error) {
       setOpenDialog(true);
       setDialogMessage("Error submitting application. Please try again.");
-      setDialogTitle(<ErrorOutlineOutlinedIcon  sx={{
+      setDialogTitle(
+        <ErrorOutlineOutlinedIcon
+          sx={{
             width: { xs: 24, md: 30 },
             height: { xs: 24, md: 30 },
             color: "error.main",
-          }} />);
+          }}
+        />
+      );
       console.error("Error submitting application:", error);
     }
   };
+
+  const formRef = useRef(null);
 
   return (
     <Box
@@ -155,8 +174,15 @@ const NewApplicationForm = () => {
       </Typography>
       <Box
         component="form"
+        ref={formRef}
         onSubmit={handleSubmit}
-        sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          width: "100%",
+          position: "relative",
+        }}
       >
         <TextField
           label="Job title:"
@@ -234,6 +260,15 @@ const NewApplicationForm = () => {
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
               },
+              position: "relative",
+            }}
+            MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem
@@ -362,6 +397,15 @@ const NewApplicationForm = () => {
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
               },
+              position: "relative",
+            }}
+            MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem
@@ -493,6 +537,15 @@ const NewApplicationForm = () => {
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
               },
+              position: "relative",
+            }}
+            MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem

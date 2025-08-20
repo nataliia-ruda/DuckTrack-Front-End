@@ -15,6 +15,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import InterviewDetailsDialog from "./InterviewDetailsDialog";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { useRef } from "react";
 
 const EditApplicationTable = () => {
   const { id } = useParams();
@@ -263,6 +264,9 @@ const EditApplicationTable = () => {
       setDialogMessage("Error saving interview or updating application status");
     }
   };
+
+  const formRef = useRef(null);
+
   return (
     <Box
       sx={{
@@ -288,7 +292,8 @@ const EditApplicationTable = () => {
       >
         Edit Application
       </Typography>
-      <Box
+      <Box 
+       ref={formRef}
         component="form"
         sx={{
           display: "flex",
@@ -296,6 +301,7 @@ const EditApplicationTable = () => {
           justifyContent: "center",
           gap: 2,
           width: "100%",
+         
         }}
         onSubmit={handleSaveChanges}
       >
@@ -377,6 +383,15 @@ const EditApplicationTable = () => {
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
               },
+              position: "relative"
+            }}
+             MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem
@@ -503,6 +518,15 @@ const EditApplicationTable = () => {
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
               },
+              position: "relative"
+            }}
+            MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem
@@ -613,7 +637,16 @@ const EditApplicationTable = () => {
               },
               "& .MuiInputLabel-root": {
                 fontSize: { xs: "0.8rem", md: "1rem" },
-              },
+              }, 
+              position: "relative",
+            }}
+            MenuProps={{
+              disablePortal: true,
+              container: formRef.current,
+              PaperProps: { sx: { maxHeight: 280, position: "absolute" } },
+              anchorOrigin: { vertical: "bottom", horizontal: "left" },
+              transformOrigin: { vertical: "top", horizontal: "left" },
+              disableScrollLock: true,
             }}
           >
             <MenuItem

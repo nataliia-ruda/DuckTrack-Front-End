@@ -131,7 +131,6 @@ const SideNavigation = () => {
             easing: t.transitions.easing.sharp,
             duration: t.transitions.duration.leavingScreen,
           }),
-
           zIndex: isMdUp ? t.zIndex.drawer + 1 : undefined,
           ...(isMdUp && open
             ? {
@@ -152,38 +151,55 @@ const SideNavigation = () => {
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.4)",
             color: "#E0E0E0",
             borderBottom: "2px solid white",
-            /* width: "100%", */
+            width: "100vw",
+            height: "auto",
+            pr: 2,
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              borderRight: "2px solid white",
-              marginRight: 5,
-              ...(isMdUp && open ? { display: "none" } : {}),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+          {/* Left side content */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{
+                borderRight: "2px solid white",
+                marginRight: 5,
+                ...(isMdUp && open ? { display: "none" } : {}),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
 
-          <Box
-            component="img"
-            src="/duck_track_white.png"
-            alt="DuckTrack logo"
-            sx={{
-              height: { xs: "18px", md: "24px" },
-              display: { xs: "none", md: "block" },
-            }}
-          />
+            <Box
+              onClick={() => navigate("/home")}
+              component="img"
+              src="/duck_track_white.png"
+              alt="DuckTrack logo"
+              sx={{
+                height: { xs: "18px", md: "24px" },
+                display: { xs: "none", md: "block" },
+                cursor: "pointer",
+              }}
+            />
+          </Box>
 
-          <Box sx={{ flexGrow: 1 }} />
-
+          {/* Right side content - your button */}
           <Button
             onClick={handleAddApplication}
-            sx={{ color: "black", backgroundColor: "#FFC107", mx: 1 }}
+            sx={{
+              color: "black",
+              backgroundColor: "#FFC107",
+              mx: 1,
+              justifySelf: "flex-end",
+              flexShrink: 0,
+              position: "absolute",
+              right: open ? 300 : 40,
+            }}
           >
             <AddIcon sx={{ mx: 0.5, fontSize: { xs: "8px", md: "14px" } }} />
             <Typography

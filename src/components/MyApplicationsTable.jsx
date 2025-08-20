@@ -30,6 +30,7 @@ import Tooltip from "@mui/material/Tooltip";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { useRef } from "react";
 
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
@@ -384,9 +385,13 @@ export default function MyApplicationsTable({ searchInput }) {
   const handleStatusFilter = (event) => {
     setStatusFilter(event.target.value);
   };
-
+  const tableContainerRef = useRef(null);
   return (
-    <TableContainer component={Paper} sx={{ width: "100%" }}>
+    <TableContainer
+      component={Paper}
+      ref={tableContainerRef}
+      sx={{ width: "100%", position: "relative" }}
+    >
       <Table aria-label="job applications" sx={{ width: "100%" }}>
         <TableHead sx={{ display: { xs: "none", md: "table-header-group" } }}>
           <TableRow>
@@ -440,23 +445,31 @@ export default function MyApplicationsTable({ searchInput }) {
               </Box>
             </TableCell>
 
-            <TableCell>
+            <TableCell sx={{ whiteSpace: "nowrap" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Typography sx={{ fontWeight: 700 }}>Status</Typography>
-                <Select
+
+                <select
                   value={statusFilter}
-                  onChange={handleStatusFilter}
-                  size="small"
-                  sx={{ minWidth: 120, height: 32 }}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  style={{
+                    minWidth: "100px",
+                    height: "32px",
+                    padding: "8px",
+                    borderRadius: "4px",
+                    border: "1px solid rgba(0,0,0,0.23)",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                  }}
                 >
-                  <MenuItem value="">All</MenuItem>
-                  <MenuItem value="applied">Applied</MenuItem>
-                  <MenuItem value="interviewing">Interviewing</MenuItem>
-                  <MenuItem value="offer">Offer</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
-                  <MenuItem value="ghosted">Ghosted</MenuItem>
-                  <MenuItem value="withdrawn">Withdrawn</MenuItem>
-                </Select>
+                  <option value="">All</option>
+                  <option value="applied">Applied</option>
+                  <option value="interviewing">Interviewing</option>
+                  <option value="offer">Offer</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="ghosted">Ghosted</option>
+                  <option value="withdrawn">Withdrawn</option>
+                </select>
               </Box>
             </TableCell>
 
