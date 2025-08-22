@@ -51,7 +51,7 @@ const SigninForm = () => {
     event.preventDefault();
 
     try {
-      let response = await fetch(`http://localhost:3000/login`, {
+      let response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {

@@ -19,7 +19,7 @@ const VerifyRequiredPage = () => {
     setSending(true);
 
     try {
-      const res = await fetch("http://localhost:3000/resend-verification", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/resend-verification`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, user_id }),

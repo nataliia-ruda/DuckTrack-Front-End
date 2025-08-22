@@ -23,7 +23,7 @@ const VerifyEmailPage = () => {
       return;
     }
 
-    fetch("http://localhost:3000/verify-email", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/verify-email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
@@ -54,7 +54,7 @@ const VerifyEmailPage = () => {
     setSending(true);
     setMessage("");
 
-    fetch("http://localhost:3000/resend-verification", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/resend-verification`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: "user@example.com" }),

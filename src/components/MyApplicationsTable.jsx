@@ -67,7 +67,7 @@ function Row({ row, fetchApplications }) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/my-applications/${deleteId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/my-applications/${deleteId}`,
         {
           method: "DELETE",
         }
@@ -355,7 +355,7 @@ export default function MyApplicationsTable({ searchInput }) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/my-applications?user_id=${user.user_id}&search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`
+        `${import.meta.env.VITE_BACKEND_URL}/my-applications?user_id=${user.user_id}&search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`
       );
 
       if (!response.ok) {

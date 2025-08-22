@@ -75,7 +75,7 @@ const EditApplicationTable = () => {
     const fetchApplicationInfo = async () => {
       try {
         let response = await fetch(
-          `http://localhost:3000/my-applications/${id}`
+          `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`
         );
         if (!response.ok) throw Error("URL does not exist!");
 
@@ -162,7 +162,7 @@ const EditApplicationTable = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/my-applications/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
         {
           method: "PATCH",
           body: JSON.stringify({
@@ -207,7 +207,7 @@ const EditApplicationTable = () => {
 
   const handleSaveInterview = async () => {
     try {
-      const interviewRes = await fetch("http://localhost:3000/interviews", {
+      const interviewRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/interviews`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -224,7 +224,7 @@ const EditApplicationTable = () => {
       const interviewResult = await interviewRes.json();
 
       const updateStatusRes = await fetch(
-        `http://localhost:3000/my-applications/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

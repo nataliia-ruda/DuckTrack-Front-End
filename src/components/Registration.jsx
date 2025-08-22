@@ -8,7 +8,7 @@ import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const url = "http://localhost:3000/signup";
+const url = `${import.meta.env.VITE_BACKEND_URL}/signup`;
 
 const Registration = () => {
   const [cleanForm, setCleanForm] = useState(false);

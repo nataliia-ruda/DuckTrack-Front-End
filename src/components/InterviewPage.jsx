@@ -46,7 +46,7 @@ const InterviewPage = () => {
 
   const fetchInterviews = async () => {
     try {
-      const res = await fetch("http://localhost:3000/interviews", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/interviews`, {
         credentials: "include",
       });
       if (!res.ok) {
@@ -65,7 +65,7 @@ const InterviewPage = () => {
 
   const fetchEmployers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/my-employers", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/my-employers`, {
         credentials: "include",
       });
       if (!res.ok) {
@@ -132,7 +132,7 @@ const InterviewPage = () => {
 
   const createInterview = async () => {
     try {
-      const res = await fetch("http://localhost:3000/interviews", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/interviews`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -159,7 +159,7 @@ const InterviewPage = () => {
       };
 
       const res = await fetch(
-        `http://localhost:3000/interviews/${editingInterviewId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/interviews/${editingInterviewId}`,
         {
           method: "PATCH",
           credentials: "include",
@@ -226,7 +226,7 @@ const InterviewPage = () => {
           onClick: async () => {
             try {
               const res = await fetch(
-                `http://localhost:3000/interviews/${id}`,
+                `${import.meta.env.VITE_BACKEND_URL}/interviews/${id}`,
                 {
                   method: "DELETE",
                   credentials: "include",

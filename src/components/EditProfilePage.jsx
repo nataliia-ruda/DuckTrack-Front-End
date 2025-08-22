@@ -85,7 +85,7 @@ const EditProfilePage = () => {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            `http://localhost:3000/get-user/${user.user_id}`
+            `${import.meta.env.VITE_BACKEND_URL}/get-user/${user.user_id}`
           );
           if (response.ok) {
             const data = await response.json();
@@ -250,7 +250,7 @@ const EditProfilePage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/update-profile", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/update-profile`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -329,7 +329,7 @@ const EditProfilePage = () => {
   const handleRequestDelete = async () => {
     setDeleting(true);
     try {
-      const resp = await fetch("http://localhost:3000/request-delete-account", {
+      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/request-delete-account`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:3000/me", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/me`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    fetch("http://localhost:3000/logout", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
       method: "POST",
       credentials: "include",
     }).then(() => {

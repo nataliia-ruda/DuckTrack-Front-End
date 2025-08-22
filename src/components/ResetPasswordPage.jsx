@@ -114,7 +114,7 @@ const ResetPasswordPage = () => {
     setPasswordError("");
     setStatus("Sending...");
 
-    fetch("http://localhost:3000/reset-password", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/reset-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, password }),
