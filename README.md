@@ -1,12 +1,40 @@
-# React + Vite
+## DuckTrack (Front-End)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DuckTrack is a web application that helps users store, organize, and track job applications in one place.
+It provides a clear overview of application statuses, progress, and key metrics throughout the job-search process.
 
-Currently, two official plugins are available:
+This repository contains the front-end part of the application, responsible for the user interface, user interactions, and data visualization.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Backend repository:
+https://github.com/nataliia-ruda/DuckTrack-Back-End
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- User authentication UI (registration, login, email verification flow)
+
+- Add new job applications via a structured form
+
+- Display applications in a table view
+
+- Sort, filter, update, and delete job applications
+
+- KPI dashboard with visual statistics
+
+- Smooth UI animations for better user experience
+
+## Technologies
+
+- React + JavaScript (component-based UI)
+
+- Material UI
+
+- Chart.js (data visualization)
+
+- GSAP (animations)
+
+## Getting Started
+```bash
+git clone https://github.com/nataliia-ruda/DuckTrack-Front-End.git
+cd DuckTrack-Front-End
+npm install
+npm run dev
