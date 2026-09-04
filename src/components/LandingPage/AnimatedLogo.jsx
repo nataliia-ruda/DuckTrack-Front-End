@@ -2,230 +2,65 @@ import React, { useEffect, useRef } from "react";
 import { Box, Typography } from "@mui/material";
 import { gsap } from "gsap";
 
+const LOGO_TEXT = "uckTrack";
+
 const AnimatedLogo = () => {
-  const lettersRef = useRef([]);
+  const containerRef = useRef(null);
+  const charsContainerRef = useRef(null);
 
   useEffect(() => {
-    /*  Logo image  */
-    gsap.fromTo(
-      lettersRef.current[0],
-      {
-        x: -500,
-        rotation: -720,
-        opacity: 0,
-      },
-      {
-        x: 0,
-        rotation: 0,
-        opacity: 1,
-        duration: 2.5,
-        ease: "power2.out",
-      }
-    );
+    const chars = charsContainerRef.current.querySelectorAll(".char");
 
-    /*  Letter U */
-
-    const uTimeline = gsap.timeline({ delay: 0.3 });
-    uTimeline.fromTo(
-      lettersRef.current[1],
-      {
-        rotationX: 0,
-        opacity: 0,
-        scale: 1.5,
-      },
-      {
-        rotationX: 360, 
-        opacity: 1,
-        scale: 1.2,
-        duration: 1.5, 
-        ease: "expo.out",
-      }
-    );
-    uTimeline.to(lettersRef.current[1], {
-      rotationX: 0,
-      scale: 1,
-      duration: 1.2,
-      ease: "elastic.out(1, 0.4)",
+    // Start each letter tipped back and below the baseline, like a flap lying flat
+    gsap.set(chars, {
+      opacity: 0,
+      y: 80,
+      rotationX: -100,
+      scale: 0.4,
+      transformOrigin: "50% 100%",
     });
 
-    /* Letter C */
-    gsap.fromTo(
-      lettersRef.current[2],
-      {
-        x: -300,
-        opacity: 0,
-      },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power3.out",
-        delay: 0.8,
-      }
+    const tl = gsap.timeline();
+
+    // Logo image comes in first, same as before
+    tl.fromTo(
+      containerRef.current,
+      { x: -300, rotation: -360, opacity: 0 },
+      { x: 0, rotation: 0, opacity: 1, duration: 1.2, ease: "power2.out" }
     );
 
-    /* Letter K */
-    gsap.fromTo(
-      lettersRef.current[3],
+    // Letters pop/flip up into place one after another, with a slight overshoot
+    tl.to(
+      chars,
       {
-        y: 200,
-        scale: 2,
-        rotation: -180,
-        opacity: 0,
-      },
-      {
+        opacity: 1,
         y: 0,
+        rotationX: 0,
         scale: 1,
-        rotation: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "elastic.out(1, 0.5)",
-        delay: 1.0,
-      }
-    );
-
-    /* Letter T */
-    gsap.fromTo(
-      lettersRef.current[4],
-      {
-        y: -150,
-        opacity: 0,
+        duration: 0.9,
+        ease: "back.out(1.8)",
+        stagger: 0.05,
       },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power3.out",
-        delay: 1.2,
-      }
-    );
-
-    /* Letter R */
-    gsap.fromTo(
-      lettersRef.current[5],
-      {
-        y: -150,
-        rotation: 90,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        rotation: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "back.out(1.7)",
-        delay: 1.4,
-      }
-    );
-
-    /* Letter A */
-    gsap.fromTo(
-      lettersRef.current[6],
-      {
-        scale: 0,
-        opacity: 0,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 2,
-        ease: "back.out(2)",
-        delay: 1.6,
-      }
-    );
-
-    /* Letter C second one */
-    gsap.fromTo(
-      lettersRef.current[7],
-      {
-        y: 200,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "back.out(1.7)",
-        delay: 1.8,
-      }
-    );
-
-    /* Letter K last one */
-    gsap.fromTo(
-      lettersRef.current[8],
-      {
-        x: -200,
-        rotation: -360,
-        opacity: 0,
-      },
-      {
-        x: 0,
-        rotation: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "power4.out",
-        delay: 2.0,
-      }
+      "-=0.7"
     );
   }, []);
 
-  
-  const text = "uckTrack";
-
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "auto",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Box sx={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Typography
         variant="h1"
-        sx={{
-          display: "flex",
-          color: "#001A42",
-          fontWeight: 800,
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: {xs: 45, md:70},
-        }}
+        sx={{ display: "flex", color: "#001A42", fontWeight: 800, fontSize: { xs: 45, md: 70 } }}
       >
-        <span
-          ref={(el) => (lettersRef.current[0] = el)}
-          style={{
-            display: "inline-block",
-            transformOrigin: "center center",
-            marginRight: "0em", 
-          }}
-        >
-          <img
-            src="/d_logo.png"
-            alt="Logo"
-            style={{
-              height :"0.85em",
-              verticalAlign: "baseline",
-            }}
-          />
+        <span ref={containerRef} style={{ display: "inline-block", marginRight: "0.05em" }}>
+          <img src="/d_logo.png" alt="Logo" style={{ height: "0.85em", verticalAlign: "baseline" }} />
         </span>
-
-        {/* The rest of the letters moving */}
-        {text.split("").map((letter, index) => (
-          <span
-            key={index}
-            ref={(el) => (lettersRef.current[index + 1] = el)}
-            style={{
-              display: "inline-block",
-              transformOrigin: "center center",
-              marginRight: letter === " " ? "0.3em" : "0.05em",
-              perspective: "1000px",
-            }}
-          >
-            {letter}
-          </span>
-        ))}
+        <span ref={charsContainerRef} style={{ display: "inline-block", perspective: "600px" }}>
+          {LOGO_TEXT.split("").map((char, i) => (
+            <span key={i} className="char" style={{ display: "inline-block" }}>
+              {char}
+            </span>
+          ))}
+        </span>
       </Typography>
     </Box>
   );
