@@ -24,12 +24,22 @@ const EditApplicationTable = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [customEmploymentType, setCustomEmploymentType] = useState("");
+  const [customSource, setCustomSource] = useState("");
   const employmentOptions = [
     "Full-time",
     "Part-time",
     "Minijob",
     "Internship",
     "Temporary",
+  ];
+  const sourceOptions = [
+    "StepStone",
+    "Indeed",
+    "LinkedIn",
+    "Xing",
+    "Arbeitsagentur",
+    "Monster",
+    "Corporate website",
   ];
 
   const [formData, setFormData] = useState({
@@ -88,12 +98,17 @@ const EditApplicationTable = () => {
         const dbType = result.employment_type || "";
         const isPreset = employmentOptions.includes(dbType);
 
+        const dbSource = result.source || "";
+        const isPresetSource = sourceOptions.includes(dbSource);
+
         setFormData({
           ...result,
           application_date: formattedDate,
           employment_type: isPreset ? dbType : dbType ? "Other" : "",
+          source: isPresetSource ? dbSource : dbSource ? "Other" : "",
         });
         setCustomEmploymentType(isPreset ? "" : dbType);
+        setCustomSource(isPresetSource ? "" : dbSource);
       } catch (error) {
         console.error(error);
         setOpenDialog(true);
@@ -160,6 +175,24 @@ const EditApplicationTable = () => {
       return;
     }
 
+    const resolvedSource =
+      formData.source === "Other" ? customSource.trim() : formData.source;
+
+    if (formData.source === "Other" && !resolvedSource) {
+      setOpenDialog(true);
+      setDialogTitle(
+        <ErrorOutlineIcon
+          sx={{
+            width: { xs: 24, md: 30 },
+            height: { xs: 24, md: 30 },
+            color: "error.main",
+          }}
+        />
+      );
+      setDialogMessage("Please enter source");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
@@ -168,6 +201,7 @@ const EditApplicationTable = () => {
           body: JSON.stringify({
             ...formData,
             employment_type: resolvedEmploymentType, // ✅ send resolved value
+            source: resolvedSource,
           }),
           headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -578,6 +612,24 @@ const EditApplicationTable = () => {
               Other
             </MenuItem>
           </Select>
+
+          {formData.source === "Other" && (
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Enter source here:"
+              value={customSource}
+              onChange={(e) => setCustomSource(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+                "& .MuiInputLabel-root": {
+                  fontSize: { xs: "0.8rem", md: "1rem" },
+                },
+              }}
+            />
+          )}
         </FormControl>
 
         <TextField
