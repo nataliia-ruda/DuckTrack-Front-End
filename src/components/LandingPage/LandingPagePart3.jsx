@@ -16,7 +16,13 @@ const LandingPagePart3 = ({ instructionsSectionRef }) => {
   return (
     <Box
       ref={instructionsSectionRef}
-      sx={{ width: "100%", py: { xs: 3, md: 8 }, bgcolor: "#f9f9f9" }}
+      sx={{
+        width: "100%",
+        py: { xs: 3, md: 8 },
+        px: { xs: 2, md: 6 },
+        boxSizing: "border-box",
+        bgcolor: "#f9f9f9",
+      }}
     >
       <Typography
         variant="h3"
@@ -44,7 +50,7 @@ const LandingPagePart3 = ({ instructionsSectionRef }) => {
         <Box
           sx={{
             width: { xs: "100%", md: "50%" },
-            px: { xs: 2, md: 9 },
+            px: { xs: 2, md: 5 },
             py: 4,
             display: "flex",
             flexDirection: "column",
@@ -123,8 +129,7 @@ const LandingPagePart3 = ({ instructionsSectionRef }) => {
               height: "auto",
               objectFit: "cover",
               display: "block",
-              borderTopLeftRadius: "12px",
-              borderBottomLeftRadius: "12px",
+              borderRadius: "12px",
               boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
             }}
           />
