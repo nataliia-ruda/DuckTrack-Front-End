@@ -14,6 +14,7 @@ import {
   Typography,
   IconButton,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -344,6 +345,7 @@ Row.propTypes = {
 
 export default function MyApplicationsTable({ searchInput }) {
   const [applications, setApplications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
 
   const [sortColumn, setSortColumn] = useState("created_at");
@@ -353,6 +355,7 @@ export default function MyApplicationsTable({ searchInput }) {
   const fetchApplications = async () => {
     if (!user) return;
 
+    setIsLoading(true);
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/my-applications?user_id=${user.user_id}&search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`
@@ -367,6 +370,8 @@ export default function MyApplicationsTable({ searchInput }) {
     } catch (error) {
       console.error("Error fetching applications:", error);
       setApplications([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -478,7 +483,13 @@ export default function MyApplicationsTable({ searchInput }) {
         </TableHead>
 
         <TableBody>
-          {applications.length > 0 ? (
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={6} align="center" sx={{ py: 5 }}>
+                <CircularProgress size={32} />
+              </TableCell>
+            </TableRow>
+          ) : applications.length > 0 ? (
             applications.map((row) => (
               <Row
                 key={row.application_id}
