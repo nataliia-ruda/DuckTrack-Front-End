@@ -85,7 +85,8 @@ const EditProfilePage = () => {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/get-user/${user.user_id}`
+            `${import.meta.env.VITE_BACKEND_URL}/get-user/${user.user_id}`,
+            { credentials: "include" }
           );
           if (response.ok) {
             const data = await response.json();
@@ -252,12 +253,12 @@ const EditProfilePage = () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/update-profile`, {
         method: "PATCH",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName,
           lastName,
           gender,
-          user_id: user.user_id,
           autoGhostEnabled: checked,
           ...(isChangingPassword && {
             currentPassword,

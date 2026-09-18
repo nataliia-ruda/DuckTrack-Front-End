@@ -71,6 +71,7 @@ function Row({ row, fetchApplications }) {
         `${import.meta.env.VITE_BACKEND_URL}/my-applications/${deleteId}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
 
@@ -358,7 +359,8 @@ export default function MyApplicationsTable({ searchInput }) {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/my-applications?user_id=${user.user_id}&search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`
+        `${import.meta.env.VITE_BACKEND_URL}/my-applications?search=${searchInput}&sort=${sortColumn}&order=${sortOrder}&status=${statusFilter}`,
+        { credentials: "include" }
       );
 
       if (!response.ok) {

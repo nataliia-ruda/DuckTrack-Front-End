@@ -45,7 +45,8 @@ const Charts = () => {
     const fetchApplications = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/my-applications?user_id=${user.user_id}`
+          `${import.meta.env.VITE_BACKEND_URL}/my-applications`,
+          { credentials: "include" }
         );
         if (!response.ok) throw new Error("Failed to fetch applications");
 

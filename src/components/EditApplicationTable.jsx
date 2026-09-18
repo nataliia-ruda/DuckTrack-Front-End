@@ -85,7 +85,8 @@ const EditApplicationTable = () => {
     const fetchApplicationInfo = async () => {
       try {
         let response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`
+          `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
+          { credentials: "include" }
         );
         if (!response.ok) throw Error("URL does not exist!");
 
@@ -198,6 +199,7 @@ const EditApplicationTable = () => {
         `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
         {
           method: "PATCH",
+          credentials: "include",
           body: JSON.stringify({
             ...formData,
             employment_type: resolvedEmploymentType, // ✅ send resolved value
@@ -243,6 +245,7 @@ const EditApplicationTable = () => {
     try {
       const interviewRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/interviews`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           application_id: id,
@@ -261,6 +264,7 @@ const EditApplicationTable = () => {
         `${import.meta.env.VITE_BACKEND_URL}/my-applications/${id}`,
         {
           method: "PATCH",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...formData, status: "interviewing" }),
         }

@@ -36,7 +36,8 @@ const Homepage = () => {
       if (user) {
         try {
           const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL}/my-applications?user_id=${userId}`
+            `${import.meta.env.VITE_BACKEND_URL}/my-applications`,
+            { credentials: "include" }
           );
           if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);

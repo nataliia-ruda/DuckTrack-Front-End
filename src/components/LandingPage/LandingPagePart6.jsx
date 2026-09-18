@@ -15,18 +15,15 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
   useEffect(() => {
     const slider = sliderRef.current;
 
-    const totalWidth = slider.scrollWidth / 2;
+    gsap.set(slider, { xPercent: -50 });
 
-    const animation = gsap.fromTo(
-      slider,
-      { x: -totalWidth },
-      {
-        x: 0,
-        duration: 80,
-        ease: "linear",
-        repeat: -1,
-      }
-    );
+    const animation = gsap.to(slider, {
+      xPercent: 0,
+      duration: 80,
+      ease: "linear",
+      repeat: -1,
+      force3D: true,
+    });
 
     return () => {
       animation.kill();
@@ -41,15 +38,7 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           width: "100%",
           position: "relative",
           backgroundColor: "#f9f9f9",
-          background: "blur",
-          height: { xs: "auto", md: "auto" },
-          minHeight: { xs: "unset", md: "unset" },
-        }}
-      >
-        <Box
-          ref={sliderRef}
-          sx={{
-            backgroundImage: `linear-gradient(
+          backgroundImage: `linear-gradient(
           to bottom,
           rgba(255, 255, 255, 0.6) 0%,
           rgba(255, 255, 255, 0.6) 60%,
@@ -58,13 +47,22 @@ const LandingPagePart6 = ({ contactSectionRef }) => {
           rgba(77, 166, 255, 0.6) 90%,
           rgba(26, 95, 180, 0.6) 100%
         )`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          height: { xs: "auto", md: "auto" },
+          minHeight: { xs: "unset", md: "unset" },
+          mb: "-2px",
+        }}
+      >
+        <Box
+          ref={sliderRef}
+          sx={{
             display: "flex",
             gap: { xs: 4, md: 8 },
             width: "max-content",
+            willChange: "transform",
           }}
         >
           {[...Array(2)].flatMap((_, groupIndex) =>

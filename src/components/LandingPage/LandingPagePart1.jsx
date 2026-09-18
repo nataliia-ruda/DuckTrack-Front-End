@@ -210,7 +210,7 @@ const LandingPagePart1 = ({
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
-                disableScrollLock = {false}
+                disableScrollLock
                 sx={{position: "absolute"}}
                 slotProps={{
                   paper: {
