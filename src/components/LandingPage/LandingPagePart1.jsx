@@ -24,6 +24,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 const LandingPagePart1 = ({
   onFeaturesClick,
   onInstructionsClick,
+  onFaqClick,
   onContactClick,
 }) => {
   const { user, isLogged, logout } = useContext(AuthContext);
@@ -139,6 +140,26 @@ const LandingPagePart1 = ({
               }}
             >
               How it works?
+            </Button>
+            <Button
+              onClick={onFaqClick}
+              sx={{
+                color: "#001A42",
+                fontSize: "1em",
+                px: 3,
+                py: 1,
+                borderRadius: "999px",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  bgcolor: "blur",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
+                  borderColor: "#ffdb4d",
+                },
+              }}
+            >
+              FAQ
             </Button>
             <Button
               onClick={onContactClick}

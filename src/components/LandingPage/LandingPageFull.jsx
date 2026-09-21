@@ -4,6 +4,7 @@ import LandingPagePart3 from "./LandingPagePart3.jsx";
 import LandingPagePart4 from "./LandingPagePart4.jsx";
 import LandingPagePart5 from "./LandingPagePart5.jsx";
 import LandingPagePart6 from "./LandingPagePart6.jsx";
+import LandingPagePart7 from "./LandingPagePart7.jsx";
 import Box from "@mui/material/Box";
 import { useRef } from "react";
 
@@ -18,7 +19,13 @@ const LandingPageFull = () => {
 
   const scrollToInstructions = () => {
     instructionsPartRef.current?.scrollIntoView({ behavior: "smooth" });
-  }; 
+  };
+
+  const faqPartRef = useRef(null);
+
+  const scrollToFaq = () => {
+    faqPartRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const contactPartRef = useRef(null);
 
@@ -35,12 +42,14 @@ const LandingPageFull = () => {
       <LandingPagePart1
         onFeaturesClick={scrollToFeatures}
         onInstructionsClick={scrollToInstructions}
+        onFaqClick={scrollToFaq}
         onContactClick = {scrollToContact}
       />
       <LandingPagePart2 featuresSectionRef={featuresPartRef} />
       <LandingPagePart3 instructionsSectionRef={instructionsPartRef} />
       <LandingPagePart4 />
       <LandingPagePart5 />
+      <LandingPagePart7 faqSectionRef={faqPartRef} />
       <LandingPagePart6 contactSectionRef = {contactPartRef}/>
     </Box>
   );
