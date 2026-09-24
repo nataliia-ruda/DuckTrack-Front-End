@@ -8,34 +8,39 @@ import { useState } from "react";
 
 const faqs = [
   {
-    question: "Is DuckTrack free to use?",
+    question: "Is DuckTrack free?",
     answer:
-      "Yes! DuckTrack is completely free to use — you can create an account and start tracking your job applications right away.",
+      "Yes, completely free. Create an account and start tracking your applications right away. No trial period, no credit card.",
   },
   {
-    question: "Do I need to install anything to use DuckTrack?",
+    question: "Is there a limit to how many applications I can track?",
     answer:
-      "No installation required. DuckTrack runs entirely in your browser, so you can access your applications from any device with an internet connection.",
+      "No. Add as many applications as you need, whether you're sending five a month or fifty a week.",
   },
   {
-    question: "Can I edit or delete an application after adding it?",
+    question: "How do I log an interview?",
     answer:
-      "Absolutely. You can update the status, edit any details, or delete an application from your table at any time with a single click.",
+      "There are two ways. Click the + button in the Interviews section of your dashboard, or simply change an application's status to \"Interviewing\" and the interview form will open automatically.",
   },
   {
-    question: "Will I get reminders for my interviews?",
+    question: "Will I get a reminder before my interview?",
     answer:
-      "Yes, once you log an interview with its date and time, DuckTrack will send you timely email reminders so you never miss it.",
+      "Yes. Once you've logged an interview, DuckTrack emails you a reminder 24 hours before it starts, so you have time to prepare.",
   },
   {
-    question: "Is my data private and secure?",
+    question: "What is Auto-Ghosting Mode?",
     answer:
-      "Your data is only visible to you. We never share your application details with third parties, and your account is protected by your own login credentials.",
+      "Sometimes companies simply never reply. With Auto-Ghosting Mode turned on, any application that stays in \"Applied\" with no updates for 3 weeks is automatically marked as \"Ghosted\", which keeps your list tidy and your statistics honest. You can switch it on or off at any time in your profile settings.",
   },
   {
-    question: "Can I track statistics about my job search?",
+    question: "Who can see my data?",
     answer:
-      "Yes! The Analytics page gives you an overview of your applications, response rates, and interview progress so you can track your job hunt over time.",
+      "Only you. Your applications are linked to your personal account and aren't visible to anyone else. We don't sell or share your data, and you stay in control of it: you can delete it whenever you like.",
+  },
+  {
+    question: "Can I delete my account?",
+    answer:
+      "Yes. Go to your profile settings in the dashboard and choose to delete your account. This permanently removes your account and all the applications stored in it, and it can't be undone.",
   },
 ];
 
