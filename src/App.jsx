@@ -22,6 +22,7 @@ import InterviewPage from "./components/InterviewPage.jsx";
 import NotFound from "./components/NotFound.jsx"; 
 import AccountDeleted from "./components/AccountDeleted.jsx";
 import DeleteLinkInvalid from "./components/DeleteLinkInvalid.jsx";
+import AboutUsPage from "./components/AboutUsPage.jsx";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPageFull />} />
+      <Route path="/about" element={<AboutUsPage />} />
       <Route path="/signin" element={<SigninPage />} />
       <Route path="signup" element={<Registration />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />

@@ -181,6 +181,26 @@ const LandingPagePart1 = ({
             >
               Contact
             </Button>
+            <Button
+              onClick={() => navigate("/about")}
+              sx={{
+                color: "#001A42",
+                fontSize: "1em",
+                px: 3,
+                py: 1,
+                borderRadius: "999px",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  bgcolor: "blur",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
+                  borderColor: "#ffdb4d",
+                },
+              }}
+            >
+              About us
+            </Button>
           </Box>
 
           {isLogged ? (
