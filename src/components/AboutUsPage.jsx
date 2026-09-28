@@ -82,29 +82,8 @@ const AboutUsPage = () => {
             },
           }}
         >
-          Back to home
+          Back
         </Button>
-
-        <Box
-          onClick={() => navigate("/")}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 0.5,
-            cursor: "pointer",
-            color: "#001A42",
-            fontWeight: 800,
-            fontSize: { xs: 22, md: 28 },
-          }}
-        >
-          <Box
-            component="img"
-            src="/d_logo.png"
-            alt="DuckTrack logo"
-            sx={{ height: "0.9em" }}
-          />
-          uckTrack
-        </Box>
       </Toolbar>
 
       <Box
