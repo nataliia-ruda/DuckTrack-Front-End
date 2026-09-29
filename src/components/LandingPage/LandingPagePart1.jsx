@@ -117,6 +117,7 @@ const LandingPagePart1 = ({
             width: "100%",
             maxWidth: "1440px",
             mx: "auto",
+            boxSizing: "border-box",
             zIndex: 2,
           }}
         >
@@ -302,7 +303,7 @@ const LandingPagePart1 = ({
                 justifyContent: "flex-end",
                 px: { xs: 1, md: 0 },
                 ml: { md: 2 },
-                gap: 2,
+                gap: { xs: 1.5, md: 2 },
               }}
             >
               <Button
@@ -314,8 +315,8 @@ const LandingPagePart1 = ({
                 sx={{
                   borderColor: "#001A42",
                   color: "#001A42",
-                  px: 3,
-                  py: 1,
+                  px: { xs: 2, md: 3 },
+                  py: { xs: 0.75, md: 1 },
                   borderRadius: "999px",
                   textTransform: "none",
                   fontSize: { xs: "0.8rem", md: "1rem", lg: "1.1rem" },
@@ -342,8 +343,8 @@ const LandingPagePart1 = ({
                 sx={{
                   bgcolor: "#001A42",
                   color: "white",
-                  px: 3,
-                  py: 1,
+                  px: { xs: 2, md: 3 },
+                  py: { xs: 0.75, md: 1 },
                   borderRadius: "999px",
                   textTransform: "none",
                   fontSize: { xs: "0.8rem", md: "1rem", lg: "1.1rem" },
