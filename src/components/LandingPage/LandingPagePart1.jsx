@@ -21,6 +21,24 @@ import AuthContext from "../../core/AuthContext.jsx";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
+const navButtonSx = {
+  color: "#001A42",
+  fontSize: { md: "0.95em", lg: "1em" },
+  px: { md: 1.5, lg: 3 },
+  py: 1,
+  borderRadius: "999px",
+  textTransform: "none",
+  fontWeight: 600,
+  whiteSpace: "nowrap",
+  flexShrink: 0,
+  "&:hover": {
+    bgcolor: "blur",
+    transform: "translateY(-2px)",
+    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
+    borderColor: "#ffdb4d",
+  },
+};
+
 const LandingPagePart1 = ({
   onFeaturesClick,
   onInstructionsClick,
@@ -38,6 +56,14 @@ const LandingPagePart1 = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navItems = [
+    { label: "Features", onClick: onFeaturesClick },
+    { label: "How it works?", onClick: onInstructionsClick },
+    { label: "FAQ", onClick: onFaqClick },
+    { label: "Contact", onClick: onContactClick },
+    { label: "About us", onClick: () => navigate("/about") },
+  ];
 
   return (
     <>
@@ -97,110 +123,16 @@ const LandingPagePart1 = ({
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
-              gap: 3,
-              width: "60%",
+              flex: 1,
+              minWidth: 0,
+              gap: { md: 1, lg: 3 },
             }}
           >
-            <Button
-              onClick={onFeaturesClick}
-              sx={{
-                color: "#001A42",
-                fontSize: "1em",
-                px: 3,
-                py: 1,
-                borderRadius: "999px",
-                textTransform: "none",
-                fontWeight: 600,
-                "&:hover": {
-                  bgcolor: "blur",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  borderColor: "#ffdb4d",
-                },
-              }}
-            >
-              Features
-            </Button>
-            <Button
-              onClick={onInstructionsClick}
-              sx={{
-                color: "#001A42",
-                fontSize: "1em",
-                px: 3,
-                py: 0.5,
-                borderRadius: "999px",
-                textTransform: "none",
-                fontWeight: 600,
-                "&:hover": {
-                  bgcolor: "blur",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  borderColor: "#ffdb4d",
-                },
-              }}
-            >
-              How it works?
-            </Button>
-            <Button
-              onClick={onFaqClick}
-              sx={{
-                color: "#001A42",
-                fontSize: "1em",
-                px: 3,
-                py: 1,
-                borderRadius: "999px",
-                textTransform: "none",
-                fontWeight: 600,
-                "&:hover": {
-                  bgcolor: "blur",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  borderColor: "#ffdb4d",
-                },
-              }}
-            >
-              FAQ
-            </Button>
-            <Button
-              onClick={onContactClick}
-              sx={{
-                color: "#001A42",
-                fontSize: "1em",
-                px: 3,
-                py: 1,
-                borderRadius: "999px",
-                textTransform: "none",
-                fontWeight: 600,
-                "&:hover": {
-                  bgcolor: "blur",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  borderColor: "#ffdb4d",
-                },
-              }}
-            >
-              Contact
-            </Button>
-            <Button
-              onClick={() => navigate("/about")}
-              sx={{
-                color: "#001A42",
-                fontSize: "1em",
-                px: 3,
-                py: 1,
-                borderRadius: "999px",
-                textTransform: "none",
-                fontWeight: 600,
-                "&:hover": {
-                  bgcolor: "blur",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.2)",
-                  borderColor: "#ffdb4d",
-                },
-              }}
-            >
-              About us
-            </Button>
+            {navItems.map(({ label, onClick }) => (
+              <Button key={label} onClick={onClick} sx={navButtonSx}>
+                {label}
+              </Button>
+            ))}
           </Box>
 
           {isLogged ? (
@@ -364,9 +296,11 @@ const LandingPagePart1 = ({
             <Box
               sx={{
                 display: "flex",
-                width: { xs: "100%" },
+                width: { xs: "100%", md: "auto" },
+                flexShrink: 0,
                 justifyContent: "flex-end",
-                px: { xs: 4 },
+                px: { xs: 4, md: 0 },
+                ml: { md: 2 },
                 gap: 2,
               }}
             >
@@ -383,8 +317,9 @@ const LandingPagePart1 = ({
                   py: 1,
                   borderRadius: "999px",
                   textTransform: "none",
-                  fontSize: { xs: "0.8rem", md: "1.1rem" },
+                  fontSize: { xs: "0.8rem", md: "1rem", lg: "1.1rem" },
                   fontWeight: 600,
+                  whiteSpace: "nowrap",
                   transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -410,8 +345,9 @@ const LandingPagePart1 = ({
                   py: 1,
                   borderRadius: "999px",
                   textTransform: "none",
-                  fontSize: { xs: "0.8rem", md: "1.1rem" },
+                  fontSize: { xs: "0.8rem", md: "1rem", lg: "1.1rem" },
                   fontWeight: 600,
+                  whiteSpace: "nowrap",
                   transition: "all 0.3s ease",
                   "&:hover": {
                     backgroundColor: "#001a42e3",
