@@ -297,9 +297,10 @@ const LandingPagePart1 = ({
               sx={{
                 display: "flex",
                 width: { xs: "100%", md: "auto" },
-                flexShrink: 0,
+                flexShrink: { xs: 1, md: 0 },
+                boxSizing: "border-box",
                 justifyContent: "flex-end",
-                px: { xs: 4, md: 0 },
+                px: { xs: 1, md: 0 },
                 ml: { md: 2 },
                 gap: 2,
               }}
