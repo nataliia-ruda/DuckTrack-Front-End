@@ -15,6 +15,8 @@ import {
   IconButton,
   Paper,
   CircularProgress,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -36,6 +38,8 @@ import { useRef } from "react";
 function Row({ row, fetchApplications }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleEditClick = () => {
     navigate(`/my-applications/${row.application_id}`);
@@ -116,7 +120,9 @@ function Row({ row, fetchApplications }) {
   return (
     <>
       <TableRow
+        onClick={isSmallScreen ? handleEditClick : undefined}
         sx={{
+          cursor: { xs: "pointer", md: "default" },
           "& .MuiTableCell-root": {
             borderBottom: {
               xs: "none",
@@ -205,7 +211,12 @@ function Row({ row, fetchApplications }) {
           </Tooltip>
 
           <Tooltip title="Delete">
-            <IconButton onClick={() => confirmDelete(row.application_id)}>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                confirmDelete(row.application_id);
+              }}
+            >
               <DeleteIcon sx={{ fontSize: { xs: 15, md: 22 } }} />
             </IconButton>
           </Tooltip>
